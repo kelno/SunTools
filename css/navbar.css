@@ -1,7 +1,7 @@
-﻿.loader {
+﻿#navbar .loader {
     visibility: hidden;
 }
 
-.loader.active {
+#navbar .loader.active {
     visibility: visible;
 }

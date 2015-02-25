@@ -1,17 +1,35 @@
-<link rel="stylesheet" href="css/navbar.css" />
 <div>
     <div class="navbar-container" id="navbar-container">
         <div class="navbar-header pull-left">
             <a href="#" class="navbar-brand">
                 <i data-bind="attr: { class: app.icon }"></i>
                 <small data-bind="text: app.title">
-                    SunTools <!-- placeholder -->
+                    SunTools <!-- Placeholder-->
                 </small>
             </a>
             <div class="main-throbber navbar-brand active">
                 <i class="fa-spinner" data-bind="css: {'ace-icon fa fa-spin': router.isNavigating }">
                 </i>
             </div>
-        </div>
+        </div> <!--
+        <div class="navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+                <li class="light-blue">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <i class="icon-user"></i>
+                        <span class="user-info">
+                            <small>Welcome</small>
+                        </span>
+                        <i class="icon-caret-down"></i>
+                    </a>
+                   <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
+                        <li class="divider"></li>
+                        <li>
+                            <a href="j_spring_security_logout"  ><i class="icon-off"></i>Logout </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>-->
     </div>
 </div>

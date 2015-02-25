@@ -3,14 +3,37 @@
         try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
     </script>
 
-    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+    <div class="sidebar-shortcuts dropdown-toggle" id="sidebar-shortcuts">
+        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+            <button class="btn btn-warning no-border" data-bind="click: navigateToHome">
+                <i class="menu-icon fa fa-home"></i>
+            </button>
+            <button class="btn btn-info no-border" data-bind="click: refreshPage">
+                <i class="menu-icon fa fa-refresh"></i>
+            </button>
+            <button class="btn btn-info no-border" data-bind="click: navigateBack">
+                <i class="menu-icon fa fa-chevron-left"></i>
+            </button>
+            <button class="btn btn-info no-border" data-bind="click: navigateForward">
+                <i class="menu-icon fa fa-chevron-right"></i>
+            </button>
+        </div>
 
+        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+            <span class="btn btn-warning"></span>
+
+            <span class="btn btn-info"></span>
+
+            <span class="btn btn-info"></span>
+
+            <span class="btn btn-info"></span>
+        </div>
     </div>
 
     <ul class="nav nav-list" data-bind="foreach: router.navigationModel">
         <!-- ko if: $data.childRoutes === undefined && $data.parent === undefined -->
         <li data-bind="css: { active: isActive }, if: nav">
-            
+
             <a data-bind="attr: { href: hash }">
                 <i data-bind="attr: { class: iconClass }"></i>
                 <span class="menu-text" data-bind="text: title"></span>
@@ -19,7 +42,6 @@
             <b class="arrow"></b>
         </li>
         <!-- /ko -->
-
         <!-- ko if: $data.childRoutes !== undefined -->
         <li data-bind="css: { active: isActive }, if: nav" class="hsub">
             <a data-bind="attr: { href: hash }" class="dropdown-toggle">
@@ -38,7 +60,7 @@
 
     <!-- #section:basics/sidebar.layout.minimize -->
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-        <i class="ace-icon fa fa-angle-double-right" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+        <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
     </div>
 
     <!-- /section:basics/sidebar.layout.minimize -->
