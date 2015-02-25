@@ -4,7 +4,7 @@ input.typeahead,
 input.tt-query,
 input.tt-hint {
   min-width: 175px;
-  font-size: 16px;
+  font-size: @font-size-typeahead-hint;
   line-height: 24px;
   border: 1px solid #CCC;
 
@@ -36,7 +36,7 @@ input.tt-hint , .form-group input.tt-hint {
 
 .tt-suggestion {
   padding: 3px 12px 4px;
-  font-size: 16px;
+  font-size: @font-size-typeahead-suggestion;
   line-height: 24px;
   
   &.tt-cursor {
@@ -57,3 +57,6 @@ input.typeahead.scrollable ~ .tt-dropdown-menu {
 
 }
 .enable_plugin_typeahead();
+
+
+

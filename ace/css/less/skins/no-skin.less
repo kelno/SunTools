@@ -1,3 +1,5 @@
+@menumin-submenu-top-border: lighten(@menumin-border , 10%);
+
 .no-skin {
 	.navbar .navbar-toggle {
 		background-color: #75B3D7;
@@ -221,9 +223,24 @@
 	}
 
 	
+	//show active caret only for 1st level item
 	@media only screen and (max-width: @grid-float-breakpoint-max) {
-		.sidebar.responsive .nav-list > li.active.open > a:after {
+		.sidebar.responsive .nav-list > li.active.open > a:after,
+		.sidebar.responsive-max .nav-list > li.active.open > a:after
+		{
 			display: block;
+		}
+		
+		.sidebar.responsive .nav-list li li.active > a:after,
+		.sidebar.responsive-max .nav-list li li.active > a:after
+		{
+			display: none;
+		}
+		
+		.sidebar.responsive .nav-list > li.active:after,
+		.sidebar.responsive-max .nav-list > li.active:after
+		{
+			height: @nav-item-height + 2;
 		}
 	}
 
@@ -250,7 +267,7 @@
 		 .nav-list > li > .submenu {
 				background-color: @submenu-background;
 				border: 1px solid @menumin-border;
-				border-top-color: lighten(@menumin-border , 10%);
+				border-top-color: @menumin-submenu-top-border;
 				.box-shadow(@menumin-shadow2);
 		 }
 		 
@@ -417,11 +434,17 @@
 			}
 
 			.nav-list > li {
-				&:hover {
-					border-color: @h-nav-item-border-hover;
+				&:hover , &:hover + li {
+					border-left-color: @h-nav-item-border-hover;
 				}
-				&.active {
-					border-color: @h-nav-item-border-active;
+				&:last-child:hover {
+					border-right-color: @h-nav-item-border-hover;
+				}
+				&.active , &.active + li , &:hover + li.active {
+					border-left-color: @h-nav-item-border-active;
+				}
+				&.active:last-child {
+					border-right-color: @h-nav-item-border-active;
 				}
 			}
 			.nav-list > li.active:before {
@@ -430,20 +453,21 @@
 			
 			//a white line on bottom of active item to cover the blue separator
 			.nav-list > li.active > a:after {
-				border-width: 0 0 3px 0;
+				border-width: 0 0 2px 0;
 				border-color: transparent;
 				border-bottom-color: #FFF;
 
 				left: 0;
 				right: 0;
 				top: auto;
-				bottom: -3px;
+				bottom: -2px;
 			}
+
 			
 			
 			.sidebar-shortcuts-large {
 				background-color: #FFF;
-				border-color: #CCC;
+				border-color: @menumin-border;
 				.box-shadow(~"2px 1px 2px 0 rgba(0,0,0,0.1)");
 			}
 			.sidebar-shortcuts-large:after {
@@ -457,6 +481,13 @@
 				> .submenu {
 					border-color: @hover-submenu-border;
 				}
+			}
+			&.menu-min {
+				.nav-list > li.hover {
+					> .submenu {
+						border-top-color: @menumin-submenu-top-border;
+					}
+				}				
 			}
 
 			.nav-list > li.hover {
@@ -478,6 +509,15 @@
 					-moz-border-bottom-colors: #B8B8B8;
 					border-bottom-color: #B8B8B8;
 				}
+			}
+			
+			
+			&.menu-min .nav-list > li.hover > .arrow:after {
+				-moz-border-bottom-colors: #F5F5F5;
+				border-bottom-color: #F5F5F5;
+			}
+			&.menu-min .nav-list > li.active > a > .menu-text {
+				border-left-color: @menumin-border;
 			}
 		}
 	  }

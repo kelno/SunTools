@@ -104,12 +104,12 @@
  .box-shadow(none) !important;
 }
 
-
-.overflow-hidden {overflow: hidden !important;}
 .overflow-auto {overflow: auto !important;}
-.overflow-scroll {overflow: scroll !important;}
 .overflow-visible {overflow: visible !important;}
 */
+
+.overflow-hidden {overflow: hidden !important;}
+.overflow-scroll {overflow-x: hidden !important; overflow-y: scroll !important;}
 
 .no-radius {
  .border-radius(0) !important;
@@ -259,3 +259,5 @@
 	.transform(~"scale(1.2)");
   }
 }
+
+

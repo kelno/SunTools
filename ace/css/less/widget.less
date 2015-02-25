@@ -435,8 +435,8 @@
   background-color: #FFF;
   border-width: 3px;
 
-  z-index: @zindex-navbar-fixed + 10;
-  -moz-backface-visibility: hidden;
+  z-index: @zindex-navbar-fixed + 10 !important;//to override inline style from jquery ui draggable
+  //-moz-backface-visibility: hidden;
   
   &:not([class*="widget-color-"]) {
 	border-color: #AAA;
@@ -627,6 +627,22 @@
 	
 	&.center {
 		text-align:center;
+	}
+	
+	&.toolbox-vertical {
+		border-bottom-width: 0;
+		border-right: 1px solid #D9D9D9;
+		
+		display: table-cell;
+		padding: 6px 4px;
+		vertical-align: top;
+		
+		width: 1px;
+		
+		+ .widget-main {
+			display: table-cell;
+			vertical-align: top;
+		}
 	}
 }
 
