@@ -1,0 +1,9 @@
+<div class="navbar navbar-default navbar-fixed-top" id="navbar" data-bind="compose: {view: 'shell/navbar'}"></div>
+<div class="main-container" id="main-container">
+    <div id="sidebar" class="sidebar responsive menu-min" data-bind="compose: {view: 'shell/sidebar'}"></div>
+    <div class="main-content">
+        <div class="breadcrumbs" id="breadcrumbs breadcrumbs-fixed" data-bind="compose: {view: 'shell/breadcrumbs'}"></div>
+        <div class="page-content" data-bind="router: { transition:'fadeInOut' }"></div>
+    </div>
+</div>
+

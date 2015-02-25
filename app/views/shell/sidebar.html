@@ -1,0 +1,48 @@
+<div>
+    <script type="text/javascript">
+        try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
+    </script>
+
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+
+    </div>
+
+    <ul class="nav nav-list" data-bind="foreach: router.navigationModel">
+        <!-- ko if: $data.childRoutes === undefined && $data.parent === undefined -->
+        <li data-bind="css: { active: isActive }, if: nav">
+            
+            <a data-bind="attr: { href: hash }">
+                <i data-bind="attr: { class: iconClass }"></i>
+                <span class="menu-text" data-bind="text: title"></span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+        <!-- /ko -->
+
+        <!-- ko if: $data.childRoutes !== undefined -->
+        <li data-bind="css: { active: isActive }, if: nav" class="hsub">
+            <a data-bind="attr: { href: hash }" class="dropdown-toggle">
+                <i data-bind="attr: { class: iconClass }"></i>
+                <span class="menu-text" data-bind="text: title"></span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <ul class="submenu nav-show" data-bind="foreach: childRoutes">
+                <li><a data-bind="css: { active: isActive }, attr: { href: hash }, text: title" class="menu-text" href="#" /></li>
+            </ul>
+
+            <b class="arrow"></b>
+        </li>
+        <!-- /ko -->
+    </ul>
+
+    <!-- #section:basics/sidebar.layout.minimize -->
+    <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+        <i class="ace-icon fa fa-angle-double-right" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+    </div>
+
+    <!-- /section:basics/sidebar.layout.minimize -->
+    <script type="text/javascript">
+        try { ace.settings.check('sidebar', 'collapsed') } catch (e) { }
+    </script>
+</div>

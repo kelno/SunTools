@@ -1,0 +1,15 @@
+<div>
+    <div class="container">
+        <div class=" row">
+            <div class="col-xs-4" data-bind="foreach: creatureExtraFlags">
+                <a href="." style="height: 40px" class="list-group-item" data-bind="click: $parent.clicked"><span data-bind="text: $data"></span></a>
+            </div>
+            <div class="pull-right col-xs-8">
+                <h3>
+                    Mask : <input type="number" min="0" data-bind="value: selection" />
+                </h3>
+                <p><button class="btn btn-primary" data-bind="click: reset">Reset</button></p>
+            </div>
+        </div>
+    </div>
+</div>

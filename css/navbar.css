@@ -1,0 +1,7 @@
+﻿.loader {
+    visibility: hidden;
+}
+
+.loader.active {
+    visibility: visible;
+}
