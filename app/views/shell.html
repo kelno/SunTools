@@ -3,6 +3,7 @@
     <div id="sidebar" class="sidebar responsive sidebar-fixed" data-bind="compose: {view: 'shell/sidebar'}"></div>
     <div class="main-content">
         <div class="breadcrumbs" id="breadcrumbs breadcrumbs-fixed" data-bind="compose: {view: 'shell/breadcrumbs'}"></div>
-        <div class="page-content" data-bind="router: { transition:'fadeInOut' }"></div>
+        <!-- set position relative to allow views to use absolute position from here-->
+        <div class="page-content" data-bind="router: { transition:'fadeInOut' }" style="position: relative"></div>
     </div>
 </div>
