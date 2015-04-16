@@ -129,6 +129,21 @@
 	border-left-color: #A4C6DD;
  }
 
+ 
+ .sidebar + .main-content .breadcrumbs-fixed {
+	left: 0;
+ }
+ 
+ @media (min-width: @screen-sm) {
+  .container.main-container {
+	.sidebar.compact + .main-content .breadcrumbs-fixed,
+	.sidebar.menu-min + .main-content .breadcrumbs-fixed {
+		left: auto;
+		right: auto;
+	}
+  }
+ }
+ 
  @media (min-width: max(@screen-fixed-breadcrumbs , @screen-compact-menu)) {
   .sidebar.menu-min, .sidebar.compact {
 	+ .main-content .breadcrumbs-fixed {
@@ -310,10 +325,10 @@
 	}
  }
 
- .user-menu.dropdown-close {
-	right: auto !important;
-	left: 0 !important;
- }
+ //.user-menu.dropdown-close {
+	//right: auto !important;
+	//left: 0 !important;
+ //}
 }
 
 
@@ -885,8 +900,11 @@
  .ui-datepicker .ui-datepicker-next:before {
 	content: "\f060";
  }
- .ui-menu .ui-menu-item a .ui-menu-icon {
+ .ui-menu .ui-menu-item .ui-menu-icon {
 	float: left;
+	left: 4px;
+	right: auto;
+
 	&:before {
 		content: "\f104";
 	}

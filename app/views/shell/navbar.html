@@ -1,5 +1,16 @@
 <div>
     <div class="navbar-container" id="navbar-container">
+
+        <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+            <span class="sr-only">Toggle sidebar</span>
+
+            <span class="icon-bar"></span>
+
+            <span class="icon-bar"></span>
+
+            <span class="icon-bar"></span>
+        </button>
+
         <div class="navbar-header pull-left">
             <a href="#" class="navbar-brand">
                 <i data-bind="attr: { class: app.icon }"></i>
@@ -8,7 +19,7 @@
                 </small>
             </a>
             <div class="main-throbber navbar-brand active">
-                <i class="fa-spinner" data-bind="css: {'ace-icon fa fa-spin': router.isNavigating }">
+                <i class="" data-bind="css: {'fa-spinner ace-icon fa fa-spin': router.isNavigating }">
                 </i>
             </div>
         </div> <!--
