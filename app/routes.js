@@ -44,9 +44,9 @@ define(
             nav: true,
             iconClass: "menu-icon fa fa-database",
         }, {
-            route: 'Test',
-            moduleId: 'test',
-            title: 'Test',
+            route: 'Quests',
+            moduleId: 'quests/index',
+            title: 'Quests',
             nav: true,
             iconClass: "menu-icon fa fa-cog",
         },{

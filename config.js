@@ -9,7 +9,15 @@
  */
 var config = function () {
 
+    var QuestRootModule = "#Quests";
     return {
         //appTitle: "SunTools",
+        modulesPathList: {
+
+            quests: {
+                index: QuestRootModule,
+                php: "app/views/quests/index2.html",
+            },
+        },
     }
 }();
