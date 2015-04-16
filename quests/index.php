@@ -18,9 +18,9 @@ function getRealMotherfucker(&$coucou) {
 }
 
 if(!isset($_GET['zone'])) {
-	echo '<p>Il faut renseigner une zone avec son nom anglais !<br />Exemple : #Quests?zone=nagrand</p>
+	echo '<p>Il faut renseigner une zone avec son nom anglais !<br />Exemple : index.php?zone=nagrand</p>
 			<ul>
-				<li><a href="#Quests?zone=peninsula">Hellfire Peninsula</a></li>
+				<li><a href="?zone=peninsula">Hellfire Peninsula</a></li>
 			</ul>';
 } else {
 	$zone = "%".htmlspecialchars($_GET['zone'])."%";

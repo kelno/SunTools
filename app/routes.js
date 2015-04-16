@@ -45,7 +45,7 @@ define(
             iconClass: "menu-icon fa fa-database",
         }, {
             route: 'Quests',
-            moduleId: 'quests/index',
+            hash: 'quests/index.php',
             title: 'Quests',
             nav: true,
             iconClass: "menu-icon fa fa-cog",
