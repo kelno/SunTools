@@ -44,6 +44,12 @@ define(
             nav: true,
             iconClass: "menu-icon fa fa-database",
         }, {
+            route: 'Test',
+            moduleId: 'test',
+            title: 'Test',
+            nav: true,
+            iconClass: "menu-icon fa fa-cog",
+        },{
             route: 'DBCs',
             moduleId: 'dbcs/index',
             moduleRootId: 'dbcs', // Custom property to make child routes easier
@@ -54,30 +60,44 @@ define(
             childRoutes: [
                 {
                     route: 'CastTimes',
+                    hash: 'CastTimes',
                     moduleId: 'casttimes',
                     title: 'Cast Times',
                     nav: true,
-                    hash: 'CastTimes',
                 }, {
                     route: 'Radius',
+                    hash: 'Radius',
                     moduleId: 'radius',
                     title: 'Radius',
                     nav: true,
-                    hash: 'Radius',
                 }, {
                     route: 'Range',
+                    hash: 'Range',
                     moduleId: 'range',
                     title: 'Range',
                     nav: true,
-                    hash: 'Range',
                 }
             ]
         }
         ];
 
+        //create parents route for each route
+        for(var i = 0; routes[i] != undefined; i++) {
+            var route = routes[i];
+            route.parentRoute = null;
+            if (route.childRoutes != undefined) {
+                for(var j = 0; route.childRoutes[j] != undefined; j++) {
+
+                    var childRoute = route.childRoutes[j];
+                    childRoute.parentRoute = route;
+                }
+            }
+        }
+
+        //Last step, map child routes
         $.each(routes, function (index, route) {
             if (route.childRoutes === undefined)
-                return
+                return;
             $.each(route.childRoutes, function (index, childRoute) {
                 childRoute.route = route.route + '/' + childRoute.route;
                 childRoute.moduleId = route.moduleRootId + '/' + childRoute.moduleId;

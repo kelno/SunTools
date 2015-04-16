@@ -1,9 +1,9 @@
 requirejs.config({
     paths: {
-    'ace' : '../ace/js/uncompressed/ace',
-    'ace-elements': '../ace/js/uncompressed/ace-elements',
-    'ace-extra': '../ace/js/uncompressed/ace-extra',
-    'bootstrap': '../ace/js/uncompressed/bootstrap',
+    'ace' : '../ace/js/ace',
+    'ace-elements': '../ace/js/ace-elements',
+    'ace-extra': '../ace/js/ace-extra',
+    'bootstrap': '../ace/js/bootstrap',
     'creatureDefines': '../js/creatureDefines',
     'durandal':'../lib/durandal/js',
     'knockout': '../lib/knockout/knockout-3.1.0',
