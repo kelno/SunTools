@@ -1,0 +1,68 @@
+#header-fixed { 
+    position: fixed; 
+    top: 0px; display:none;
+    background-color:white;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle!important;
+}
+
+.dataTables_scrollBody tr.top td {
+    padding: 0px!important;
+}
+
+td {
+    text-align: center;
+    padding: 8px 0!important;
+}
+
+td span {
+    display: none;
+}
+
+td.big {
+    width: 25%;
+}
+
+td.med {
+    width: 10%;
+}
+
+td.small {
+    width: 5%;
+    font-size: 100%!important;
+}
+
+td.part {
+    width: 3.33%;
+}
+
+td textarea {
+    width: 95%;
+}
+
+.border {
+    border-right: 1px solid #fff;
+}
+
+.border2 {
+    border-right: 1px solid #dbdbdb;
+}
+
+td.ok {
+    background: #5cb85c;
+}
+
+td.mid {
+    background: #f0ad4e;
+}
+
+td.ko {
+    background: #F95C4B;
+}
+
+td.no {
+    background: #777;
+}
