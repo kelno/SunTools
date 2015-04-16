@@ -32,10 +32,12 @@
 
     <ul class="nav nav-list" data-bind="foreach: router.navigationModel">
         <!-- ko if: $data.childRoutes === undefined && $data.parent === undefined -->
-        <li data-bind="css: { active: isActive }, if: nav">
+        <li data-bind="css: { active: isActive, hidden: !nav}">
 
             <a data-bind="attr: { href: hash }">
+                <!-- ko if: iconClass !== undefined -->
                 <i data-bind="attr: { class: iconClass }"></i>
+                <!-- /ko -->
                 <span class="menu-text" data-bind="text: title"></span>
             </a>
 
@@ -45,12 +47,16 @@
         <!-- ko if: $data.childRoutes !== undefined -->
         <li data-bind="css: { active: isActive }, if: nav" class="hsub">
             <a data-bind="attr: { href: hash }" class="dropdown-toggle">
+                <!-- ko if: iconClass !== undefined -->
                 <i data-bind="attr: { class: iconClass }"></i>
+                <!-- /ko -->
                 <span class="menu-text" data-bind="text: title"></span>
                 <b class="arrow fa fa-angle-down"></b>
             </a>
             <ul class="submenu nav-show" data-bind="foreach: childRoutes">
+                <!-- ko if: nav -->
                 <li><a data-bind="css: { active: isActive }, attr: { href: hash }, text: title" class="menu-text" href="#" /></li>
+                <!-- /ko -->
             </ul>
 
             <b class="arrow"></b>

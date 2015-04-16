@@ -1,5 +1,28 @@
 define(['bootstrap', 'knockout', 'ace', 'ace-elements', 'ace-extra', 'jquery', 'plugins/router', 'durandal/app', 'routes']
 , function (bootstrap, ko, ace, aceelements, aceextra, $, router, app, routes) {
+    "use strict";
+    var parentRoute = ko.computed(function() {
+        //get current module hash
+        var currentRouteLastPart = null;
+        if (router.activeInstruction()) {
+            var fullPath = router.activeInstruction().fragment;
+            currentRouteLastPart = fullPath.substr(fullPath.lastIndexOf('/') + 1);
+        }
+        if (currentRouteLastPart == null)
+            return null;
+
+        //find current route
+        /*var currentRoute = _.find(router.routes, function (route) {
+            var routeLastPart = route.route.substr(route.route.lastIndexOf('/') + 1);
+            return routeLastPart == currentRouteLastPart;
+        });
+        if (currentRoute == undefined)
+            return null;
+        
+        //return parent route
+        return currentRoute.parentRoute;*/
+        return null;
+    });
 
     var viewTitle = ko.computed(function () {
         if (router.activeInstruction()) {
@@ -23,6 +46,13 @@ define(['bootstrap', 'knockout', 'ace', 'ace-elements', 'ace-extra', 'jquery', '
         window.location.reload();
     };
 
+    var navigateToParent = function () {
+        if(parentRoute())
+            router.navigate(parentRoute().route);
+        else
+            console.log("navigateBackModule: No parent route found");
+    };
+
     return {
         app: app,
         router: router,
@@ -39,5 +69,8 @@ define(['bootstrap', 'knockout', 'ace', 'ace-elements', 'ace-extra', 'jquery', '
         navigateBack: navigateBack,
         navigateForward: navigateForward,
         refreshPage: refreshPage,
+
+        navigateToParent: navigateToParent,
+        parentRoute: parentRoute,
     };
 });

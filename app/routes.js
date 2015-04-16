@@ -6,7 +6,7 @@ define(
             route: '',
             title: 'Home',
             moduleId: 'home',
-            nav: true,
+            nav: false,
             iconClass: "menu-icon fa fa-home",
         }, {
             route: 'MaskHome',
