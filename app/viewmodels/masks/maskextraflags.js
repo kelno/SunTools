@@ -7,7 +7,7 @@ define(['durandal/app', 'knockout', 'jquery', 'creatureDefines'],
             var target = event.currentTarget;
             $(target).toggleClass("active");
             var active = $(target).hasClass("active");
-            $(".list-group-item").each(function (index, element) {
+            $(".extralist").each(function (index, element) {
                 if (element == event.currentTarget) {
                     if (active == true)
                         var newVal = selection() | Math.pow(2, index);
@@ -19,7 +19,7 @@ define(['durandal/app', 'knockout', 'jquery', 'creatureDefines'],
             });
         },
         redrawList = function () {
-            $(".list-group-item").each(function (index, element) {
+            $(".extralist").each(function (index, element) {
                 var active = selection() & Math.pow(2, index);
                 $(element).toggleClass("active", active != 0);
             });

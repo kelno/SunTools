@@ -5,7 +5,7 @@
                 <span href="." style="height: 40px; text-align: right" class="list-group-item"><span data-bind="text: '0x' + Math.pow(2,$index()).toString(16)"></span></span>
             </div>
             <div class="col-xs-4" data-bind="foreach: creatureImmuneMechanics">
-                <a href="." style="height: 40px" class="list-group-item" data-bind="click: $parent.clicked"><span data-bind="text: $data"></span></a>
+                <a href="." style="height: 40px" class="list-group-item mechalist" data-bind="click: $parent.clicked"><span data-bind="text: $data"></span></a>
             </div>
             <div class="col-xs-6">
                 <h3>
