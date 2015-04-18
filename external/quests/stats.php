@@ -1,4 +1,5 @@
 <?php
+require('../config.php');
 try {
     $handler = new PDO('mysql:host=62.210.236.104;dbname=world', 'nastyadmin', 'Z9EuAAtxPtA5gt3F');
     $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -6,6 +7,9 @@ try {
     echo $e->getMessage();
     die();
 }
+
+//global variable
+$zoneID = 0;
 
 function testProgression($tested, $total) {
     return round(($tested / $total) * 100, 2). '%';
@@ -28,7 +32,7 @@ function countFields($status) {
                                        SUM(CASE WHEN placeNPC = :status THEN 1 ELSE 0 END) +
                                        SUM(CASE WHEN workObj = :status THEN 1 ELSE 0 END) +
                                        SUM(CASE WHEN baObj = :status THEN 1 ELSE 0 END)
-                                       ) TotalCount
+                                       ) AS TotalCount
                                 FROM suntools.quest_test qtest
                                 JOIN world.quest_template qt ON qtest.questid = qt.entry
                                 WHERE ZoneOrSort = :zoneID');
@@ -37,17 +41,13 @@ function countFields($status) {
     $query->execute();
     $countStatus = $query->fetch();
     
-    switch($status) {
-        case 1: return $success = $countStatus['TotalCount']; break;
-        case 2: return $working = $countStatus['TotalCount']; break;
-        case 3: return $bugged = $countStatus['TotalCount']; break;
-        case 4: return $no = $countStatus['TotalCount']; break;
-        default: return;
-    }
+	return $countStatus['TotalCount'];
 }
 
-function zoneProgression($zoneID) {
-    global $handler;
+function zoneProgression($id) {
+    global $handler, $zoneID;
+	
+	$zoneID = $id;
     
     // Count quests in $zoneID
     $totalQuestQuery = $handler->prepare('SELECT count(*) as count FROM quest_template WHERE ZoneOrSort = :zoneID AND Title NOT LIKE "%BETA%"');
@@ -70,11 +70,10 @@ function zoneProgression($zoneID) {
     $testedQuest = $testedQuest['count'];
     
     // Count success (status = 1) fields
-    $success = $no = $working = $bugged = 0;
-    countFields(1);
-    countFields(2);
-    countFields(3);
-    countFields(4);
+    $success = countFields(1);
+    $working = countFields(2);
+    $bugged = countFields(3);
+    $no = countFields(4);
     
     $successBar = (($success + $no) / ($totalQuest * 14)) * 100;
     $buggedBar = ($bugged / ($totalQuest * 14)) * 100;
@@ -83,13 +82,13 @@ function zoneProgression($zoneID) {
     // Display results
     echo '
         <div class="col-md-6">
-            <h2>Hellfire Peninsula - ' . testProgression($testedQuest, $totalQuest) . '></h2>
+            <h2>Hellfire Peninsula - '. testProgression($testedQuest, $totalQuest) . '</h2>
             <p>
                 <strong>Total quests:</strong> ' . $totalQuest . '<br />
                 <strong>Total tested:</strong> ' . $testedQuest . '
             </p>
             <p>
-                <strong>Success:</strong> ' . $success + $no . '<br />
+                <strong>Success:</strong> ' . ($success + $no) . '<br />
                 <strong>Bugged:</strong> ' . $bugged . '<br />
                 <strong>Working:</strong> ' . $working . '<br />
             </p>

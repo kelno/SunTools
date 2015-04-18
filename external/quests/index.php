@@ -1,7 +1,6 @@
 <?php
 require('../config.php');
 try {
-    //$handler = new PDO('mysql:host=62.210.236.104;dbname=world', 'nastyadmin', 'Z9EuAAtxPtA5gt3F');
     $handler = new PDO('mysql:host=localhost;dbname='.$worlddb, $user, $password);
     $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
