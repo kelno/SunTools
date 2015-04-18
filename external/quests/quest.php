@@ -57,6 +57,17 @@ if(isset($_GET['questId']) && isset($_GET['column']) && isset($_GET['status'])) 
     $questID = htmlspecialchars($_GET['questId']);
 	$column = htmlspecialchars($_GET['column']);
 	$status = htmlspecialchars($_GET['status']);
-            
 	updateTestQuest($questID, $column, $status);
+}
+
+if(isset($_GET['questId']) && isset($_GET['comment'])) {
+    $comment = htmlspecialchars($_GET['comment']);
+    $questID = htmlspecialchars($_GET['questId']);
+    
+	$query = $handler->prepare('INSERT INTO quest_test (questid, other)
+									VALUE (:questID, :value)
+									ON DUPLICATE KEY UPDATE other = :value');
+		$query->bindValue(':questID', $questID, PDO::PARAM_INT);
+		$query->bindValue(':value', $comment, PDO::PARAM_STR);
+		$query->execute();
 }

@@ -41,6 +41,7 @@ if(!isset($_GET['zone'])) {
 							  ct.entry as idstarter, ct.name as starter, ct2.entry as idender, ct2.name as ender,
 							  qtest.startTxt, qtest.progTxt, qtest.endTxt, qtest.txtEvent, qtest.pathEvent, qtest.timeEvent,
 							  qtest.Exp, qtest.Stuff, qtest.Gold, qtest.emotNPC, qtest.spellNPC, qtest.placeNPC, qtest.workObj, qtest.baObj,
+                              qtest.other,
 							  objstart.id as objidstarter, objt.name as objstarter,
 							  objend.id as objidender, objt2.name as objender
 							  FROM quest_template qt
@@ -170,7 +171,7 @@ if(!isset($_GET['zone'])) {
 							<td status="<?php echo $quests['placeNPC']; ?>" id="<?php echo $quests['entry']; ?>_12" onclick='testQuest(<?php echo $quests['entry']; ?>, 12)' class="test border"></td>
 							<td status="<?php echo $quests['workObj']; ?>" id="<?php echo $quests['entry']; ?>_13" onclick='testQuest(<?php echo $quests['entry']; ?>, 13)' class="test"></td>
 							<td status="<?php echo $quests['baObj']; ?>" id="<?php echo $quests['entry']; ?>_14" onclick='testQuest(<?php echo $quests['entry']; ?>, 14)' class="test border"></td>
-							<td id="<?php echo $quests['entry']; ?>_15" ><textarea></textarea></td>
+							<td id="<?php echo $quests['entry']; ?>_15" ><textarea id="<?php echo $quests['entry']; ?>"><?php echo $quests['other']; ?></textarea></td>
 						</tr>
 	<?php
 										  }
@@ -228,6 +229,19 @@ if(!isset($_GET['zone'])) {
 						url  : 'quest.php'
 						});
 				} 
+                
+                
+                $('textarea').change(function(){
+                    var questId = $(this).attr('id');
+                    var Comment = $(this).val();
+                    Comment = Comment.replace(/\r?\n/g, '%0D%0A');
+                    var UrlToPass = 'questId='+questId+'&comment='+Comment;
+                        $.ajax({
+                        type : 'GET',
+                        data : UrlToPass,
+                        url  : 'quest.php'
+                        });
+                });
 			</script>
 		</body>
 	</html>
