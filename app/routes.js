@@ -45,8 +45,15 @@ define(
             iconClass: "menu-icon fa fa-database",
         }, {
             route: 'Quests',
-            hash: 'quests/index.php',
+            hash: 'external/quests/index.php',
             title: 'Quests',
+            nav: true,
+            iconClass: "menu-icon fa fa-exclamation",
+        },
+		{
+            route: 'SpellInfo',
+            hash: 'external/spellinfo/index.php',
+            title: 'Spell Info',
             nav: true,
             iconClass: "menu-icon fa fa-cog",
         },{
