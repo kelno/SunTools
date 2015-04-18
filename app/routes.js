@@ -38,32 +38,6 @@ define(
                 }
                 ]
         }, {
-            route: 'Statis',
-            moduleId: 'statis',
-            title: 'Stasis',
-            nav: true,
-            iconClass: "menu-icon fa fa-database",
-        }, {
-            route: 'Quests',
-            hash: 'external/quests/index.php',
-            title: 'Quests',
-            nav: true,
-            iconClass: "menu-icon fa fa-exclamation",
-        },
-		{
-            route: 'NPCModifiers',
-            hash: 'external/npcmodifiers/index.php',
-            title: 'NPC Modifiers',
-            nav: true,
-            iconClass: "menu-icon fa fa-bar-chart ",
-        },
-		{
-            route: 'SpellInfo',
-            hash: 'external/spellinfo/index.php',
-            title: 'Spell Info',
-            nav: true,
-            iconClass: "menu-icon fa fa-cog",
-        },{
             route: 'DBCs',
             moduleId: 'dbcs/index',
             moduleRootId: 'dbcs', // Custom property to make child routes easier
@@ -92,6 +66,32 @@ define(
                     nav: true,
                 }
             ]
+        }, {
+            route: 'Statis',
+            moduleId: 'statis',
+            title: 'Stasis',
+            nav: true,
+            iconClass: "menu-icon fa fa-database",
+        }, {
+            route: 'Quests',
+            hash: 'external/quests/index.php',
+            title: 'Quests',
+            nav: true,
+            iconClass: "menu-icon fa fa-exclamation",
+        },
+		{
+            route: 'NPCModifiers',
+            hash: 'external/npcmodifiers/index.php',
+            title: 'NPC Modifiers',
+            nav: true,
+            iconClass: "menu-icon fa fa-bar-chart ",
+        },
+		{
+            route: 'SpellInfo',
+            hash: 'external/spellinfo/index.php',
+            title: 'Spell Info',
+            nav: true,
+            iconClass: "menu-icon fa fa-cog",
         }
         ];
 
