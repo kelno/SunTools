@@ -15,7 +15,7 @@ define(
             title: 'Masks',
             nav: true,
             hash: '#MaskHome',
-            iconClass: "menu-icon fa fa-heart",
+            iconClass: "menu-icon fa fa-calculator",
             childRoutes: [
                 {
                     route: 'MaskGeneric',
@@ -49,6 +49,13 @@ define(
             title: 'Quests',
             nav: true,
             iconClass: "menu-icon fa fa-exclamation",
+        },
+		{
+            route: 'NPCModifiers',
+            hash: 'external/npcmodifiers/index.php',
+            title: 'NPC Modifiers',
+            nav: true,
+            iconClass: "menu-icon fa fa-bar-chart ",
         },
 		{
             route: 'SpellInfo',
