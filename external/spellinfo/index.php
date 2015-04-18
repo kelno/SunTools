@@ -13,6 +13,8 @@
 	</head>
 <body>
 <?php
+require('../config.php');
+
 if (isset($_GET["id"])) {
 	$id = $_GET["id"];
 	echo "Spell Info : " . $id . "<br>";
@@ -22,13 +24,10 @@ if (isset($_GET["id"])) {
 	echo "</form>";
 	exit(1);
 }
-	
- $mysql = mysql_connect('sql31.free-h.org:3306', 'canardwc42', 'barbecue42');
-$db = mysql_select_db("canardbd", $mysql); 
-/*
-$mysql = mysql_connect('localhost:3306', 'root', 'canard');
-$db = mysql_select_db("wrworld", $mysql); 
-*/
+
+$mysql = mysql_connect($host, $user, $password);
+$db = mysql_select_db($worlddb, $mysql); 
+
 if (mysql_errno($mysql)){
 	echo mysql_errno($mysql) . ": " . mysql_error($mysql). "\n";
 	exit(1);
@@ -40,7 +39,7 @@ include ('Auras.php');
 include ('Targets.php');
 include ('DBC.php');
 
-$queryStr = "SELECT * FROM spell_template where id = " . $id;
+$queryStr = "SELECT * FROM spell_template where entry = " . $id;
 $query = mysql_query($queryStr);
 
 if ($data = mysql_fetch_array($query)) {
