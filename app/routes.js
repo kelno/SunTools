@@ -74,25 +74,32 @@ define(
             iconClass: "menu-icon fa fa-database",
         }, {
             route: 'Quests',
-            hash: 'external/quests/index.php',
+            hash: 'external/quests/',
             title: 'Quests',
             nav: true,
             iconClass: "menu-icon fa fa-exclamation",
         },
 		{
             route: 'NPCModifiers',
-            hash: 'external/npcmodifiers/index.php',
+            hash: 'external/npcmodifiers/',
             title: 'NPC Modifiers',
             nav: true,
             iconClass: "menu-icon fa fa-bar-chart ",
         },
 		{
             route: 'SpellInfo',
-            hash: 'external/spellinfo/index.php',
+            hash: 'external/spellinfo/',
             title: 'Spell Info',
             nav: true,
             iconClass: "menu-icon fa fa-cog",
-        }
+        },
+		{
+            route: 'IG Commands',
+            hash: 'external/commands/',
+            title: 'IG Commands',
+            nav: true,
+            iconClass: "menu-icon fa fa-pencil",
+        },
         ];
 
         //create parents route for each route

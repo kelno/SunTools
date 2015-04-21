@@ -49,6 +49,13 @@ function zoneProgression($id) {
 	
 	$zoneID = $id;
     
+    // Get zone name
+    $zoneNameQuery = $handler->prepare('SELECT name FROM dbc.dbc_areatable WHERE id = :zoneID');
+    $zoneNameQuery->bindValue(':zoneID', $zoneID, PDO::PARAM_INT);
+    $zoneNameQuery->execute();
+    $zoneName = $zoneNameQuery->fetch();
+    $zoneName = $zoneName['name'];
+
     // Count quests in $zoneID
     $totalQuestQuery = $handler->prepare('SELECT count(*) as count FROM quest_template WHERE ZoneOrSort = :zoneID AND Title NOT LIKE "%BETA%"');
     $totalQuestQuery->bindValue(':zoneID', $zoneID, PDO::PARAM_INT);
@@ -82,7 +89,7 @@ function zoneProgression($id) {
     // Display results
     echo '
         <div class="col-md-6">
-            <h2>Hellfire Peninsula - '. testProgression($testedQuest, $totalQuest) . '</h2>
+            <h2>' . $zoneName . ' - '. testProgression($testedQuest, $totalQuest) . '</h2>
             <p>
                 <strong>Total quests:</strong> ' . $totalQuest . '<br />
                 <strong>Total tested:</strong> ' . $testedQuest . '
@@ -102,17 +109,3 @@ function zoneProgression($id) {
             </div>
         </div>';
 }
-
-?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>SunQuest :: Statistics</title>
-        <link rel="stylesheet" href="css/bootstrap.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body style="width: 75%; margin: 0 auto;">
-        <?php zoneProgression(3483); ?>
-    </body>
-</html>

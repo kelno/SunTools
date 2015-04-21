@@ -1,5 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>SunQuest</title>
+		<link rel="stylesheet" href="css/jquery.dataTables.css">
+		<link rel="stylesheet" href="main.css">
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="js/jquery-1.11.2.min.js"></script>
+		<script src="js/jquery.dataTables.js"></script>
+	</head>
+	<body>
 <?php
 require('../config.php');
+require('stats.php');
 try {
     $handler = new PDO('mysql:host=localhost;dbname='.$worlddb, $user, $password);
     $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -18,26 +32,54 @@ function getRealMotherfucker(&$coucou) {
     }
 }
 
-if(!isset($_GET['zone'])) {
-	echo '<p>Il faut renseigner une zone avec son nom anglais !<br />Exemple : index.php?zone=nagrand</p>
-			<ul>
-				<li><a href="?zone=peninsula">Hellfire Peninsula</a></li>
-			</ul>';
+if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
+	echo '<div class="col-md-10">
+                <h2>SunQuest</h2>
+                <p>
+                    Voir <a href="http://www.sunstrider.cf/wiki/Quests">Wiki:Quests</a> pour la documentation.
+                </p>
+                <h3>Zones</h3>
+                <ul>
+                    <li><a href="?zoneid=3483">Hellfire Peninsula</a></li>
+                    <li><a href="?zoneid=3521">Zangarmarsh</a></li>
+                    <li><a href="?zone=terokkar">Terokkar Forest</a></li>
+                    <li><a href="?zone=nagrand">Nagrand</a></li>
+                    <li><a href="?zoneid=3522">Blade\'s Edge Mountains</a></li>
+                    <li><a href="?zone=netherstorm">Netherstorm</a></li>
+                    <li><a href="?zone=shadowmoon">Shadowmoon Valley</a></li>
+                </ul>
+            </div>';
+    echo zoneProgression(3483);
+    echo zoneProgression(3521);
+
 } else {
-	$zone = "%".htmlspecialchars($_GET['zone'])."%";
+    if (isset($_GET['zone'])) {
+        $zone = "%".htmlspecialchars($_GET['zone'])."%";
 
-	$query = $handler->prepare('SELECT id, name FROM dbc.dbc_areatable WHERE name LIKE :zone');
-	$query->bindValue(':zone', $zone, PDO::PARAM_INT);
-	$query->execute();
-	$getZoneID = $query->fetch();
+        $query = $handler->prepare('SELECT id, name FROM dbc.dbc_areatable WHERE name LIKE :zone');
+        $query->bindValue(':zone', $zone, PDO::PARAM_STR);
+        $query->execute();
+        $getZoneID = $query->fetch();
+        
+        if($query->rowCount() == 0) {
+		  echo "Aucune zone n'a <em>". htmlspecialchars($_GET['zone']) ."</em> dans son nom.";
+	   }
+    }
+    
+    if (isset($_GET['zoneid'])) {
+        $zone = $_GET['zoneid'];
 
-	if($query->rowCount() == 0) {
-		echo "Aucune zone n'a <em>". htmlspecialchars($_GET['zone']) ."</em> dans son nom.";
-	}
-	else {
-
-	// DAT SQL QUERY
-	// 3483 = Hellfire Peninsula
+        $query = $handler->prepare('SELECT id, name FROM dbc.dbc_areatable WHERE id = :zone');
+        $query->bindValue(':zone', $zone, PDO::PARAM_INT);
+        $query->execute();
+        $getZoneID = $query->fetch();
+        
+        if($query->rowCount() == 0) {
+		  echo "Aucune zone n'a <em>". htmlspecialchars($_GET['zone']) ."</em> dans son nom.";
+	   }
+    }
+    
+	if($query->rowCount() != 0) {
 	$query = $handler->prepare('SELECT qt.entry, qt.Title, qt.RequiredRaces as race, it.entry as itemid, it.name as itemname,
 							  ct.entry as idstarter, ct.name as starter, ct2.entry as idender, ct2.name as ender,
 							  qtest.startTxt, qtest.progTxt, qtest.endTxt, qtest.txtEvent, qtest.pathEvent, qtest.timeEvent,
@@ -60,19 +102,6 @@ if(!isset($_GET['zone'])) {
 	$query->bindValue(':zone', $getZoneID['id'], PDO::PARAM_INT);
 	$query->execute();
 	?>
-	<!DOCTYPE html>
-	<html>
-		<head>
-			<meta charset="utf-8">
-			<title>SunQuest :: <?php echo $getZoneID['name']; ?></title>
-			<link rel="stylesheet" href="css/jquery.dataTables.css">
-			<link rel="stylesheet" href="main.css">
-			<link rel="stylesheet" href="css/bootstrap.css">
-			<meta name="viewport" content="width=device-width, initial-scale=1">
-			<script src="js/jquery-1.11.2.min.js"></script>
-			<script src="js/jquery.dataTables.js"></script>
-		</head>
-		<body>
 			<div class="fluid-container">
 				<table id="table" class="table table-hover">
 					<thead>
@@ -95,7 +124,7 @@ if(!isset($_GET['zone'])) {
 							<td class="part">Txts</td>
 							<td class="part">Path</td>
 							<td class="part border2">Time</td>
-							<td class="part">Exp</td>
+							<td class="part">Rep</td>
 							<td class="part">Stuff</td>
 							<td class="part border2">Gold</td>
 							<td class="part">Emot</td>
