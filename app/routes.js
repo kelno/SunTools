@@ -9,32 +9,32 @@ define(
             nav: false,
             iconClass: "menu-icon fa fa-home",
         }, {
-            route: 'MaskHome',
+            route: 'Mask',
             moduleId: 'masks/index',
             moduleRootId: 'masks', // Custom property to make child routes easier
             title: 'Masks',
             nav: true,
-            hash: '#MaskHome',
+            hash: '#Mask',
             iconClass: "menu-icon fa fa-calculator",
             childRoutes: [
                 {
-                    route: 'MaskGeneric',
+                    route: 'Generic',
                     moduleId: 'maskgeneric',
                     title: 'Generic',
                     nav: true,
-                    hash: 'MaskGeneric',
+                    hash: 'Generic',
                 }, {
-                    route: 'MaskImmuneMechanics',
+                    route: 'ImmuneMechanics',
                     moduleId: 'maskimmunemechanics',
                     title: 'Immune Mechanics',
                     nav: true,
-                    hash: 'MaskImmuneMechanics',
+                    hash: 'ImmuneMechanics',
                 }, {
-                    route: 'MaskExtraFlags',
+                    route: 'ExtraFlags',
                     moduleId: 'maskextraflags',
                     title: 'Extra flags',
                     nav: true,
-                    hash: 'MaskExtraFlags',
+                    hash: 'ExtraFlags',
                 }
                 ]
         }, {
