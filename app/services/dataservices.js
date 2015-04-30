@@ -18,37 +18,38 @@ define(
         getCreatureGossip
         */
 
+        /* 
+        obj : json object in the form of { url: "xx", method: "xxx" }   (get those from the config file)
+        */
+        var ajax = function(obj, args) {
+            return $.ajax({
+              method: obj.method,
+              url: obj.url,
+              data: args,
+            })
+            .fail(function(a, b, c) {
+                toastr.error('Something went wrong !<br/>Error: ' + c);
+            });
+        }
+
         /** (optional) gossip_text = generictable model object (not observable)
         */
         var getGossipText = function(id, gossipText) {
-            return $.ajax({
-              method: "GET",
-              url: config.servicesList.npc.getGossipText,
-              data: { id: id }
-            })
+            var args = { id: id };
+            return ajax(config.servicesList.npc.getGossipText, args)
             .done(function(data, b, c) {
                 if(gossipText) {
                     gossipText.receiveDTO(data);
                 }
-            })
-            .fail(function(a, b, c) {
-                toastr.error('Something went wrong !<br/>Error: ' + c);
             });
         };
 
         var updateGossipText = function(gossip_text) {
             var dto = gossip_text.createDTO();
-            return $.ajax({
-              method: "POST",
-              url: config.servicesList.npc.updateGossipText,
-              data: dto
-            })
+            return ajax(config.servicesList.npc.updateGossipText, dto)
             .done(function(data) {
                 toastr.success('Text successfully updated');
             })
-            .fail(function(a, b, c) {
-                toastr.error('Something went wrong !<br/>Error: ' + c);
-            });
         }
 
         return {

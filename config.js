@@ -22,12 +22,12 @@ var config = function () {
         },
         servicesList: {
             npc: {
-                updateGossipText:     serviceRootPath + "npc/updateGossipText.php",
-                updateMenu:           serviceRootPath + "npc/updateMenu.php",
-                updateCreatureGossip: serviceRootPath + "npc/updateCreatureGossip.php",
-                getGossipText:        serviceRootPath + "npc/getGossipText.php",
-                getGossipMenu:        serviceRootPath + "npc/getGossipMenu.php",
-                getCreatureGossip:    serviceRootPath + "npc/getCreatureGossip.php",
+                updateGossipText:     { url: serviceRootPath + "npc/updateGossipText.php", method: "POST" },
+                updateMenu:           { url: serviceRootPath + "npc/updateMenu.php", method: "POST" },
+                updateCreatureGossip: { url: serviceRootPath + "npc/updateCreatureGossip.php", method: "POST" },
+                getGossipText:        { url: serviceRootPath + "npc/getGossipText.php", method: "GET" },
+                getGossipMenu:        { url: serviceRootPath + "npc/getGossipMenu.php", method: "GET" },
+                getCreatureGossip:    { url: serviceRootPath + "npc/getCreatureGossip.php", method: "GET" },
             },
         },
     }
