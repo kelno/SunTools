@@ -13,6 +13,19 @@
     padding: 0px!important;
 }
 
+td.testing {
+    padding: 0!important;
+    vertical-align: top!important;
+    height: 68px;
+}
+
+td.testing div {
+    height: 50%;
+    width: 50%;
+    float: left;
+    line-height: 2.4;
+}
+
 td {
     text-align: center;
     padding: 8px 0!important;
@@ -51,18 +64,27 @@ td textarea {
     border-right: 1px solid #dbdbdb;
 }
 
-td.ok {
+.ok {
     background: #5cb85c;
+    color: #fff;
 }
 
-td.mid {
+.mid {
     background: #f0ad4e;
+    color: #fff;
 }
 
-td.ko {
+.ko {
     background: #F95C4B;
+    color: #fff;
 }
 
-td.no {
+.no {
     background: #777;
+    color: #fff;
+}
+
+.name {
+    background: #5bc0de;
+    color: #fff;
 }

@@ -15,7 +15,7 @@
 require('../config.php');
 require('stats.php');
 try {
-    $handler = new PDO('mysql:host=localhost;dbname='.$worlddb, $user, $password);
+    $handler = new PDO('mysql:host='.$host.';dbname='.$worlddb, $user, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
     echo $e->getMessage();
@@ -42,15 +42,17 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
                 <ul>
                     <li><a href="?zoneid=3483">Hellfire Peninsula</a></li>
                     <li><a href="?zoneid=3521">Zangarmarsh</a></li>
-                    <li><a href="?zone=terokkar">Terokkar Forest</a></li>
-                    <li><a href="?zone=nagrand">Nagrand</a></li>
+                    <li><a href="?zoneid=3519">Terokkar Forest</a></li>
+                    <li><a href="?zoneid=3518">Nagrand</a></li>
                     <li><a href="?zoneid=3522">Blade\'s Edge Mountains</a></li>
-                    <li><a href="?zone=netherstorm">Netherstorm</a></li>
-                    <li><a href="?zone=shadowmoon">Shadowmoon Valley</a></li>
+                    <li><a href="?zoneid=3523">Netherstorm</a></li>
+                    <li><a href="?zoneid=3520">Shadowmoon Valley</a></li>
                 </ul>
             </div>';
     echo zoneProgression(3483);
     echo zoneProgression(3521);
+    echo zoneProgression(3519);
+    echo zoneProgression(3518);
 
 } else {
     if (isset($_GET['zone'])) {
@@ -84,18 +86,18 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 							  ct.entry as idstarter, ct.name as starter, ct2.entry as idender, ct2.name as ender,
 							  qtest.startTxt, qtest.progTxt, qtest.endTxt, qtest.txtEvent, qtest.pathEvent, qtest.timeEvent,
 							  qtest.Exp, qtest.Stuff, qtest.Gold, qtest.emotNPC, qtest.spellNPC, qtest.placeNPC, qtest.workObj, qtest.baObj,
-                              qtest.other,
+                              qtest.other, qtest.tester,
 							  objstart.id as objidstarter, objt.name as objstarter,
 							  objend.id as objidender, objt2.name as objender
 							  FROM quest_template qt
-							  LEFT JOIN creature_questrelation qstart ON qt.entry = qstart.quest
-							  LEFT JOIN creature_involvedrelation qend ON qt.entry = qend.quest
+							  LEFT JOIN creature_queststarter qstart ON qt.entry = qstart.quest
+							  LEFT JOIN creature_questender qend ON qt.entry = qend.quest
 							  LEFT JOIN creature_template ct ON qstart.id = ct.entry
 							  LEFT JOIN creature_template ct2 ON qend.id = ct2.entry
-							  LEFT JOIN gameobject_questrelation objstart ON qt.entry = objstart.quest
-							  LEFT JOIN gameobject_involvedrelation objend ON qt.entry = objend.quest
+							  LEFT JOIN gameobject_queststarter objstart ON qt.entry = objstart.quest
+							  LEFT JOIN gameobject_questender objend ON qt.entry = objend.quest
 							  LEFT JOIN gameobject_template objt ON objstart.id = objt.entry
-							  LEFT JOIN gameobject_template objt2 ON objend.id = objt.entry
+							  LEFT JOIN gameobject_template objt2 ON objend.id = objt2.entry
 							  LEFT JOIN item_template it ON qt.entry = it.startquest
 							  LEFT JOIN suntools.quest_test qtest ON qt.entry = qtest.questid
 							  WHERE ZoneOrSort = :zone AND qt.Title NOT LIKE "%BETA%"');
@@ -110,6 +112,7 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 							<td class="med" rowspan="2">Name</td>
 							<td class="small" rowspan="2">#</td>
 							<td class="small" rowspan="2">Start<br />End</td>
+							<td class="small" rowspan="2">Test</td>
 							<td class="med" colspan="3">Textes</td>
 							<td class="med" colspan="3">Event</td>
 							<td class="med" colspan="3">Gains</td>
@@ -125,7 +128,7 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 							<td class="part">Path</td>
 							<td class="part border2">Time</td>
 							<td class="part">Rep</td>
-							<td class="part">Stuff</td>
+							<td class="part">Items</td>
 							<td class="part border2">Gold</td>
 							<td class="part">Emot</td>
 							<td class="part">Spells</td>
@@ -139,7 +142,7 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 		while ($quests = $query->fetch()) {	
 
 			if ($quests['starter'] == null AND $quests['itemid'] == null) {
-				$quest_start = '<img src="quest_start.gif" alt="Quest Start" title="' . $quests['objstarter'] .'" />';
+				$quest_start = '<a href="http://www.wowhead.com/object=' . $quests['objidstarter'] . '"><img src="quest_start.gif" alt="Quest Start" title="' . $quests['objstarter'] .'" /></a>';
 			} elseif ($quests['objstarter'] == null AND $quests['starter'] == null) {
 				$quest_start = '<a href="http://www.wowhead.com/item=' . $quests['itemid'] . '"><img src="quest_start.gif" alt="Quest Start" title="' . $quests['itemname'] .'" /></a>';
 			} else {
@@ -147,7 +150,7 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 			}
 
 			if ($quests['ender'] == null) {
-				$quest_end = '<a href="http://www.wowhead.com/item=' . $quests['objidender'] . '"><img src="quest_end.gif" alt="Quest End" title="' . $quests['objender'] .'" /></a>';
+				$quest_end = '<a href="http://www.wowhead.com/object=' . $quests['objidender'] . '"><img src="quest_end.gif" alt="Quest End" title="' . $quests['objender'] .'" /></a>';
 			} else {
 				$quest_end = '<a href="http://www.wowhead.com/npc=' . $quests['idender'] . '"><img src="quest_end.gif" alt="Quest End" title="' . $quests['ender'] .'" /></a>';
 			}
@@ -166,6 +169,15 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 			getRealMotherfucker($quests['placeNPC']);
 			getRealMotherfucker($quests['workObj']);
 			getRealMotherfucker($quests['baObj']);
+            
+            $tester1 = $tester2 = $tester3 = $tester4 = 0;
+            switch($quests['tester']) {
+                case 1: $tester1 = 1; break;
+                case 2: $tester2 = 1; break;
+                case 3: $tester3 = 1; break;
+                case 4: $tester4 = 1; break;
+                default: break;
+            }
 
 			switch($quests['race']) {
 				case 0: $race = ""; break;
@@ -186,6 +198,12 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 							</td>
 							<td class="border">
 								<?php echo $quest_start . $quest_end; ?>
+							</td>
+							<td class="border testing">
+								<div class="testeur" id="<?php echo $quests['entry']; ?>_test1" status="<?php echo $tester1; ?>" onclick='setTester(<?php echo $quests['entry']; ?>, 1)' title="Mikelus">M</div>
+								<div class="testeur" id="<?php echo $quests['entry']; ?>_test2" status="<?php echo $tester2; ?>" onclick='setTester(<?php echo $quests['entry']; ?>, 2)' title="Potestas">P</div>
+								<div class="testeur" id="<?php echo $quests['entry']; ?>_test4" status="<?php echo $tester4; ?>" onclick='setTester(<?php echo $quests['entry']; ?>, 4)' title="Vanquish">V</div>
+								<div class="testeur" id="<?php echo $quests['entry']; ?>_test3" status="<?php echo $tester3; ?>" onclick='setTester(<?php echo $quests['entry']; ?>, 3)' title="Yukka">Y</div>
 							</td>
 							<td status="<?php echo $quests['startTxt']; ?>" id="<?php echo $quests['entry']; ?>_1" onclick='testQuest(<?php echo $quests['entry']; ?>, 1)' class="test"></td>
 							<td status="<?php echo $quests['progTxt']; ?>" id="<?php echo $quests['entry']; ?>_2" onclick='testQuest(<?php echo $quests['entry']; ?>, 2)' class="test"></td>
@@ -218,11 +236,23 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 						"order": [[ 2, "asc" ]]
 					} );
 
-					//set the celles visuals based on their status
+					//set the cells visuals based on their status
 					 $('tbody td').each(function(lol, element) {
 						 var status = $(element).attr("status");
 						 if(status !== undefined) { //jQuery attr() returns undefined on no result
 							setElementColorByStatus(element, status);
+						 }
+					 });
+                    
+					//set the cells visuals based on their status
+					 $('.testeur').click(function() {
+						 $(this).toggleClass('name').siblings().removeClass('name');
+					 });
+                    
+					 $('.testeur').each(function(lol, element) {
+						 var status = $(element).attr("status");
+						 if(status !== undefined) { //jQuery attr() returns undefined on no result
+							setTesterColor(element, status);
 						 }
 					 });
 				} );
@@ -243,6 +273,16 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 					}
 				}
 
+				function setTesterColor(element, status) {
+					$(element).toggleClass('name', false);
+
+					switch(parseInt(status))
+					{
+						case 0:	break;
+						case 1:	$(element).toggleClass('name',true);	break;
+					}
+				}
+
 				function testQuest(questId, column) {
 					var element = $('#'+questId+"_"+column);
 
@@ -258,7 +298,23 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 						data : UrlToPass,
 						url  : 'quest.php'
 						});
-				} 
+				}
+                
+                // Tester
+				function setTester(questId, tester) {
+					var element = $('#'+questId+"_test"+tester);
+                    
+                    if (element.hasClass('name')) {
+                        var tester = 0;
+                    }
+
+					var UrlToPass = 'questId='+questId+'&tester='+tester;
+						$.ajax({
+						type : 'GET',
+						data : UrlToPass,
+						url  : 'quest.php'
+						});
+				}
                 
                 
                 $('textarea').change(function(){

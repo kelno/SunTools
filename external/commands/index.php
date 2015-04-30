@@ -3,17 +3,17 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Commands</title>
-		<link rel="stylesheet" href="../quests/css/jquery.dataTables.css">
-		<link rel="stylesheet" href="../quests/css/bootstrap.css">
+		<link rel="stylesheet" href="../../lib/jquery/css/jquery.dataTables.css">
+		<link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="../quests/js/jquery-1.11.2.min.js"></script>
-		<script src="../quests/js/jquery.dataTables.js"></script>
+		<script src="../../lib/jquery/jquery-1.11.2.min.js"></script>
+		<script src="../../lib/jquery/jquery.dataTables.js"></script>
 	</head>
 	<body>
 <?php
 require('../config.php');
 try {
-    $handler = new PDO('mysql:host=62.210.236.104;dbname=world', 'nastyadmin', 'Z9EuAAtxPtA5gt3F', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$handler = new PDO('mysql:host=localhost;dbname='.$worlddb, $user, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
     echo $e->getMessage();

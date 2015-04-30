@@ -1,9 +1,11 @@
 <?php
+require('../config.php');
 try {
-    $handler = new PDO('mysql:host=62.210.236.104;dbname=suntools', 'nastyadmin', 'Z9EuAAtxPtA5gt3F');
+    $handler = new PDO('mysql:host='.$host.';dbname=suntools', $user, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
     echo $e->getMessage();
+	http_response_code(500);
     die();
 }
 
@@ -69,5 +71,17 @@ if(isset($_GET['questId']) && isset($_GET['comment'])) {
 									ON DUPLICATE KEY UPDATE other = :value');
 		$query->bindValue(':questID', $questID, PDO::PARAM_INT);
 		$query->bindValue(':value', $comment, PDO::PARAM_STR);
+		$query->execute();
+}
+
+if(isset($_GET['questId']) && isset($_GET['tester'])) {
+    $tester = htmlspecialchars($_GET['tester']);
+    $questID = htmlspecialchars($_GET['questId']);
+    
+	$query = $handler->prepare('INSERT INTO quest_test (questid, tester)
+									VALUE (:questID, :value)
+									ON DUPLICATE KEY UPDATE tester = :value');
+		$query->bindValue(':questID', $questID, PDO::PARAM_INT);
+		$query->bindValue(':value', $tester, PDO::PARAM_STR);
 		$query->execute();
 }
