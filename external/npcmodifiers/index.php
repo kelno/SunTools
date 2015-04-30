@@ -18,7 +18,6 @@ if (mysql_errno($mysql))
 		<meta charset="utf-8"/>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js" language="javascript"></script>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js" language="javascript"></script>
-		<script type="text/javascript" src="qg.js" language="javascript"></script>
         <style type="text/css">
             body {
                 background-color: #225599;

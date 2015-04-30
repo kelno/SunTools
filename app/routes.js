@@ -73,25 +73,50 @@ define(
             nav: true,
             iconClass: "menu-icon fa fa-database",
         }, {
+            route: 'NPC',
+            moduleId: 'npc',
+            moduleRootId: 'npc', // Custom property to make child routes easier
+            title: 'NPC',
+            nav: true,
+            hash: '#NPC',
+            iconClass: "menu-icon fa fa-cog",
+            childRoutes: [
+                {
+                    route: 'SmartAI Text',
+                    hash: 'external/creature_text/',
+                    title: 'SmartAI Text',
+                    nav: true,
+                    external: true,
+                }, {
+                    route: 'NPCModifiers',
+                    hash: 'external/npcmodifiers/',
+                    title: 'NPC Modifiers',
+                    nav: true,
+                    iconClass: "menu-icon fa fa-bar-chart ",
+                    external: true,
+                }, {
+                    route: 'GossipMenu',
+                    hash: 'external/gossip/',
+                    title: 'Gossip Menu',
+                    nav: true,
+                    iconClass: "menu-icon fa fa-cog",
+                    external: true,
+                } ,
+            ]
+        }, {
             route: 'Quests',
             hash: 'external/quests/',
             title: 'Quests',
             nav: true,
             iconClass: "menu-icon fa fa-exclamation",
-        },
-		{
-            route: 'NPCModifiers',
-            hash: 'external/npcmodifiers/',
-            title: 'NPC Modifiers',
-            nav: true,
-            iconClass: "menu-icon fa fa-bar-chart ",
-        },
-		{
+            external: true,
+        }, {
             route: 'SpellInfo',
             hash: 'external/spellinfo/',
             title: 'Spell Info',
             nav: true,
             iconClass: "menu-icon fa fa-cog",
+            external: true,
         },
 		{
             route: 'IG Commands',
@@ -99,6 +124,7 @@ define(
             title: 'IG Commands',
             nav: true,
             iconClass: "menu-icon fa fa-pencil",
+            external: true,
         },
         ];
 
@@ -123,7 +149,8 @@ define(
                 childRoute.route = route.route + '/' + childRoute.route;
                 childRoute.moduleId = route.moduleRootId + '/' + childRoute.moduleId;
                 childRoute.title = childRoute.title;
-                childRoute.hash = route.hash + '/' + childRoute.hash;
+                if(!childRoute.external)
+                    childRoute.hash = route.hash + '/' + childRoute.hash;
                 childRoute.parent = route.moduleRootId;
             });
             routes = routes.concat(route.childRoutes);
