@@ -13,7 +13,7 @@
 	</head>
 <body>
 <?php
-require('../config.php');
+require('../../dbconfig.php');
 
 if (isset($_GET["id"])) {
 	$id = $_GET["id"];

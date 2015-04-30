@@ -1,0 +1,171 @@
+﻿/* Overriding toastr css Create a new css for a "new" toast theme*/
+.toast-title {
+  font-weight: bold;
+}
+
+.toast-message a:hover {
+  color: #cccccc;
+  text-decoration: none;
+}
+
+#toast-container {
+    position: fixed !important;
+    z-index: 999999 !important;
+}
+
+#toast-container > :hover {
+    opacity: 1 !important;
+}
+
+.toast-top-right {
+    top: 55px !important;
+    right: 12px !important;
+}
+
+.toast-success {
+    color: #3c763d !important;
+    background-color: #dff0d8 !important;
+    border-radius: 0 !important;
+    border: 1px solid transparent !important;
+    border-color: #d6e9c6 !important;
+    font-size: 14px !important;
+}
+
+.toast-error {
+    color: #a94442 !important;
+    background-color: #f2dede !important;
+    border-radius: 0 !important;
+    border: 1px solid transparent !important;
+    border-color: #ebccd1 !important;
+    font-size: 14px !important;
+}
+
+.toast-info {
+    color: #31708f !important;
+    background-color: #d9edf7 !important;
+    border-radius: 0 !important;
+    border: 1px solid transparent !important;
+    border-color: #bce8f1 !important;
+    font-size: 14px !important;
+}
+
+.toast-warning {
+    color: #c09853 !important;
+    background-color: #fcf8e3 !important;
+    border-radius: 0 !important;
+    border: 1px solid transparent !important;
+    border-color: #fbeed5 !important;
+    font-size: 14px !important;
+}
+
+#toast-container * {
+    -moz-box-sizing: inherit !important;
+}
+
+#toast-container > div {
+    margin: 0 0 6px !important;
+    padding: 15px 15px 15px 15px !important;
+    opacity: 1 !important;
+    width: 450px !important;
+}
+
+#toast-container > :hover {
+    opacity: 1 !important;
+}
+
+.toast-close-button {
+    position: relative !important;
+    right: -0.3em !important;
+    top: -0.3em !important;
+    float: right !important;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    color: #ffffff !important; /* Color of the close button on the right of the notification */
+    -webkit-text-shadow: 0 1px 0 #ffffff !important;
+    text-shadow: 0 1px 0 #ffffff !important;
+    opacity: 0.8 !important;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80) !important;
+    filter: alpha(opacity=80) !important;
+}
+
+.toast-close-button:hover,
+.toast-close-button:focus {
+    color: #000000 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    opacity: 0.4 !important;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40) !important;
+    filter: alpha(opacity=40) !important;
+}
+
+button.toast-close-button {
+    padding: 0 !important;
+    cursor: pointer !important;
+    background: transparent !important;
+    border: 0 !important;
+    -webkit-appearance: none !important;
+}
+
+/*Responsive Design*/
+@media all and (max-width: 240px) {
+    #toast-container > div {
+        padding: 8px 8px 8px 8px !important;
+        width: 11em !important;
+    }
+
+    #toast-container .toast-close-button {
+        right: -0.2em !important;
+        top: -0.2em !important;
+    }
+}
+
+@media all and (min-width: 241px) and (max-width: 480px) {
+    #toast-container > div {
+        padding: 8px 8px 8px 8px !important;
+        width: 18em !important;
+    }
+
+    #toast-container .toast-close-button {
+        right: -0.2em !important;
+        top: -0.2em !important;
+    }
+
+    .toast-success {
+        font-size: 10px !important;
+    }
+
+    .toast-error {
+        font-size: 10px !important;
+    }
+
+    .toast-info {
+        font-size: 10px !important;
+    }
+
+    .toast-warning {
+        font-size: 10px !important;
+    }
+}
+
+@media all and (min-width: 481px) and (max-width: 768px) {
+    #toast-container > div {
+        padding: 15px 15px 15px 15px !important;
+        width: 25em !important;
+    }
+
+    .toast-success {
+        font-size: 12px !important;
+    }
+
+    .toast-error {
+        font-size: 12px !important;
+    }
+
+    .toast-info {
+        font-size: 12px !important;
+    }
+
+    .toast-warning {
+        font-size: 12px !important;
+    }
+}

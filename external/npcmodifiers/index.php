@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <?php
-require('../config.php');
+require('../../dbconfig.php');
 
 $mysql = mysql_connect($host, $user, $password);
 $db = mysql_select_db($worlddb, $mysql); 

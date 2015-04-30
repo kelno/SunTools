@@ -11,6 +11,7 @@ requirejs.config({
     'transitions' : '../lib/durandal/js/transitions',
     'jquery': '../lib/jquery/jquery-1.9.1',
     'text': '../lib/require/text',
+    'toastr': '../lib/toastr/toastr.min',
     'underscore': '../lib/underscore/underscore',
   },
   shim: {

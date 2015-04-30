@@ -74,7 +74,7 @@ define(
             iconClass: "menu-icon fa fa-database",
         }, {
             route: 'NPC',
-            moduleId: 'npc',
+            moduleId: 'npc/index',
             moduleRootId: 'npc', // Custom property to make child routes easier
             title: 'NPC',
             nav: true,
@@ -95,12 +95,19 @@ define(
                     iconClass: "menu-icon fa fa-bar-chart ",
                     external: true,
                 }, {
+                    route: 'GossipMenu2',
+                    hash: 'gossipmenu2',
+                    title: 'Gossip Menu 2',
+                    moduleId: 'gossipmenu',
+                    nav: true,
+                    iconClass: "menu-icon fa fa-cog",
+                } , {
                     route: 'GossipMenu',
                     hash: 'external/gossip/',
                     title: 'Gossip Menu',
                     nav: true,
-                    iconClass: "menu-icon fa fa-cog",
                     external: true,
+                    iconClass: "menu-icon fa fa-cog",
                 } ,
             ]
         }, {

@@ -1,0 +1,28 @@
+<div>
+    <div class="col-md-6">
+        <h2>Edit a gossip text</h2>
+        <form action="index.php" method="post">
+            <div class="form-group">
+                <label for="id">ID</label>
+                 <input type="text" data-bind="value: inputID" class="form-control" id="id" name="id">
+            </div>
+            <div class="form-group">
+                <label>Text - NPC is a male</label>
+                <textarea class="form-control" data-bind="value: gossipText().text0_0" name="enmale" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Text - NPC is a female</label>
+                <textarea class="form-control" data-bind="value: gossipText().text0_1" name="enfemale" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label>FR(optional) - Text - NPC is a male</label>
+                <textarea readonly class="form-control" data-bind="value: gossipText().Text0_0_loc2" name="frmale" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label>FR(optional) - Text - NPC is a female</label>
+                <textarea readonly class="form-control" data-bind="value: gossipText().Text0_1_loc2" name="frfemale" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-default" data-bind="click: sendGossipText, style: { disabled: gossipText().ID() == 0 }">Submit</button>
+        </form>
+    </div>
+</div>

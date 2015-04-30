@@ -1,5 +1,5 @@
 <?php
-require('../config.php');
+require('../../dbconfig.php');
 try {
     $handler = new PDO('mysql:host=62.210.236.104;dbname=world', 'nastyadmin', 'Z9EuAAtxPtA5gt3F');
     $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
