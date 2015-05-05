@@ -2,8 +2,7 @@ define(['durandal/app', 'knockout', 'jquery', 'creatureDefines'],
     function (app, ko, $, creatureDefines) {
         "use strict";
 
-        var 
-        clicked = function (self, event) {
+        var  clicked = function (self, event) {
             var target = event.currentTarget;
             $(target).toggleClass("active");
             var active = $(target).hasClass("active");
@@ -17,20 +16,21 @@ define(['durandal/app', 'knockout', 'jquery', 'creatureDefines'],
                     selection(newVal);
                 }
             });
-        },
-        redrawList = function () {
+        };
+        var redrawList = function () {
             $(".extralist").each(function (index, element) {
                 var active = selection() & Math.pow(2, index);
                 $(element).toggleClass("active", active != 0);
             });
-        },
-        selection = ko.observable(0),
-        selectionC = ko.computed(function () {
+        };
+        var selection = ko.observable(0);
+        var selectionC = ko.computed(function () {
             redrawList();
             return selection();
-        }),
-        reset = function () { selection(0); }
-        ;
+        });
+        var reset = function () { 
+            selection(0); 
+        };
 
         return {
             creatureExtraFlags: creatureDefines.creatureExtraFlags,

@@ -53,7 +53,6 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'plugins/rout
            router:     true,
            dialog:     true,
            widget:     true,
-          // observable: true,
        });
 
        app.start().then(function () {
