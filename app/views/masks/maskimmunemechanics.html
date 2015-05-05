@@ -2,14 +2,15 @@
     <div class="container">
         <div class=" row">
             <div class="col-xs-2" data-bind="foreach: creatureImmuneMechanics">
-                <span href="." style="height: 40px; text-align: right" class="list-group-item"><span data-bind="text: '0x' + Math.pow(2,$index()).toString(16)"></span></span>
+                <span href="." style="height: 40px; text-align: right" class="list-group-item">{{'0x' + Math.pow(2,$index()).toString(16)}}</span>
             </div>
             <div class="col-xs-4" data-bind="foreach: creatureImmuneMechanics">
-                <a href="." style="height: 40px" class="list-group-item mechalist" data-bind="click: $parent.clicked"><span data-bind="text: $data"></span></a>
+                <a href="." style="height: 40px" class="list-group-item mechalist" data-bind="click: $parent.clicked">
+                <span>{{$data}}</span></a>
             </div>
             <div class="col-xs-6">
                 <h3>
-                    Mask : <input type="number" min="0" data-bind="value: selection" />
+                    Mask : <input type="number" min="0" value="{{selection}}" />
                 </h3>
                 <p><button class="btn btn-primary" data-bind="click: reset">Reset</button></p>
             </div>

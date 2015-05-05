@@ -6,7 +6,8 @@ requirejs.config({
     'bootstrap': '../ace/js/bootstrap',
     'creatureDefines': '../js/creatureDefines',
     'durandal':'../lib/durandal/js',
-    'knockout': '../lib/knockout/knockout-3.1.0',
+    'knockout': '../lib/knockout/knockout-3.2.0',
+    'knockout.punches' : '../lib/knockout/knockout.punches',
     'plugins' : '../lib/durandal/js/plugins',
     'transitions' : '../lib/durandal/js/transitions',
     'jquery': '../lib/jquery/jquery-1.9.1',
@@ -29,24 +30,30 @@ requirejs.config({
           deps: ['jquery'],
       },
       'jquery': {
-        exports: 'jQuery'
-      }
+          exports: 'jQuery'
+      },
+      'knockout.punches' : {
+          deps: ['knockout'],
+      },
   }
 });
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'plugins/router', 'ace', 'jquery']
-   , function (system, app, viewLocator, router, ace, $) {
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'plugins/router', 'ace', 'jquery', 'knockout', 'knockout.punches']
+   , function (system, app, viewLocator, router, ace, $, ko, kopunches) {
        'use strict';
 
        system.debug(true);
 
-       app.title = "HoheTest";
-       app.icon = "fa fa-institution";
+       app.title = "SunTools";
+       app.icon = "fa fa-gears";
  
+       ko.punches.enableAll();
+
        app.configurePlugins({
-           router: true,
-           dialog: true,
-           widget: true
+           router:     true,
+           dialog:     true,
+           widget:     true,
+          // observable: true,
        });
 
        app.start().then(function () {

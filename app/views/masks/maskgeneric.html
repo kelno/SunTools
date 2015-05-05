@@ -1,11 +1,11 @@
 <div>
 	<div class="container">
 		<form>
-			Mask : <input data-bind="value: mask" type="number" name="mask" value="0" min="0"/>
+			Mask : <input value="{{mask}}" type="number" name="mask" min="0"/>
 		</form>
-        </br>
+        <br/>
         <div class="col-xs-4" data-bind="foreach: bitsList">
-            <span href="." style="height: 40px" class="list-group-item"><span data-bind="text: $data"></span></span>
+            <span href="." style="height: 40px" class="list-group-item">{{$data}}</span>
         </div>
 	</div>
 </div>
