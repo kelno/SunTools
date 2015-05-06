@@ -133,6 +133,30 @@ define(
             iconClass: "menu-icon fa fa-pencil",
             external: true,
         },
+		{
+            route: 'Fireworks Editor',
+            hash: 'external/fireworks/',
+            title: 'Fireworks Editor',
+            nav: true,
+            iconClass: "menu-icon fa fa-pencil",
+            external: true,
+        },
+		{
+            route: 'Quest Generator',
+            hash: 'external/questgenerator/',
+            title: 'Quest Generator',
+            nav: true,
+            iconClass: "menu-icon fa fa-pencil",
+            external: true,
+        },
+		{
+            route: 'Make Heroic',
+            hash: 'external/makeheroic/',
+            title: 'Make Heroic',
+            nav: true,
+            iconClass: "menu-icon fa fa-pencil",
+            external: true,
+        },
         ];
 
         //create parents route for each route
