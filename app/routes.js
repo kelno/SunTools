@@ -111,9 +111,9 @@ define(
                 } ,
             ]
         }, {
-            route: 'Quests',
+            route: 'Quests Tests',
             hash: 'external/quests/',
-            title: 'Quests',
+            title: 'Quests Tests',
             nav: true,
             iconClass: "menu-icon fa fa-exclamation",
             external: true,
@@ -138,7 +138,7 @@ define(
             hash: 'external/fireworks/',
             title: 'Fireworks Editor',
             nav: true,
-            iconClass: "menu-icon fa fa-pencil",
+            iconClass: "menu-icon fa fa-dot-circle-o",
             external: true,
         },
 		{
@@ -146,7 +146,7 @@ define(
             hash: 'external/questgenerator/',
             title: 'Quest Generator',
             nav: true,
-            iconClass: "menu-icon fa fa-pencil",
+            iconClass: "menu-icon fa fa-exclamation-circle",
             external: true,
         },
 		{
@@ -154,7 +154,7 @@ define(
             hash: 'external/makeheroic/',
             title: 'Make Heroic',
             nav: true,
-            iconClass: "menu-icon fa fa-pencil",
+            iconClass: "menu-icon fa fa-angle-double-up",
             external: true,
         },
         ];

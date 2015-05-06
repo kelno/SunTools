@@ -7,10 +7,18 @@ function isCivilian($mysql,$entry)
    return 0;
 }
 
-/*$mysql = mysql_connect('sql31.free-h.org:3306', 'canardwc42', 'barbecue42');
-$db = mysql_select_db("canardbd", $mysql);*/
-	$mysql = mysql_connect('localhost:3306', 'root', 'canard');
-	$db = mysql_select_db("wrworld", $mysql);
+require('../../dbconfig.php');
+/*
+CREATE TABLE `quest_generator` (
+  `requests` longtext,
+  `time` int(11) NOT NULL
+) 
+*/
+header('Content-Type: text/html; charset=utf-8');
+
+$mysql = mysql_connect($host, $user, $password);
+$db = mysql_select_db("world", $mysql);
+
 if (mysql_errno($mysql)){
 	if (mysql_errno($mysql)){
 		echo mysql_errno($mysql) . ": " . mysql_error($mysql). "<br>";
