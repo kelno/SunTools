@@ -41,16 +41,16 @@ if(isset($_POST['entry']) && preg_match('/[0-9]+/', $_POST['entry'])) {
                             <td><?php echo $getResult["groupid"]; ?></td>
                             <td><?php echo $getResult["id"]; ?></td>
                             <td>
-                                <input type="text" class="form-control" value="<?php echo $getResult["probability"]; ?>" onchange="update('8', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
+                                <input type="text" class="form-control" value="<?php echo $getResult["probability"]; ?>" onchange="update('7', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
                             </td>
                             <td>
-                                <input type="text" class="form-control" value="<?php echo $getResult["sound"]; ?>" onchange="update('11', this.value, <?php echo $getResult["entry"]; ?>, <?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
+                                <input type="text" class="form-control" value="<?php echo $getResult["sound"]; ?>" onchange="update('10', this.value, <?php echo $getResult["entry"]; ?>, <?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
                             </td>
                             <td>
-                                <input type="text" class="form-control" value="<?php echo $getResult["duration"]; ?>" onchange="update('10', this.value, <?php echo $getResult["entry"]; ?>, <?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
+                                <input type="text" class="form-control" value="<?php echo $getResult["duration"]; ?>" onchange="update('9', this.value, <?php echo $getResult["entry"]; ?>, <?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
                             </td>
                             <td>
-                                <select class="form-control" onchange="update('6', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
+                                <select class="form-control" onchange="update('5', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
                                     <option value="0" <?php if ($getResult["type"] == 0) echo "selected=selected"; ?>>Say</option>
                                     <option value="1" <?php if ($getResult["type"] == 1) echo "selected=selected"; ?>>Yell</option>
                                     <option value="2" <?php if ($getResult["type"] == 2) echo "selected=selected"; ?>>Emote</option>
@@ -60,7 +60,7 @@ if(isset($_POST['entry']) && preg_match('/[0-9]+/', $_POST['entry'])) {
                                 </select>
                             </td>
                             <td>
-                                <select class="form-control" onchange="update('7', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
+                                <select class="form-control" onchange="update('6', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
                                     <option value="0" <?php if ($getResult["language"] == 0) echo "selected=selected"; ?>>All understand</option>
                                     <option value="1" <?php if ($getResult["language"] == 1) echo "selected=selected"; ?>>Orcish</option>
                                     <option value="2" <?php if ($getResult["language"] == 2) echo "selected=selected"; ?>>Darnassian</option>
@@ -82,7 +82,7 @@ if(isset($_POST['entry']) && preg_match('/[0-9]+/', $_POST['entry'])) {
                                 </select>
                             </td>
                             <td>
-                                <select class="form-control" onchange="update('9', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
+                                <select class="form-control" onchange="update('8', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
                                     <option value="0" <?php if ($getResult["emote"] == 0) echo "selected=selected"; ?>>None</option>
                                     <option value="1" <?php if ($getResult["emote"] == 1) echo "selected=selected"; ?>>Talk</option>
                                     <option value="2" <?php if ($getResult["emote"] == 2) echo "selected=selected"; ?>>Bow</option>
@@ -112,13 +112,10 @@ if(isset($_POST['entry']) && preg_match('/[0-9]+/', $_POST['entry'])) {
                                 </select>
                             </td>
                             <td>
-                                <textarea class="form-control" rows="2" onchange="update('4', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)"><?php echo $getResult["text_en"]; ?></textarea>
+                                <textarea class="form-control" rows="2" onchange="update('4', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)"><?php echo $getResult["text"]; ?></textarea>
                             </td>
                             <td>
-                                <textarea class="form-control" rows="2" onchange="update('5', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)"><?php echo $getResult["text_fr"]; ?></textarea>
-                            </td>
-                            <td>
-                                <textarea class="form-control" rows="2" onchange="update('12', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)"><?php echo $getResult["comment"]; ?></textarea>
+                                <textarea class="form-control" rows="2" onchange="update('11', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)"><?php echo $getResult["comment"]; ?></textarea>
                             </td>
                             <td><span class="glyphicon glyphicon-remove" onclick="removeLine(<?php echo $getResult["entry"]; ?>, <?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)"></span></td>
                         </tr>

@@ -69,15 +69,14 @@ if(isset($_POST['entry']) && preg_match('/[0-9]+/', $_POST['entry'])
     switch($field) {
         case 2: $column  = "groupid"; break;
         case 3: $column  = "id"; break;
-        case 4: $column  = "text_en"; break;
-        case 5: $column  = "text_fr"; break;
-        case 6: $column  = "type"; break;
-        case 7: $column  = "language"; break;
-        case 8: $column  = "probability"; break;
-        case 9: $column  = "emote"; break;
-        case 10: $column = "duration"; break;
-        case 11: $column = "sound"; break;
-        case 12: $column = "comment"; break;
+        case 4: $column  = "text"; break;
+        case 5: $column  = "type"; break;
+        case 6: $column  = "language"; break;
+        case 7: $column  = "probability"; break;
+        case 8: $column  = "emote"; break;
+        case 9: $column = "duration"; break;
+        case 10: $column = "sound"; break;
+        case 11: $column = "comment"; break;
         default: return;
     }
     

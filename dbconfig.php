@@ -1,7 +1,8 @@
 <?php
-	$host = "localhost";
-	$user = "root";
-	$password = "canard";
-	$worlddb = "world";
-	$backupworld = "trinityworld";
-?>
+	$host           = "localhost";
+	$user           = "root";
+	$password       = "";
+	$worlddb        = "world";
+	$suntoolsdb     = "suntools";
+	$dbcdb          = "dbc";
+	$backupworld    = "trinityworld";
