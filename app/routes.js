@@ -111,9 +111,9 @@ define(
                 } ,
             ]
         }, {
-            route: 'Quests',
+            route: 'Quests Tests',
             hash: 'external/quests/',
-            title: 'Quests',
+            title: 'Quests Tests',
             nav: true,
             iconClass: "menu-icon fa fa-exclamation",
             external: true,
@@ -131,6 +131,30 @@ define(
             title: 'IG Commands',
             nav: true,
             iconClass: "menu-icon fa fa-pencil",
+            external: true,
+        },
+		{
+            route: 'Fireworks Editor',
+            hash: 'external/fireworks/',
+            title: 'Fireworks Editor',
+            nav: true,
+            iconClass: "menu-icon fa fa-dot-circle-o",
+            external: true,
+        },
+		{
+            route: 'Quest Generator',
+            hash: 'external/questgenerator/',
+            title: 'Quest Generator',
+            nav: true,
+            iconClass: "menu-icon fa fa-exclamation-circle",
+            external: true,
+        },
+		{
+            route: 'Make Heroic',
+            hash: 'external/makeheroic/',
+            title: 'Make Heroic',
+            nav: true,
+            iconClass: "menu-icon fa fa-angle-double-up",
             external: true,
         },
         ];

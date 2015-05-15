@@ -1,5 +1,8 @@
-define(['durandal/app', 'knockout'], 
+
+define(['durandal/app',  'knockout'], 
     function (app, ko) {
+        "use strict";
+
         var mask = ko.observable(0);
         var bitsList = ko.observableArray();
         var computeList = ko.computed(function() {

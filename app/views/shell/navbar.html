@@ -13,13 +13,13 @@
 
         <div class="navbar-header pull-left">
             <a href="#" class="navbar-brand">
-                <i data-bind="attr: { class: app.icon }"></i>
-                <small data-bind="text: app.title">
-                    SunTools <!-- Placeholder-->
+                <i class="{{app.icon}}"></i>
+                <small>
+                    {{app.title}}
                 </small>
             </a>
             <div class="main-throbber navbar-brand active">
-                <i class="" data-bind="css: {'fa-spinner ace-icon fa fa-spin': router.isNavigating }">
+                <i data-bind="css: {'fa-spinner ace-icon fa fa-spin': router.isNavigating }">
                 </i>
             </div>
         </div> <!--

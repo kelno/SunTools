@@ -31,37 +31,37 @@
     </div>
 
     <ul class="nav nav-list" data-bind="foreach: router.navigationModel">
-        <!-- ko if: $data.childRoutes === undefined && $data.parent === undefined -->
+        {{#if $data.childRoutes === undefined && $data.parent === undefined}}
         <li data-bind="css: { active: isActive, hidden: !nav}">
 
-            <a data-bind="attr: { href: hash }">
-                <!-- ko if: iconClass !== undefined -->
-                <i data-bind="attr: { class: iconClass }"></i>
-                <!-- /ko -->
-                <span class="menu-text" data-bind="text: title"></span>
+            <a href="{{hash}}">
+                {{#if iconClass !== undefined}}
+                    <i class="{{iconClass}}"></i>
+                {{/if}}
+                <span class="menu-text">{{title}}</span>
             </a>
 
             <b class="arrow"></b>
         </li>
-        <!-- /ko -->
-        <!-- ko if: $data.childRoutes !== undefined -->
+        {{/if}}
+        {{#if $data.childRoutes !== undefined}}
         <li data-bind="css: { active: isActive }, if: nav" class="hsub">
-            <a data-bind="attr: { href: hash }" class="dropdown-toggle">
-                <!-- ko if: iconClass !== undefined -->
-                <i data-bind="attr: { class: iconClass }"></i>
-                <!-- /ko -->
-                <span class="menu-text" data-bind="text: title"></span>
+            <a href="{{hash}}" class="dropdown-toggle">
+                {{#if iconClass !== undefined}}
+                    <i class="{{iconClass}}"></i>
+                {{/if}}
+                <span class="menu-text">{{title}}</span>
                 <b class="arrow fa fa-angle-down"></b>
             </a>
             <ul class="submenu nav-show" data-bind="foreach: childRoutes">
-                <!-- ko if: nav -->
-                <li><a data-bind="css: { active: isActive }, attr: { href: hash }, text: title" class="menu-text" href="#" /></li>
-                <!-- /ko -->
+                {{#if nav}}
+                    <li><a href="{{hash}}" data-bind="css: { active: isActive }" class="menu-text">{{title}}</a></li>
+                {{/if}}
             </ul>
 
             <b class="arrow"></b>
         </li>
-        <!-- /ko -->
+        {{/if}}
     </ul>
 
     <!-- #section:basics/sidebar.layout.minimize -->

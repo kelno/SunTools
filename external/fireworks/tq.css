@@ -1,0 +1,134 @@
+/*------------------------------------*\
+	RESET
+\*------------------------------------*/
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{
+	margin:0;
+	padding:0;
+}
+table{
+	border-collapse:collapse;
+	border-spacing:0;
+}
+fieldset,img{
+	border:0;
+}
+address,caption,cite,code,dfn,th,var{
+	font-style:normal;
+	font-weight:normal;
+}
+caption,th{
+	text-align:left;
+}
+q:before,q:after{
+	content:'';
+}
+abbr,acronym{
+	border:0;
+}
+
+/*------------------------------------*\
+	MAIN
+\*------------------------------------*/
+
+html{
+height: 100%;
+background-color: white;
+background: scroll url(../imgs/carthis.svg) repeat-y right;
+}
+body{
+margin: 0 auto;
+font-family: Arial, Helvetica, sans-serif;
+width: 80%;
+}
+#presentation{
+width: 100%;
+overflow: hidden;
+}
+#presGauche{
+float: left;
+width: 70%;
+}
+#presDroite{
+float: right;
+width: 20%;
+}
+#presentationTxt{
+border: 1px solid black;
+border-radius: 5px;
+background-color: white;
+}
+#tris-filtres{
+border: 1px solid black;
+border-radius: 5px;
+background-color: white;
+text-align: right;
+overflow: hidden;
+}
+#tris-filtres select{
+width: 80%;
+}
+#tris-filtres input{
+width: 100%;
+}
+#legende{
+border: 1px solid black;
+border-radius: 5px;
+background-color: white;
+}
+#navCpts{
+width: 9.6%;
+border: solid 1px gray;
+border-radius: 5px;
+position: fixed;
+right: 0.2%;
+top: 60%;
+background-color: white;
+text-align: center;
+}
+.listId{
+width: 10%;
+display: inline-block;
+text-align: right;
+}
+.listTitle{
+width: 65%;
+display: inline-block;
+}
+.listInco{
+width: 25%;
+display: inline-block;
+text-align: right;
+}
+.nbMismatch1{
+background-color: rgba(255,255,0,0.9);
+}
+.nbMismatch2{
+background-color: rgba(255,165,0,0.9);
+}
+.nbMismatch3{
+background-color: rgba(255,69,0,0.9);
+}
+.nbMismatch4{
+background-color: rgba(255,0,0,0.9);;
+}
+.nbMismatch5{
+color: white;
+background-color: rgba(168,0,0,0.9);;
+}
+.nbMismatch6{
+color: white;
+background-color: rgba(72,0,0,0.9);;
+}
+.nbMismatchMax{
+color: white;
+background-color: rgba(0,0,0,0.9);;
+}
+.legendeItem{
+width: 100%;
+display: inline-block;
+}
+.navCptsItem{
+width: 100%;
+display: inline-block;
+}

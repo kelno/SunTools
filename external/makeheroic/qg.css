@@ -1,0 +1,97 @@
+html{
+background-color: white
+}
+body{
+margin: 0 auto;
+font-family: Arial, Helvetica, sans-serif;
+width: 80%;
+}
+
+.warning{
+background-color: #ff9f9f;
+border-radius: 5px;
+border: red 2px solid;
+font-weight: bold;
+text-align: center;
+width: 100%;
+}
+
+.fs1{
+border: solid 1px gray;
+border-radius: 5px;
+background-color: #FAFAFA;
+margin: 2px;
+}
+legend{
+border-top: solid 1px gray;
+border-right: solid 1px gray;
+border-left: solid 1px gray;
+border-radius: 6px 6px 0px 0px;
+background-color: #F0F0F0;
+}
+.fs1:hover{
+background-color: #FFCC66;
+transition: all 500ms 0s;
+transition-timing-function: ease-out;
+}
+.submit1{
+transition: all 1s ease;
+-webkit-transition: all 1s ease;
+-moz-transition: all 1s ease;
+-o-transition: all 1s ease;
+border: solid 4px gray;
+height: 70px;
+width: 70px;
+border-radius: 100%;
+}
+.submit1:hover{
+background-color: red;
+transform: rotate(360deg);
+-webkit-transform: rotate(360deg);
+-moz-transform: rotate(360deg);
+-o-transform: rotate(360deg);
+-ms-transform: rotate(360deg);
+}
+.submit1:active{
+background-color: green;
+
+transform: rotateX(180deg);
+-webkit-transform: rotateX(180deg);
+-moz-transform: rotateX(180deg);
+-o-transform: rotateX(180deg);
+-ms-transform: rotateX(180deg);
+
+transform: rotateY(180deg);
+-webkit-transform: rotateY(180deg);
+-moz-transform: rotateY(180deg);
+-o-transform: rotateY(180deg);
+-ms-transform: rotateY(180deg);
+}
+
+.help{
+cursor: help;
+}
+
+.check {
+border-radius: 5px;
+}
+
+#navErr{
+width: 9.6%;
+border: solid 1px gray;
+border-radius: 5px;
+position: fixed;
+right: 0.2%;
+top: 10%;
+
+text-align: center;
+}
+
+#navErr input{
+width: 100%;
+border-radius: 5px;
+white-space: normal;
+}
+#navErr span{
+font-weight: bold;
+}
