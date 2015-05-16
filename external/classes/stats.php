@@ -70,7 +70,7 @@ function classProgression($class) {
     // Display results
     echo '
         <div class="col-md-4">
-            <h2>' . $className . ' - '. testProgression($totalTested, $total) . '</h2>
+            <h2><a href="?class=' . strtolower($className) . '">' . $className . '</a> - '. testProgression($totalTested, $total) . '</h2>
             <p class="col-md-6">
                 <strong>Total spells:</strong> ' . $totalSpells . '<br />
                 <strong>Total tested:</strong> ' . $testedSpells . '

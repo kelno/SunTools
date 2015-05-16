@@ -151,25 +151,11 @@ function getClass($category, $spe) {
 	<body>
 <?php
 if(!isset($_GET['class'])) {
-	echo '<div class="col-md-3">
+	echo '<div class="col-md-12">
                 <h2>SunClasses</h2>
                 <p>
                     <a href="https://github.com/Nqsty/Sunstrider-Classes-Issues/issues">Issue Tracker</a> - <a href="https://github.com/Nqsty/Sunstrider-Classes-Issues/wiki">Wiki</a>
                 </p>
-            </div>
-            <div class="col-md-9">
-                <h3>Classes</h3>
-                <ul>
-                    <li><a href="?class=druid">Druid</a></li>
-                    <li><a href="?class=hunter">Hunter</a></li>
-                    <li><a href="?class=mage">Mage</a></li>
-                    <li><a href="?class=paladin">Paladin</a></li>
-                    <li><a href="?class=priest">Priest</a></li>
-                    <li><a href="?class=rogue">Rogue</a></li>
-                    <li><a href="?class=shaman">Shaman</a></li>
-                    <li><a href="?class=warlock">Warlock</a></li>
-                    <li><a href="?class=warrior">Warrior</a></li>
-                </ul>
             </div>';
     echo classProgression(11);
     echo classProgression(3);
