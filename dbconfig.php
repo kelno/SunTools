@@ -1,7 +1,7 @@
 <?php
 	$host           = "localhost";
 	$user           = "root";
-	$password       = "";
+	$password       = "canard";
 	$worlddb        = "world";
 	$suntoolsdb     = "suntools";
 	$dbcdb          = "dbc";
