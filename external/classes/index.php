@@ -116,7 +116,7 @@ function getClass($category, $spe) {
                 text-align: left;
             }
             .table > tbody > tr > td > input {
-                width: 35px;
+                width: 50px;
                 text-align: center;
                 display: inline;
             }
@@ -124,13 +124,6 @@ function getClass($category, $spe) {
                 width: 128px;
                 text-align: center;
                 display: inline;
-            }
-            .table > tbody > tr > td.yes {
-                background: #428bca;
-                color: #fff;
-            }
-            .table > tbody > tr > td.no {
-                color: inherit;
             }
             ul {
                 padding: 0;
