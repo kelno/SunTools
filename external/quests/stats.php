@@ -88,7 +88,7 @@ function zoneProgression($id) {
     
     // Display results
     echo '
-        <div class="col-md-6">
+        <div class="col-md-4">
             <h2>' . $zoneName . ' - '. testProgression($testedQuest, $totalQuest) . '</h2>
             <p>
                 <strong>Total quests:</strong> ' . $totalQuest . '<br />

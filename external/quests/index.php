@@ -49,10 +49,13 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
                     <li><a href="?zoneid=3520">Shadowmoon Valley</a></li>
                 </ul>
             </div>';
-    echo zoneProgression(3483);
-    echo zoneProgression(3521);
-    echo zoneProgression(3519);
-    echo zoneProgression(3518);
+    echo zoneProgression(3483); //Hellfire
+    echo zoneProgression(3521); //Zangar
+    echo zoneProgression(3519); //Terokkar
+    echo zoneProgression(3518); //Nagrand
+    echo zoneProgression(3522); //Blades
+    echo zoneProgression(3523); //Netherstorm
+    echo zoneProgression(3520); //Shadowmoon
 
 } else {
     if (isset($_GET['zone'])) {
