@@ -17,21 +17,19 @@ if(isset($_POST['entry']) && preg_match('/[0-9]+/', $_POST['entry'])) {
     $getResultQuery->execute();
     
     if($getResultQuery->rowCount() != null) {
-        echo '<table class="table table-striped" style="margin-bottom: 0!important;">
+        echo '<table class="table table-striped">
                     <thead>
                         <tr>
                             <th title="Group ID" width="2%">GID</th>
                             <th width="2%">ID</th>
                             <th width="5%">Chance</th>
                             <th width="7%">Sound</th>
-                            <th width="5%">Duration</th>
                             <th width="7%">Type</th>
                             <th width="13%">Language</th>
                             <th width="11%">Emote</th>
-                            <th width="15%">Text EN</th>
-                            <th width="15%">Text FR(optional)</th>
-                            <th width="16%">Comment</th>
-                            <th width="2%"></th>
+                            <th width="27%">Text</th>
+                            <th width="24%">Comment</th>
+                            <th width="3%"></th>
                         </tr>
                     </thead>
                     <tbody>';
@@ -45,9 +43,6 @@ if(isset($_POST['entry']) && preg_match('/[0-9]+/', $_POST['entry'])) {
                             </td>
                             <td>
                                 <input type="text" class="form-control" value="<?php echo $getResult["sound"]; ?>" onchange="update('10', this.value, <?php echo $getResult["entry"]; ?>, <?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" value="<?php echo $getResult["duration"]; ?>" onchange="update('9', this.value, <?php echo $getResult["entry"]; ?>, <?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
                             </td>
                             <td>
                                 <select class="form-control" onchange="update('5', this.value, <?php echo $getResult["entry"]; ?>,<?php echo $getResult["groupid"]; ?>, <?php echo $getResult["id"]; ?>)">
