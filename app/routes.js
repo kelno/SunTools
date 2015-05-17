@@ -118,9 +118,10 @@ define(
             iconClass: "menu-icon fa fa-exclamation",
             external: true,
         }, {
-            route: 'SpellInfo',
-            hash: 'external/spellinfo/',
-            title: 'Spell Info',
+            route: 'Class Tests',
+            route: 'ClassTests',
+            hash: 'external/classes/',
+            title: 'Class Tests',
             nav: true,
             iconClass: "menu-icon fa fa-cog",
             external: true,
