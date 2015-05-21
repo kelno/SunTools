@@ -9,6 +9,21 @@ define(
             nav: false,
             iconClass: "menu-icon fa fa-home",
         }, {
+            route: 'Quests Tests',
+            hash: 'external/quests/',
+            title: 'Quests Tests',
+            nav: true,
+            iconClass: "menu-icon fa fa-exclamation",
+            external: true,
+        }, {
+            route: 'Class Tests',
+            route: 'ClassTests',
+            hash: 'external/classes/',
+            title: 'Class Tests',
+            nav: true,
+            iconClass: "menu-icon fa fa-cog",
+            external: true,
+        }, {
             route: 'Mask',
             moduleId: 'masks/index',
             moduleRootId: 'masks', // Custom property to make child routes easier
@@ -110,21 +125,6 @@ define(
                     iconClass: "menu-icon fa fa-cog",
                 } ,
             ]
-        }, {
-            route: 'Quests Tests',
-            hash: 'external/quests/',
-            title: 'Quests Tests',
-            nav: true,
-            iconClass: "menu-icon fa fa-exclamation",
-            external: true,
-        }, {
-            route: 'Class Tests',
-            route: 'ClassTests',
-            hash: 'external/classes/',
-            title: 'Class Tests',
-            nav: true,
-            iconClass: "menu-icon fa fa-cog",
-            external: true,
         },
 		{
             route: 'IG Commands',
@@ -135,28 +135,47 @@ define(
             external: true,
         },
 		{
-            route: 'Fireworks Editor',
-            hash: 'external/fireworks/',
-            title: 'Fireworks Editor',
+            route: 'Spell Info',
+            hash: 'external/spellinfo/',
+            title: 'Spell Info',
             nav: true,
-            iconClass: "menu-icon fa fa-dot-circle-o",
+            iconClass: "menu-icon fa fa-info-circle",
             external: true,
         },
-		{
-            route: 'Quest Generator',
-            hash: 'external/questgenerator/',
-            title: 'Quest Generator',
+        {
+            route: 'Old',
+            moduleId: 'old/index',
+            moduleRootId: 'old', // Custom property to make child routes easier
+            title: 'Old garbage',
             nav: true,
-            iconClass: "menu-icon fa fa-exclamation-circle",
-            external: true,
-        },
-		{
-            route: 'Make Heroic',
-            hash: 'external/makeheroic/',
-            title: 'Make Heroic',
-            nav: true,
-            iconClass: "menu-icon fa fa-angle-double-up",
-            external: true,
+            hash: '#OLD',
+            iconClass: "menu-icon fa fa-trash",
+            childRoutes: [
+		    {
+                route: 'Fireworks Editor',
+                hash: 'external/fireworks/',
+                title: 'Fireworks Editor',
+                nav: true,
+                iconClass: "menu-icon fa fa-dot-circle-o",
+                external: true,
+            },
+		    {
+                route: 'Quest Generator',
+                hash: 'external/questgenerator/',
+                title: 'Quest Generator',
+                nav: true,
+                iconClass: "menu-icon fa fa-exclamation-circle",
+                external: true,
+            },
+	    	{
+                route: 'Make Heroic',
+                hash: 'external/makeheroic/',
+                title: 'Make Heroic',
+                nav: true,
+                iconClass: "menu-icon fa fa-angle-double-up",
+                external: true,
+            }
+            ],
         },
         ];
 
