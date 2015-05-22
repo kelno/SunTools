@@ -16,12 +16,18 @@ define(
             iconClass: "menu-icon fa fa-exclamation",
             external: true,
         }, {
-            route: 'Class Tests',
             route: 'ClassTests',
             hash: 'external/classes/',
             title: 'Class Tests',
             nav: true,
             iconClass: "menu-icon fa fa-cog",
+            external: true,
+        }, {
+            route: 'Equipment',
+            hash: 'external/equip/',
+            title: 'Equipments',
+            nav: true,
+            iconClass: "menu-icon fa fa-cutlery",
             external: true,
         }, {
             route: 'Mask',
@@ -109,13 +115,6 @@ define(
                     nav: true,
                     iconClass: "menu-icon fa fa-bar-chart ",
                     external: true,
-                }, {
-                    route: 'GossipMenu2',
-                    hash: 'gossipmenu2',
-                    title: 'Gossip Menu 2',
-                    moduleId: 'gossipmenu',
-                    nav: true,
-                    iconClass: "menu-icon fa fa-cog",
                 } , {
                     route: 'GossipMenu',
                     hash: 'external/gossip/',
