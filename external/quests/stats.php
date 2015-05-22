@@ -58,7 +58,7 @@ function zoneProgression($id) {
     $zoneName = $zoneName['name'];
 
     // Count quests in $zoneID
-    $totalQuestQuery = $handler->prepare('SELECT count(*) as count FROM quest_template WHERE ZoneOrSort = :zoneID AND Title NOT LIKE "%BETA%"');
+    $totalQuestQuery = $handler->prepare('SELECT count(*) as count FROM world.quest_template WHERE ZoneOrSort = :zoneID AND Title NOT LIKE "%BETA%"');
     $totalQuestQuery->bindValue(':zoneID', $zoneID, PDO::PARAM_INT);
     $totalQuestQuery->execute();
     $totalQuest = $totalQuestQuery->fetch();

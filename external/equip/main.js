@@ -1,3 +1,6 @@
+"use strict";
+
+var Ajax = null;
 var EquipID = null;
 var Entry = null;
 var ID = null;
@@ -38,10 +41,6 @@ $('#entryId').keyup(function() {
     var EntryName = $('#entry');
     var EquipmentID = $('#equipment');
     var UrlToPass = 'entry=' + Entry;
-    $('#result').html("");
-    $('#new').html("");
-    EntryName.html("");
-    EquipmentID.attr('value', "");
 
     $.ajax({
         type: 'GET',
@@ -49,6 +48,11 @@ $('#entryId').keyup(function() {
         url: 'query.php',
         dataType: 'json',
         success: function(data) {
+				$('#result').html("");
+				$('#new').html("");
+				EntryName.html("");
+				EquipmentID.attr('value', "");
+				
                 Ajax = data;
                 console.log(data);
                 EntryName.html(data.name);
@@ -64,6 +68,7 @@ $('#entryId').keyup(function() {
                 if (EquipID !== "0" || EquipID !== null) {
                     ID = data.id.length;
 
+					var i;
                     for (i = 0; i < data.id.length; i++) {
                         ID = i;
                         $('#result').append(

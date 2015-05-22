@@ -23,14 +23,15 @@ try {
     die();
 }
 
-if (isset($_GET["id"])) {
-	$id = htmlspecialchars($_GET["id"]);
-	echo "Spell Info : " . $id . "<br>";
-} else {
+if (!isset($_GET["id"])) {
 	echo "<form>";
 	echo "ID <input type=\"text\" name=\"id\" value=\"0\"/></input>";
 	echo "</form>";
+	die();
 }
+
+$id = htmlspecialchars($_GET["id"]);
+echo "Spell Info : " . $id . "<br>";
 
 include ('Attributes.php');
 include ('Effects.php');
@@ -38,7 +39,7 @@ include ('Auras.php');
 include ('Targets.php');
 include ('DBC.php');
 
-$query = "SELECT * FROM spell_template where entry = :id";
+$query = $handler->prepare("SELECT * FROM spell_template where entry = :id");
 $query->bindValue(':id', $id, PDO::PARAM_INT);
 $query->execute();
 $data = $query->fetch();

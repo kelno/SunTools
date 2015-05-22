@@ -92,16 +92,16 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
                               qtest.other, qtest.tester,
 							  objstart.id as objidstarter, objt.name as objstarter,
 							  objend.id as objidender, objt2.name as objender
-							  FROM quest_template qt
-							  LEFT JOIN creature_queststarter qstart ON qt.entry = qstart.quest
-							  LEFT JOIN creature_questender qend ON qt.entry = qend.quest
-							  LEFT JOIN creature_template ct ON qstart.id = ct.entry
-							  LEFT JOIN creature_template ct2 ON qend.id = ct2.entry
-							  LEFT JOIN gameobject_queststarter objstart ON qt.entry = objstart.quest
-							  LEFT JOIN gameobject_questender objend ON qt.entry = objend.quest
-							  LEFT JOIN gameobject_template objt ON objstart.id = objt.entry
-							  LEFT JOIN gameobject_template objt2 ON objend.id = objt2.entry
-							  LEFT JOIN item_template it ON qt.entry = it.startquest
+							  FROM world.quest_template qt
+							  LEFT JOIN world.creature_queststarter qstart ON qt.entry = qstart.quest
+							  LEFT JOIN world.creature_questender qend ON qt.entry = qend.quest
+							  LEFT JOIN world.creature_template ct ON qstart.id = ct.entry
+							  LEFT JOIN world.creature_template ct2 ON qend.id = ct2.entry
+							  LEFT JOIN world.gameobject_queststarter objstart ON qt.entry = objstart.quest
+							  LEFT JOIN world.gameobject_questender objend ON qt.entry = objend.quest
+							  LEFT JOIN world.gameobject_template objt ON objstart.id = objt.entry
+							  LEFT JOIN world.gameobject_template objt2 ON objend.id = objt2.entry
+							  LEFT JOIN world.item_template it ON qt.entry = it.startquest
 							  LEFT JOIN suntools.quest_test qtest ON qt.entry = qtest.questid
 							  WHERE ZoneOrSort = :zone AND qt.Title NOT LIKE "%BETA%"');
 	$query->bindValue(':zone', $getZoneID['id'], PDO::PARAM_INT);

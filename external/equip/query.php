@@ -9,7 +9,7 @@ try {
     die();
 }
 
-if(   isset($_GET['entryid'])       && preg_match('/[0-9]+/', $_GET['entryid']) 
+if(      isset($_GET['entry'])       && preg_match('/[0-9]+/', $_GET['entry']) 
    && isset($_GET['equipmentid'])   && preg_match('/[0-9]+/', $_GET['equipmentid'])
    && isset($_GET['id'])            && preg_match('/[0-9]+/', $_GET['id'])
    && isset($_GET['weapon'])        && preg_match('/^(mh|oh|ranged)$/', $_GET['weapon'])
@@ -21,7 +21,7 @@ if(   isset($_GET['entryid'])       && preg_match('/[0-9]+/', $_GET['entryid'])
     $weapon             = htmlspecialchars($_GET['weapon']);
     $info               = htmlspecialchars($_GET['info']);
     $value              = htmlspecialchars($_GET['value']);
-    
+	
     switch($weapon) {
         case "mh":     switch($info) { case "display":  $column = "equipmodel1"; break;
                                        case "skill":    $column = "equipinfo1"; break;
