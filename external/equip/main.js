@@ -100,11 +100,11 @@ $('#entryId').keyup(function() {
                             '       <h5>Off Hand</h5>' +
                             '       <div class="input-group col-md-12">' +
                             '           <span class="input-group-addon">DisplayID</span>' +
-                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'oh\', \'slot\', this.value)" value="' + data.id[i].offhand.displayid + '">' +
+                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'oh\', \'display\', this.value)" value="' + data.id[i].offhand.displayid + '">' +
                             '       </div>' +
                             '       <div class="input-group col-md-12">' +
                             '           <span class="input-group-addon">Skill</span>' +
-                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'oh\', \'slot\', this.value)" value="' + data.id[i].offhand.skill + '">' +
+                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'oh\', \'skill\', this.value)" value="' + data.id[i].offhand.skill + '">' +
                             '       </div>' +
                             '       <div class="input-group col-md-12">' +
                             '           <span class="input-group-addon">Slot</span>' +
@@ -115,11 +115,11 @@ $('#entryId').keyup(function() {
                             '       <h5>Ranged</h5>' +
                             '       <div class="input-group col-md-12">' +
                             '           <span class="input-group-addon">DisplayID</span>' +
-                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'ranged\', \'slot\', this.value)" value="' + data.id[i].ranged.displayid + '">' +
+                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'ranged\', \'display\', this.value)" value="' + data.id[i].ranged.displayid + '">' +
                             '       </div>' +
                             '       <div class="input-group col-md-12">' +
                             '           <span class="input-group-addon">Skill</span>' +
-                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'ranged\', \'slot\', this.value)" value="' + data.id[i].ranged.skill + '">' +
+                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'ranged\', \'skill\', this.value)" value="' + data.id[i].ranged.skill + '">' +
                             '       </div>' +
                             '       <div class="input-group col-md-12">' +
                             '           <span class="input-group-addon">Slot</span>' +
