@@ -8,6 +8,7 @@
 * SunSpellInfo
 
 You need the following DBs :
+
 * dbc
 * suntools
 * world
