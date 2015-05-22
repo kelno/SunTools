@@ -7,7 +7,7 @@ $db = [
                                 "user"          => "root",
                                 "password"      => "",
                                 "database"      => [
-                                                        "world"     => "world"
+                                                        "world"     => "world",
                                                    ]
                          ],
         "suntools"    => [
@@ -16,9 +16,9 @@ $db = [
                                 "user"          => "root",
                                 "password"      => "",
                                 "database"      => [ 
-                                                        "world"     => "world"
+                                                        "world"     => "world",
                                                         "suntools"  => "suntools",
-                                                        "dbc"       => "dbc"
+                                                        "dbc"       => "dbc",
                                                    ]
                          ]
     ];
