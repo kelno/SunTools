@@ -1,7 +1,7 @@
 <?php
 require '../../dbconfig.php';
 try {
-    $handler = new PDO('mysql:host='.$host.'; dbname='.$worlddb, $user, $password);
+    $handler = new PDO("mysql:host=".$db['world']['host'].";port=".$db['world']['port'].";dbname=".$db['world']['database']['world'], $db['world']['user'], $db['world']['password']);
     $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
     echo $e->getMessage();

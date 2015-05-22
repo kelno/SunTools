@@ -1,18 +1,19 @@
 <?php
 
-function getCreatureName($mysql, $entry)
+require('../../dbconfig.php');
+
+function getCreatureName($entry)
 {
-	$queryStr = "SELECT name FROM creature_template WHERE entry = " . $entry;
-	$query = mysql_query($queryStr);
-	if (mysql_errno($mysql)) 
+    global $handler;
+    
+	$query = $handler->prepare("SELECT name FROM creature_template WHERE entry = :entry");
+    $query->bindValue(':entry', $entry, PDO::PARAM_INT);
+    $query->execute();
+	$data = $query->fetch();
+    
+	if($data == null)
 	{
-		echo mysql_errno($mysql) . ": " . mysql_error($mysql). "\n";
-		exit(1);
-	}
-	$data = mysql_fetch_array($query);
-	if(!isset($data))
-	{
-		echo "getCreatureName : creature not found";
+		echo "getCreatureName: creature not found";
 		exit(1);
 	}
 	return $data[0];
@@ -21,10 +22,10 @@ function getCreatureName($mysql, $entry)
 function getClassName($id)
 {
 	switch ($id) {
-		case "1":	return "Warrior";
-		case "2":	return "Paladin";
-		case "4":	return "Rogue";
-		case "8":	return "Mage";
+		case "1":	return "Warrior"; break;
+		case "2":	return "Paladin"; break;
+		case "4":	return "Rogue"; break;
+		case "8":	return "Mage"; break;
 		default:	return "<error>";
 	}
 }
@@ -32,11 +33,9 @@ function getClassName($id)
 function getExpansionName($id)
 {
 	switch($id) {
-		case "0":	return "Vanilla";
-		case "1":	return "Burning Crusade";
-		case "2":	return "Lich King";
+		case "0":	return "Vanilla"; break;
+		case "1":	return "Burning Crusade"; break;
+		case "2":	return "Lich King"; break;
 		default :	return "<error>";
 	}
 }
-
-?>

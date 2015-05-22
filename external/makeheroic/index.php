@@ -16,85 +16,72 @@ CREATE TABLE `quest_generator` (
 */
 header('Content-Type: text/html; charset=utf-8');
 
-$mysql = mysql_connect($host, $user, $password);
-$db = mysql_select_db("world", $mysql);
+try {
+    $handler = new PDO("mysql:host=".$db['world']['host'].";port=".$db['world']['port'].";dbname=".$db['world']['database']['world'], $db['world']['user'], $db['world']['password']);
+    $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    echo $e->getMessage();
+    die();
+};
 
-if (mysql_errno($mysql)){
-	if (mysql_errno($mysql)){
-		echo mysql_errno($mysql) . ": " . mysql_error($mysql). "<br>";
-		return(1);
-	}
-}
-
-mysql_query("set names 'utf8'");
-
-$map = (int)($_POST['map']);
-
-if($map) {
-	$damageRate = (int)($_POST['damageRate']);
-	$hpRate = (int)($_POST['hpRate']);
-	$startingId = (int)($_POST['startingId']);
-	$respawnDelay = (int)($_POST['respawnDelay']);
-	$armorRate = (int)($_POST['armorRate']);
-	$customID = (int)($_POST['customID']);
-}
-
-if (!$map) {
-	//formulaire
-	include ('qg.php');
+if(!isset($_POST['map'])) {
+    include ('qg.php');
 } else {
-$currentId = $startingId;
-//get npc's present in map
-$customIDStr = "";
-if ($customID){
-	$customIDStr = " OR id IN (" . $customID . ")";
-}
-$queryStr = "SELECT DISTINCT id FROM creature WHERE map = $map" . $customIDStr . " ORDER BY id";
-$query = mysql_query($queryStr);
-if (mysql_errno($mysql)){
-	echo mysql_errno($mysql) . ": " . mysql_error($mysql). "<br>";
-	return(1);
-}
-while ($data = mysql_fetch_array($query)) {
+    $map           = (int)($_POST['map']);
+    $damageRate    = (int)($_POST['damageRate']);
+	$hpRate        = (int)($_POST['hpRate']);
+	$startingId    = (int)($_POST['startingId']);
+	$respawnDelay  = (int)($_POST['respawnDelay']);
+	$armorRate     = (int)($_POST['armorRate']);
+	$customID      = (int)($_POST['customID']);
+    $currentId     = $startingId;
+    
+    //get NPCs present in map
+    $query = $handler->prepare("SELECT DISTINCT id FROM creature WHERE map = :map OR id IN :customID ORDER BY id");
+    $query->bindValue(':map', $map, PDO::PARAM_INT);
+    $query->bindValue(':customID', $customID, PDO::PARAM_INT);
+    $query->execute();
+    
+    while ($data = $query->fetch()) {
 	$creatureEntry = $data[0];
 	if(isCivilian($mysql,$creatureEntry))
 		continue;
 		
 	if($creatureEntry) {
-	echo "/* -- Create new creature $currentId from base $creatureEntry -- */<br>";
-	echo "
-	REPLACE INTO creature_template
-	SELECT '$currentId',`heroic_entry`,`modelid_A`,`modelid_A2`,`modelid_H`,`modelid_H2`,CONCAT(`name`,' (heroic)'),`subname`,`IconName`,'70','70',`minhealth`*$hpRate,`maxhealth`*$hpRate,`minmana`*$hpRate,`maxmana`*$hpRate,`armor`*$armorRate,`faction_A`,`faction_H`,`npcflag`,`speed`,`scale`,`rank`,`mindmg`*$damageRate,`maxdmg`*$damageRate,`dmgschool`,`attackpower`*$damageRate,`baseattacktime`,`rangeattacktime`,`unit_flags`,`dynamicflags`,`family`,`trainer_type`,`trainer_spell`,`class`,`race`,`minrangedmg`*$damageRate,`maxrangedmg`*$damageRate,`rangedattackpower`*$damageRate,`type`,`type_flags`,`lootid`,`pickpocketloot`,`skinloot`,`resistance1`,`resistance2`,`resistance3`,`resistance4`,`resistance5`,`resistance6`,`spell1`,`spell2`,`spell3`,`spell4`,`spell5`,`spell6`,`spell7`,`spell8`,`PetSpellDataId`,`mingold`,`maxgold`,`AIName`,`MovementType`,`InhabitType`,`RacialLeader`,`RegenHealth`,`equipment_id`,`mechanic_immune_mask`,`flags_extra`,`ScriptName`,`pool_id` FROM creature_template WHERE entry = $creatureEntry;<br>";
-	
-	echo "/* Copy creature_template_addon */<br>";
-	echo "
-	REPLACE INTO creature_template_addon
-	SELECT '$currentId', `path_id`, `mount`, `bytes0`, `bytes1`, `bytes2`, `emote`, `moveflags`, `auras` FROM creature_template_addon WHERE entry = $creatureEntry;<br>";
-	
-	echo "/* Replace heroicEntry */<br>";
-	echo "UPDATE creature_template set heroic_entry = $currentId where entry = $creatureEntry;<br>";
-	
-	echo "/* Update eventAI scripts */<br>";
-	$queryStr = "SELECT id,event_flags FROM eventai_scripts WHERE creature_id = $creatureEntry ORDER BY id;";
-	$queryEAI = mysql_query($queryStr);
-	if (mysql_errno($mysql)){
-		echo mysql_errno($mysql) . ": " . mysql_error($mysql). "<br>";
-		return(1);
-	}
-	while ($dataEAI = mysql_fetch_array($queryEAI)) {
-		$EAI_Id = $dataEAI[0];
-		$EAI_Flags = $dataEAI[1];
-		if($EAI_Id && !($EAI_Flags&4) ) {
-			//event_flags`&0x4 c'est pour EFLAG_HEROIC
-			echo "UPDATE eventai_scripts
-			SET event_flags = (event_flags + 0x04)
-			WHERE id = $EAI_Id;<br>";
-		}
-	}
-	
-	echo "/* -- Creature $currentId end -- */<br><br>";
-	}
-	$currentId = $currentId + 1;	
+        echo "/* -- Create new creature $currentId from base $creatureEntry -- */<br>";
+        echo "
+        REPLACE INTO creature_template
+        SELECT '$currentId',`heroic_entry`,`modelid_A`,`modelid_A2`,`modelid_H`,`modelid_H2`,CONCAT(`name`,' (heroic)'),`subname`,`IconName`,'70','70',`minhealth`*$hpRate,`maxhealth`*$hpRate,`minmana`*$hpRate,`maxmana`*$hpRate,`armor`*$armorRate,`faction_A`,`faction_H`,`npcflag`,`speed`,`scale`,`rank`,`mindmg`*$damageRate,`maxdmg`*$damageRate,`dmgschool`,`attackpower`*$damageRate,`baseattacktime`,`rangeattacktime`,`unit_flags`,`dynamicflags`,`family`,`trainer_type`,`trainer_spell`,`class`,`race`,`minrangedmg`*$damageRate,`maxrangedmg`*$damageRate,`rangedattackpower`*$damageRate,`type`,`type_flags`,`lootid`,`pickpocketloot`,`skinloot`,`resistance1`,`resistance2`,`resistance3`,`resistance4`,`resistance5`,`resistance6`,`spell1`,`spell2`,`spell3`,`spell4`,`spell5`,`spell6`,`spell7`,`spell8`,`PetSpellDataId`,`mingold`,`maxgold`,`AIName`,`MovementType`,`InhabitType`,`RacialLeader`,`RegenHealth`,`equipment_id`,`mechanic_immune_mask`,`flags_extra`,`ScriptName`,`pool_id` FROM creature_template WHERE entry = $creatureEntry;<br>";
+
+        echo "/* Copy creature_template_addon */<br>";
+        echo "
+        REPLACE INTO creature_template_addon
+        SELECT '$currentId', `path_id`, `mount`, `bytes0`, `bytes1`, `bytes2`, `emote`, `moveflags`, `auras` FROM creature_template_addon WHERE entry = $creatureEntry;<br>";
+
+        echo "/* Replace heroicEntry */<br>";
+        echo "UPDATE creature_template set heroic_entry = $currentId where entry = $creatureEntry;<br>";
+
+        echo "/* Update eventAI scripts */<br>";
+        $query = $handler->prepare("SELECT id,event_flags FROM eventai_scripts WHERE creature_id = :creatureEntry ORDER BY id");
+        $query->bindValue(':creatureEntry', $creatureEntry, PDO::PARAM_INT);
+        $query->execute();
+        
+        while ($dataEAI = $query->fetch()) {
+            $EAI_Id     = $dataEAI[0];
+            $EAI_Flags  = $dataEAI[1];
+            
+            if( $EAI_Id && !($EAI_Flags&4) ) {
+                //event_flags`&0x4 c'est pour EFLAG_HEROIC
+                echo "UPDATE eventai_scripts
+                SET event_flags = (event_flags + 0x04)
+                WHERE id = $EAI_Id;<br>";
+            }
+        }
+
+        echo "/* -- Creature $currentId end -- */<br><br>";
+        }
+        
+    $currentId = $currentId + 1;	
 }
 
 echo "/* Replace spawnMask's */<br>";

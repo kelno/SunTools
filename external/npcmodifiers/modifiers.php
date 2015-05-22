@@ -13,34 +13,32 @@ $creatureModifiers  = [
 	"rangevariance" => $data[8],
 ];
 */
-function getModifiers($mysql, $entry)
+function getModifiers($entry)
 {
-	$queryStr = "SELECT exp, HealthModifier, ManaModifier, ArmorModifier, DamageModifier, ExperienceModifier, unit_class, BaseVariance, RangeVariance, BaseAttackTime/1000, RangeAttackTime/1000 FROM creature_template WHERE entry = " . $entry;
-	$query = mysql_query($queryStr);
-	if (mysql_errno($mysql)){
-		echo "printModifersForm : " . mysql_errno($mysql) . ": " . mysql_error($mysql). "\n";
-		exit(1);
-	}
+    global $handler;
+    
+	$query = $handler->prepare("SELECT exp, HealthModifier, ManaModifier, ArmorModifier, DamageModifier, ExperienceModifier, unit_class, BaseVariance, RangeVariance, BaseAttackTime/1000, RangeAttackTime/1000 FROM creature_template WHERE entry = :entry");
+    $query->bindValue(':entry', htmlspecialchars($entry), PDO::PARAM_INT);
+    $query->execute();
 
-	$data = mysql_fetch_array($query);
-	if(!isset($data))
+	$data = $query->fetch();
+	if($data == null)
 	{
 		echo "printModifersForm : Creature template not found.";
-		exit(1);
 	}
 	
 	$creatureModifiers = [
-	"expansion"         => $data[0],
-	"health"            => $data[1],
-	"mana"              => $data[2],
-	"armor"             => $data[3],
-	"damage"            => $data[4],
-	"experience"        => $data[5],
-	"class"             => $data[6],
-	"basevariance"      => $data[7],
-	"rangevariance"     => $data[8],
-	"attackspeed"       => $data[9],
-	"rangedattackspeed" => $data[10],
+        "expansion"         => $data[0],
+        "health"            => $data[1],
+        "mana"              => $data[2],
+        "armor"             => $data[3],
+        "damage"            => $data[4],
+        "experience"        => $data[5],
+        "class"             => $data[6],
+        "basevariance"      => $data[7],
+        "rangevariance"     => $data[8],
+        "attackspeed"       => $data[9],
+        "rangedattackspeed" => $data[10],
 	];
 	return $creatureModifiers;
 }
@@ -127,5 +125,3 @@ function printModifersForm($entry, $modifiers)
 	echo "<input type=\"submit\" value=\"reset\" />";
 	echo "</form>";
 }
-
-?>

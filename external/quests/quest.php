@@ -1,7 +1,8 @@
 <?php
 require('../../dbconfig.php');
+
 try {
-    $handler = new PDO('mysql:host='.$host.';dbname=suntools', $user, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    $handler = new PDO("mysql:host=".$db['world']['host'].";port=".$db['world']['port'].";dbname=".$db['world']['database']['world'], $db['world']['user'], $db['world']['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
     echo $e->getMessage();
@@ -43,11 +44,11 @@ function updateTestQuest($questID, $column, $status) {
     }
 	// http://dev.mysql.com/doc/refman/5.0/en/insert-on-duplicate.html
 	$query = $handler->prepare('INSERT INTO quest_test (questid, ' . $columnDB . ')
-									VALUE (:questID, :value)
-									ON DUPLICATE KEY UPDATE '. $columnDB .' = :value');
-		$query->bindValue(':questID', $questID, PDO::PARAM_INT);
-		$query->bindValue(':value', $status, PDO::PARAM_INT);
-		$query->execute();
+								VALUE (:questID, :value)
+								ON DUPLICATE KEY UPDATE '. $columnDB .' = :value');
+    $query->bindValue(':questID', $questID, PDO::PARAM_INT);
+    $query->bindValue(':value', $status, PDO::PARAM_INT);
+    $query->execute();
 }
 
 
@@ -67,11 +68,11 @@ if(isset($_GET['questId']) && isset($_GET['comment'])) {
     $questID = htmlspecialchars($_GET['questId']);
     
 	$query = $handler->prepare('INSERT INTO quest_test (questid, other)
-									VALUE (:questID, :value)
-									ON DUPLICATE KEY UPDATE other = :value');
-		$query->bindValue(':questID', $questID, PDO::PARAM_INT);
-		$query->bindValue(':value', $comment, PDO::PARAM_STR);
-		$query->execute();
+								VALUE (:questID, :value)
+								ON DUPLICATE KEY UPDATE other = :value');
+    $query->bindValue(':questID', $questID, PDO::PARAM_INT);
+    $query->bindValue(':value', $comment, PDO::PARAM_STR);
+    $query->execute();
 }
 
 if(isset($_GET['questId']) && isset($_GET['tester'])) {
@@ -79,9 +80,9 @@ if(isset($_GET['questId']) && isset($_GET['tester'])) {
     $questID = htmlspecialchars($_GET['questId']);
     
 	$query = $handler->prepare('INSERT INTO quest_test (questid, tester)
-									VALUE (:questID, :value)
-									ON DUPLICATE KEY UPDATE tester = :value');
-		$query->bindValue(':questID', $questID, PDO::PARAM_INT);
-		$query->bindValue(':value', $tester, PDO::PARAM_STR);
-		$query->execute();
+								VALUE (:questID, :value)
+								ON DUPLICATE KEY UPDATE tester = :value');
+    $query->bindValue(':questID', $questID, PDO::PARAM_INT);
+    $query->bindValue(':value', $tester, PDO::PARAM_STR);
+    $query->execute();
 }

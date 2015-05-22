@@ -1,7 +1,7 @@
 <?php
 require '../../dbconfig.php';
 try {
-    $handler = new PDO('mysql:host='.$host.'; dbname='.$worlddb, $user, $password);
+    $handler = new PDO("mysql:host=".$db['world']['host'].";port=".$db['world']['port'].";dbname=".$db['world']['database']['world'], $db['world']['user'], $db['world']['password']);
     $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
     echo $e->getMessage();
@@ -74,7 +74,7 @@ if(isset($_POST['entry']) && preg_match('/[0-9]+/', $_POST['entry'])
         case 6: $column  = "language"; break;
         case 7: $column  = "probability"; break;
         case 8: $column  = "emote"; break;
-        case 9: $column = "duration"; break;
+        case 9: $column  = "duration"; break;
         case 10: $column = "sound"; break;
         case 11: $column = "comment"; break;
         default: return;

@@ -1,17 +1,15 @@
-<!DOCTYPE html>
-
 <?php
 require('../../dbconfig.php');
 
-$mysql = mysql_connect($host, $user, $password);
-$db = mysql_select_db($worlddb, $mysql); 
-if (mysql_errno($mysql)) 
-{
-	echo mysql_errno($mysql) . ": " . mysql_error($mysql). "\n";
-	exit(1);
+try {
+    $handler = new PDO("mysql:host=".$db['world']['host'].";port=".$db['world']['port'].";dbname=".$db['world']['database']['world'], $db['world']['user'], $db['world']['password']);
+    $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    echo $e->getMessage();
+    die();
 }
 ?>
-
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>NPC Stats</title>
@@ -77,32 +75,16 @@ if (mysql_errno($mysql))
         </style>
 	</head>
 <body>
-
+    <div id="wrap">
 <?php
-
-echo "<div id=\"wrap\">";
-
-error_reporting(E_ALL);
-
 include ('modifiers.php');
 include ('basestats.php');
 include ('results.php');
 include ('modifymodifiers.php');
 include ('misc.php');
 
-if (!isset($_GET["entry"]))
-{
-	echo "<form>";
-	echo "Creature entry <input type=\"text\" name=\"entry\" value=\"15548\"/></input>";
-	echo "</form>";
-	echo "<br>";
-	exit(1);
-}
 
-$entry = $_GET["entry"];
-
-if(
-   isset($_GET["entry"])
+if(isset($_GET["entry"])
 && isset($_GET["expansion"])
 && isset($_GET["health"])
 && isset($_GET["mana"])
@@ -112,44 +94,50 @@ if(
 && isset($_GET["basevariance"])
 && isset($_GET["rangevariance"])
 && isset($_GET["attackspeed"])
-&& isset($_GET["rangedattackspeed"])
-)
-{
-	udpateModifiers($mysql, $_GET);
-	exit(0);
+&& isset($_GET["rangedattackspeed"])) {
+	udpateModifiers($_GET);
 }
 
-echo "<h1>" . getCreatureName($mysql, $entry) . " (<a href=\"http://www.wowhead.com/npc=" . $entry . "\">" . $entry . "</a>)</h1>"; 
-echo "<div style=\"float: left; width: 220px\">";
-$creatureModifiers = getModifiers($mysql, $entry);
-printModifersForm($entry, $creatureModifiers);
-echo "</div><div id=\"content\">";
-$baseStatsInfo = getBaseStatsInfo($mysql, $entry);
-$baseStats = getBaseStats($mysql, $baseStatsInfo["level"], $baseStatsInfo["class"], $baseStatsInfo["expansion"]);
+if (!isset($_GET["entry"]))
+{
+	echo '<form method="GET" action="index.php">';
+	echo 'Creature entry <input type="text" name="entry" value="" />';
+	echo '</form>';
+	echo '<br>';
+} else {
+    $entry = htmlspecialchars($_GET["entry"]);
+    
+    echo "<h1>" . getCreatureName($entry) . " (<a href=\"http://www.wowhead.com/npc=" . $entry . "\">" . $entry . "</a>)</h1>"; 
+    echo "<div style=\"float: left; width: 220px\">";
+    $creatureModifiers = getModifiers($entry);
+    printModifersForm($entry, $creatureModifiers);
+    echo "</div><div id=\"content\">";
+    $baseStatsInfo = getBaseStatsInfo($entry);
+    $baseStats = getBaseStats($baseStatsInfo["level"], $baseStatsInfo["class"], $baseStatsInfo["expansion"]);
 
-$n_exp = getExpansionName($baseStatsInfo["expansion"]);
-$n_class = getClassName($baseStatsInfo["class"]);
+    $n_exp = getExpansionName($baseStatsInfo["expansion"]);
+    $n_class = getClassName($baseStatsInfo["class"]);
 
-$title = "<h3>Base stats for level " . $baseStatsInfo["level"] . " - Class " . $n_class . " - Expansion " . $n_exp . "</h3>";
+    $title = "<h3>Base stats for level " . $baseStatsInfo["level"] . " - Class " . $n_class . " - Expansion " . $n_exp . "</h3>";
 
-echo "<fieldset><legend>" . $title . "</legend>";
-printBaseStats($baseStats);
-echo "</fieldset><br/>";
-/*
-$creatureInfo = getCreatureInfo($mysql, $entry);
-$title = "<h3>Creature info :</h3>";
-echo "<fieldset><legend>" . $title . "</legend>";
-printCreatureInfo($creatureInfo);
-echo "</fieldset><br/>";*/
+    echo "<fieldset><legend>" . $title . "</legend>";
+    printBaseStats($baseStats);
+    echo "</fieldset><br/>";
+    /*
+    $creatureInfo = getCreatureInfo($entry);
+    $title = "<h3>Creature info :</h3>";
+    echo "<fieldset><legend>" . $title . "</legend>";
+    printCreatureInfo($creatureInfo);
+    echo "</fieldset><br/>";*/
 
-$title = "<h3>Results :</h3>";
-echo "<fieldset><legend>" . $title . "</legend>";
-printResultingStats($mysql, $baseStats, $creatureModifiers);
-echo "</fieldset></div>";
+    $title = "<h3>Results :</h3>";
+    echo "<fieldset><legend>" . $title . "</legend>";
+    printResultingStats($baseStats, $creatureModifiers);
+    echo "</fieldset></div>";
 
-echo "</div>";
+}
 
 ?>
-
+    </div>
 </body>
 </html>

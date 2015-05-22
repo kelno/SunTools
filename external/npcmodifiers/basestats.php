@@ -7,16 +7,15 @@ $baseStatsInfo = [
 	"expansion" => $data[2],
 ];
 */
-function getBaseStatsInfo($mysql, $entry)
+function getBaseStatsInfo($entry)
 {
-	$queryStr = "SELECT minlevel, unit_class, exp  FROM creature_template WHERE entry = " . $entry;
-	$query = mysql_query($queryStr);
-	if (mysql_errno($mysql)){
-		echo "printBaseStatsForCreatureByEntry : " . mysql_errno($mysql) . ": " . mysql_error($mysql). "\n";
-		return;
-	}
+    global $handler;
+    
+	$query = $handler->prepare("SELECT minlevel, unit_class, exp  FROM creature_template WHERE entry = :entry");
+    $query->bindValue(':entry', htmlspecialchars($entry), PDO::PARAM_INT);
+    $query->execute();
 
-	if ($data = mysql_fetch_array($query)) {
+	if ($data = $query->fetch()) {
 		$baseStatsInfo = [
 			"level" =>     $data[0],
 			"class" =>     $data[1],
@@ -39,8 +38,12 @@ $baseStats = [
 			"damagebase"    => $data[5],
 		];
 */
-function getBaseStats($mysql, $level, $class, $exp)
+function getBaseStats($level, $class, $exp)
 {
+    global $handler;
+    
+    $exp = htmlspecialchars($exp);
+    
 	$hpfield = "basehp" . $exp;
 	
 	if($exp == 0)
@@ -48,16 +51,14 @@ function getBaseStats($mysql, $level, $class, $exp)
 	else		
 		$damagefield = "damage_exp". $exp;
 	
-	$queryStr = "SELECT " . $hpfield . ", basemana, basearmor, attackpower, rangedattackpower, " . $damagefield . 
-	            " FROM creature_classlevelstats " .
-                " WHERE level = ".$level." AND class = ".$class;
-	$query = mysql_query($queryStr);
-	if (mysql_errno($mysql)){
-		echo "getBaseStatsForCreature : " . mysql_errno($mysql) . ": " . mysql_error($mysql). "\n";
-		exit(1);
-	}
+	$query = $handler->prepare("SELECT " . $hpfield . ", basemana, basearmor, attackpower, rangedattackpower, " . $damagefield . "
+	                           FROM creature_classlevelstats 
+                               WHERE level = :level AND class = :class");
+    $query->bindValue(':level', htmlspecialchars($level), PDO::PARAM_INT);
+    $query->bindValue(':class', htmlspecialchars($class), PDO::PARAM_INT);
+    $query->execute();
 
-	if ($data = mysql_fetch_array($query)) {
+	if ($data = $query->fetch()) {
 		$baseStats = [
 			"health"        => $data[0],
 			"mana"          => $data[1],

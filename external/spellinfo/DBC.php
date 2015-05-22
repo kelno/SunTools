@@ -29,4 +29,3 @@ function getDuration($i)
 	else
 		return "unknown". " (index " . $i . ")";
 }
-?>

@@ -14,12 +14,12 @@
 <body>
 <?php
 
-$mysql = mysql_connect('localhost:3306', 'root', 'canard');
-$db = mysql_select_db("sunworld", $mysql); 
-
-if (mysql_errno($mysql)){
-	echo mysql_errno($mysql) . ": " . mysql_error($mysql). "\n";
-	exit(1);
+try {
+    $handler = new PDO("mysql:host=".$db['suntools']['host'].";port=".$db['suntools']['port'].";dbname=".$db['suntools']['database']['suntools'], $db['suntools']['user'], $db['suntools']['password']);
+    $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    echo $e->getMessage();
+    die();
 }
 
 include ('functions.php');
@@ -38,12 +38,15 @@ if (isset($_GET["id"])) {
 
 //delete
 
-$queryStr = "SELECT time, spellorgob, size, posX, posY, ori, morphX, morphY FROM game_event_fireworks WHERE groupid = " . $id . " ORDER BY time, posX, posY";
-$query = mysql_query($queryStr);
+$query = $handler->prepare("SELECT time, spellorgob, size, posX, posY, ori, morphX, morphY
+                            FROM game_event_fireworks 
+                            WHERE groupid = :id ORDER BY time, posX, posY");
+$query->bindValue(':id', $id, PDO::PARAM_INT);
+$query->execute();
 
 echo "<table border=1>";
 echo "<tr><td>Time</td><td>Spell</td><td>Size</td><td>PosX</td><td>PosY</td><td>Ori</td><td>MorphX</td><td>MorphY</td></tr>";
-while ($data = mysql_fetch_array($query)) {
+while ($data = $query->fetch()) {
 	echo "<tr><form>";
 	for($i = 0; $i < 8; $i++)
 		echo "<td><input type=\"text\" name=\"".$i ."\" value=\"". $data[$i] . "\"/></input></td>";

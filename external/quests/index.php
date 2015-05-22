@@ -15,7 +15,7 @@
 require('../../dbconfig.php');
 require('stats.php');
 try {
-    $handler = new PDO('mysql:host='.$host.';dbname='.$worlddb, $user, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    $handler = new PDO("mysql:host=".$db['suntools']['host'].";port=".$db['suntools']['port'].";dbname=".$db['suntools']['database']['suntools'], $db['suntools']['user'], $db['suntools']['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $handler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
     echo $e->getMessage();
@@ -71,8 +71,8 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 	   }
     }
     
-    if (isset($_GET['zoneid'])) {
-        $zone = $_GET['zoneid'];
+    if (isset($_GET['zoneid']) && preg_match('/[0-9]+/', $_GET['zoneid']) ) {
+        $zone = htmlspecialchars($_GET['zoneid']);
 
         $query = $handler->prepare('SELECT id, name FROM dbc.dbc_areatable WHERE id = :zone');
         $query->bindValue(':zone', $zone, PDO::PARAM_INT);
@@ -106,7 +106,8 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 							  WHERE ZoneOrSort = :zone AND qt.Title NOT LIKE "%BETA%"');
 	$query->bindValue(':zone', $getZoneID['id'], PDO::PARAM_INT);
 	$query->execute();
-	?>
+        
+?>
 			<div class="fluid-container">
 				<table id="table" class="table table-hover">
 					<thead>
