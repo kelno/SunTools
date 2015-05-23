@@ -67,7 +67,7 @@ if(isset($_GET['questId']) && isset($_GET['comment'])) {
     $comment = htmlspecialchars($_GET['comment']);
     $questID = htmlspecialchars($_GET['questId']);
     
-	$query = $handler->prepare('INSERT INTO quest_test (questid, other)
+	$query = $handler->prepare('INSERT INTO suntools.quest_test (questid, other)
 								VALUE (:questID, :value)
 								ON DUPLICATE KEY UPDATE other = :value');
     $query->bindValue(':questID', $questID, PDO::PARAM_INT);
@@ -79,7 +79,7 @@ if(isset($_GET['questId']) && isset($_GET['tester'])) {
     $tester = htmlspecialchars($_GET['tester']);
     $questID = htmlspecialchars($_GET['questId']);
     
-	$query = $handler->prepare('INSERT INTO quest_test (questid, tester)
+	$query = $handler->prepare('INSERT INTO suntools.quest_test (questid, tester)
 								VALUE (:questID, :value)
 								ON DUPLICATE KEY UPDATE tester = :value');
     $query->bindValue(':questID', $questID, PDO::PARAM_INT);
