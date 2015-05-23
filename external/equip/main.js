@@ -255,6 +255,7 @@ $('#entryId').keyup(function() {
                     
                     NewID = data.id.length;
                     $('#new').html('<button type="button" id="add" class="btn btn-primary">New ID</button>');
+                    $('#equipnew').html('');
                     
                 } //end check
             } //end of function(data)
