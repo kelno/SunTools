@@ -5,3 +5,4 @@ It displays all of the item informations one need to create any equipment and co
 
 ### To do
 * On `display` change, refresh the 3D Model.
+* A `Remove ID` button.

@@ -5,6 +5,181 @@ var EquipID = null;
 var Entry = null;
 var ID = null;
 var NewID = 0;
+var EntryName = $('#entry');
+var EquipmentID = $('#equipment');
+
+function ModelView(mainhand, offhand) {
+    $('#result').append(
+        '<div class="col-md-4">' +
+        '   <object width="100%" height="300px" type="application/x-shockwave-flash" data="http://wow.zamimg.com/modelviewer/ZAMviewerfp11.swf" id="paperdoll-model-paperdoll-0-equipment-set" style="background: #fff">' +
+        '       <param name="quality" value="high">' +
+        '       <param name="allowsscriptaccess" value="always">' +
+        '       <param name="allowfullscreen" value="true">' +
+        '       <param name="menu" value="false">' +
+        '       <param name="flashvars" value="model=humanfemale&amp;modelType=16&amp;cls=11&amp;equipList=4,13115,7,13117,13,' + mainhand + ',17,' + offhand + '&amp;sk=3&amp;ha=8&amp;hc=2&amp;fa=5&amp;fh=1&amp;fc=1&amp;mode=3&amp;contentPath=//wow.zamimg.com/modelviewer/&amp;container=paperdoll-model-paperdoll-0-equipment-set&amp;hd=false&amp;">' +
+        '       <param name="bgcolor" value="fff"> ' +
+        '       <param name="wmode" value="direct">' +
+        '   </object>' +
+        '</div>');
+}
+
+function DisplayRow(Entry, EquipID, ID, data, i) {
+    $('#result').append(
+        '<div class="col-md-8">' +
+        '   <h4>ID : ' + i + '</h4>' +
+        '   <div class="col-md-4">' +
+        '       <h5>Main Hand</h5>' +
+        '       <div class="input-group col-md-12">' +
+        '           <span class="input-group-addon">DisplayID</span>' +
+        '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'mh\', \'display\', this.value)" value="' + data.mainhand.displayid + '">' +
+        '       </div>' +
+        '       <div class="input-group col-md-12">' +
+        '           <span class="input-group-addon">Skill</span>' +
+        '           <select class="form-control" id="' + EquipID + '_' + ID + '_mh_skill" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'mh\', \'skill\', this.value)">' +
+        '               <option value="">Choose</option>' +
+        '               <option value="0">Axe 1H</option>' +
+        '               <option value="1">Axe 2H</option>' +
+        '               <option value="2">Bow</option>' +
+        '               <option value="3">Gun</option>' +
+        '               <option value="4">Mace 1H</option>' +
+        '               <option value="5">Mace 2H</option>' +
+        '               <option value="6">Polearm</option>' +
+        '               <option value="7">Sword 1H</option>' +
+        '               <option value="8">Sword 2H</option>' +
+        '               <option value="10">Staff</option>' +
+        '               <option value="11">Exotic 1H</option>' +
+        '               <option value="12">Exotic 2H</option>' +
+        '               <option value="13">Fist</option>' +
+        '               <option value="14">Miscellaneous</option>' +
+        '               <option value="15">Dagger</option>' +
+        '               <option value="16">Thrown</option>' +
+        '               <option value="17">Spear</option>' +
+        '               <option value="18">Crossbow</option>' +
+        '               <option value="19">Wand</option>' +
+        '               <option value="20">Fishing Pole</option>' +
+        '           </select>' +
+        '       </div>' +
+        '       <div class="input-group col-md-12">' +
+        '           <span class="input-group-addon">Slot</span>' +
+        '           <select class="form-control" id="' + EquipID + '_' + ID + '_mh_slot" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'mh\', \'slot\', this.value)">' +
+        '               <option value="0">Choose</option>' +
+        '               <option value="13">1H Weapon</option>' +
+        '               <option value="14">Shield</option>' +
+        '               <option value="15">Ranged</option>' +
+        '               <option value="17">2H Weapon</option>' +
+        '               <option value="21">Weapon Main Hand</option>' +
+        '               <option value="22">Weapon Off Hand</option>' +
+        '               <option value="23">Holdable</option>' +
+        '               <option value="25">Thrown</option>' +
+        '               <option value="26">Ranged Right</option>' +
+        '           </select>' +
+        '       </div>' +
+        '   </div>' +
+        '   <div class="col-md-4">' +
+        '       <h5>Off Hand</h5>' +
+        '       <div class="input-group col-md-12">' +
+        '           <span class="input-group-addon">DisplayID</span>' +
+        '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'oh\', \'display\', this.value)" value="' + data.offhand.displayid + '">' +
+        '       </div>' +
+        '       <div class="input-group col-md-12">' +
+        '           <span class="input-group-addon">Skill</span>' +
+        '           <select class="form-control" id="' + EquipID + '_' + ID + '_oh_skill" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'oh\', \'skill\', this.value)">' +
+        '               <option value="">Choose</option>' +
+        '               <option value="0">Axe 1H</option>' +
+        '               <option value="1">Axe 2H</option>' +
+        '               <option value="2">Bow</option>' +
+        '               <option value="3">Gun</option>' +
+        '               <option value="4">Mace 1H</option>' +
+        '               <option value="5">Mace 2H</option>' +
+        '               <option value="6">Polearm</option>' +
+        '               <option value="7">Sword 1H</option>' +
+        '               <option value="8">Sword 2H</option>' +
+        '               <option value="10">Staff</option>' +
+        '               <option value="11">Exotic 1H</option>' +
+        '               <option value="12">Exotic 2H</option>' +
+        '               <option value="13">Fist</option>' +
+        '               <option value="14">Miscellaneous</option>' +
+        '               <option value="15">Dagger</option>' +
+        '               <option value="16">Thrown</option>' +
+        '               <option value="17">Spear</option>' +
+        '               <option value="18">Crossbow</option>' +
+        '               <option value="19">Wand</option>' +
+        '               <option value="20">Fishing Pole</option>' +
+        '           </select>' +
+        '       </div>' +
+        '       <div class="input-group col-md-12">' +
+        '           <span class="input-group-addon">Slot</span>' +
+        '           <select class="form-control" id="' + EquipID + '_' + ID + '_oh_slot" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'oh\', \'slot\', this.value)">' +
+        '               <option value="0">Choose</option>' +
+        '               <option value="13">1H Weapon</option>' +
+        '               <option value="14">Shield</option>' +
+        '               <option value="15">Ranged</option>' +
+        '               <option value="17">2H Weapon</option>' +
+        '               <option value="21">Weapon Main Hand</option>' +
+        '               <option value="22">Weapon Off Hand</option>' +
+        '               <option value="23">Holdable</option>' +
+        '               <option value="25">Thrown</option>' +
+        '               <option value="26">Ranged Right</option>' +
+        '           </select>' +
+        '       </div>' +
+        '   </div>' +
+        '   <div class="col-md-4">' +
+        '       <h5>Ranged</h5>' +
+        '       <div class="input-group col-md-12">' +
+        '           <span class="input-group-addon">DisplayID</span>' +
+        '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'ranged\', \'display\', this.value)" value="' + data.ranged.displayid + '">' +
+        '       </div>' +
+        '       <div class="input-group col-md-12">' +
+        '           <span class="input-group-addon">Skill</span>' +
+        '           <select class="form-control" id="' + EquipID + '_' + ID + '_ranged_skill" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'ranged\', \'skill\', this.value)">' +
+        '               <option value="">Choose</option>' +
+        '               <option value="0">Axe 1H</option>' +
+        '               <option value="1">Axe 2H</option>' +
+        '               <option value="2">Bow</option>' +
+        '               <option value="3">Gun</option>' +
+        '               <option value="4">Mace 1H</option>' +
+        '               <option value="5">Mace 2H</option>' +
+        '               <option value="6">Polearm</option>' +
+        '               <option value="7">Sword 1H</option>' +
+        '               <option value="8">Sword 2H</option>' +
+        '               <option value="10">Staff</option>' +
+        '               <option value="11">Exotic 1H</option>' +
+        '               <option value="12">Exotic 2H</option>' +
+        '               <option value="13">Fist</option>' +
+        '               <option value="14">Miscellaneous</option>' +
+        '               <option value="15">Dagger</option>' +
+        '               <option value="16">Thrown</option>' +
+        '               <option value="17">Spear</option>' +
+        '               <option value="18">Crossbow</option>' +
+        '               <option value="19">Wand</option>' +
+        '               <option value="20">Fishing Pole</option>' +
+        '           </select>' +
+        '       </div>' +
+        '       <div class="input-group col-md-12">' +
+        '           <span class="input-group-addon">Slot</span>' +
+        '           <select class="form-control" id="' + EquipID + '_' + ID + '_ranged_slot" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'ranged\', \'slot\', this.value)">' +
+        '               <option value="0">Choose</option>' +
+        '               <option value="13">1H Weapon</option>' +
+        '               <option value="14">Shield</option>' +
+        '               <option value="15">Ranged</option>' +
+        '               <option value="17">2H Weapon</option>' +
+        '               <option value="21">Weapon Main Hand</option>' +
+        '               <option value="22">Weapon Off Hand</option>' +
+        '               <option value="23">Holdable</option>' +
+        '               <option value="25">Thrown</option>' +
+        '               <option value="26">Ranged Right</option>' +
+        '           </select>' +
+        '       </div>' +
+        '   </div>' +
+        '</div>');
+        
+    $('#' + EquipID + '_' + ID + '_mh_skill').val(data.mainhand.skill);
+    $('#' + EquipID + '_' + ID + '_mh_slot').val(data.mainhand.slot);
+    $('#' + EquipID + '_' + ID + '_oh_skill').val(data.offhand.skill);
+    $('#' + EquipID + '_' + ID + '_oh_slot').val(data.offhand.slot);
+    $('#' + EquipID + '_' + ID + '_ranged_skill').val(data.ranged.skill);
+    $('#' + EquipID + '_' + ID + '_ranged_slot').val(data.ranged.slot);
+}
 
 $('#itemId').keyup(function() {
     var Item = $(this).val();
@@ -16,7 +191,7 @@ $('#itemId').keyup(function() {
     $.ajax({
         type: 'GET',
         data: UrlToPass,
-        url: 'query.php',
+        url: 'item_infos.php',
         dataType: 'json',
         success: function(data) {
             if (data != null) {
@@ -38,14 +213,12 @@ $('#itemId').keyup(function() {
 
 $('#entryId').keyup(function() {
     Entry = $(this).val();
-    var EntryName = $('#entry');
-    var EquipmentID = $('#equipment');
     var UrlToPass = 'entry=' + Entry;
 
     $.ajax({
         type: 'GET',
         data: UrlToPass,
-        url: 'query.php',
+        url: 'equip_infos.php',
         dataType: 'json',
         success: function(data) {
 				$('#result').html("");
@@ -62,7 +235,7 @@ $('#entryId').keyup(function() {
                 if (EquipID == 0) {
                     ID = -1;
                     NewID = 0;
-                    $('#new').html('<button type="button" id="add" class="btn btn-primary">New ID</button>');
+                    $('#equipnew').html('<button type="button" id="add" class="btn btn-primary">New Equipment</button>');
                 }
             
                 if (EquipID !== "0" || EquipID !== null) {
@@ -71,72 +244,18 @@ $('#entryId').keyup(function() {
 					var i;
                     for (i = 0; i < data.id.length; i++) {
                         ID = i;
-                        $('#result').append(
-                            '<div class="col-md-12"><br />' +
-                            '   <div class="col-md-4">' +
-                            '       <object width="100%" height="300px" type="application/x-shockwave-flash" data="http://wow.zamimg.com/modelviewer/ZAMviewerfp11.swf" id="paperdoll-model-paperdoll-0-equipment-set" style="background: #fff">' +
-                            '             <param name="quality" value="high">' +
-                            '             <param name="allowsscriptaccess" value="always">' +
-                            '             <param name="allowfullscreen" value="true">' +
-                            '             <param name="menu" value="false">' +
-                            '             <param name="flashvars" value="model=orcfemale&amp;modelType=16&amp;cls=11&amp;equipList=17,' + data.id[i].mainhand.displayid + ',17,' + data.id[i].offhand.displayid + '&amp;sk=7&amp;ha=0&amp;hc=5&amp;fa=4&amp;fh=1&amp;fc=1&amp;mode=3&amp;contentPath=//wow.zamimg.com/modelviewer/&amp;container=paperdoll-model-paperdoll-0-equipment-set&amp;hd=false&amp;">' +
-                            '             <param name="bgcolor" value="fff"> ' +
-                            '             <param name="wmode" value="direct">' +
-                            '        </object>' +
-                            '   </div>' +
-                            '   <div class="col-md-8">' +
-                            '   <h4>ID : ' + i + '</h4>' +
-                            '   <div class="col-md-4">' +
-                            '       <h5>Main Hand</h5>' +
-                            '       <div class="input-group col-md-12">' +
-                            '           <span class="input-group-addon">DisplayID</span>' +
-                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'mh\', \'display\', this.value)" value="' + data.id[i].mainhand.displayid + '">' +
-                            '       </div>' +
-                            '       <div class="input-group col-md-12">' +
-                            '           <span class="input-group-addon">Skill</span>' +
-                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'mh\', \'skill\', this.value)" value="' + data.id[i].mainhand.skill + '">' +
-                            '       </div>' +
-                            '       <div class="input-group col-md-12">' +
-                            '           <span class="input-group-addon">Slot</span>' +
-                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'mh\', \'slot\', this.value)" value="' + data.id[i].mainhand.slot + '">' +
-                            '       </div>' +
-                            '   </div>' +
-                            '   <div class="col-md-4">' +
-                            '       <h5>Off Hand</h5>' +
-                            '       <div class="input-group col-md-12">' +
-                            '           <span class="input-group-addon">DisplayID</span>' +
-                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'oh\', \'display\', this.value)" value="' + data.id[i].offhand.displayid + '">' +
-                            '       </div>' +
-                            '       <div class="input-group col-md-12">' +
-                            '           <span class="input-group-addon">Skill</span>' +
-                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'oh\', \'skill\', this.value)" value="' + data.id[i].offhand.skill + '">' +
-                            '       </div>' +
-                            '       <div class="input-group col-md-12">' +
-                            '           <span class="input-group-addon">Slot</span>' +
-                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'oh\', \'slot\', this.value)" value="' + data.id[i].offhand.slot + '">' +
-                            '       </div>' +
-                            '   </div>' +
-                            '   <div class="col-md-4">' +
-                            '       <h5>Ranged</h5>' +
-                            '       <div class="input-group col-md-12">' +
-                            '           <span class="input-group-addon">DisplayID</span>' +
-                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'ranged\', \'display\', this.value)" value="' + data.id[i].ranged.displayid + '">' +
-                            '       </div>' +
-                            '       <div class="input-group col-md-12">' +
-                            '           <span class="input-group-addon">Skill</span>' +
-                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'ranged\', \'skill\', this.value)" value="' + data.id[i].ranged.skill + '">' +
-                            '       </div>' +
-                            '       <div class="input-group col-md-12">' +
-                            '           <span class="input-group-addon">Slot</span>' +
-                            '           <input type="text" class="form-control" onchange="update(' + Entry + ', ' + EquipID + ', ' + ID + ', \'ranged\', \'slot\', this.value)" value="' + data.id[i].ranged.slot + '">' +
-                            '       </div>' +
-                            '   </div>' +
-                            '   </div>' +
-                            '</div>'
-                        );
+                        $('#result').append('<div class="col-md-12"><br />');
+                        
+                        ModelView(data.id[i].mainhand.displayid, data.id[i].offhand.displayid);
+                        DisplayRow(Entry, EquipID, ID, data.id[i], i);
+                        
+                        $('#result').append('</div>');
+                        
                     } // endfor
+                    
                     NewID = data.id.length;
                     $('#new').html('<button type="button" id="add" class="btn btn-primary">New ID</button>');
+                    
                 } //end check
             } //end of function(data)
     }); //end of ajax
@@ -147,8 +266,29 @@ $('#entryId').keyup(function() {
     }
 });
 
+$('#equipnew').click(function() {
+    $.ajax({
+        type: 'GET',
+        data: 'entry=' + Entry + '&newequipmentid=true',
+        url: 'new.php',
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+            EquipmentID.attr('value', data.equipmentID);
+                        
+            ModelView(0, 0);
+            DisplayRow(Entry, EquipID, 0, data.id, 0);
+            
+            $('#equipnew').html("");
+            NewID = 1;
+            $('#new').html('<button type="button" id="add" class="btn btn-primary">New ID</button>');
+        }
+    });
+    
+    
+});
+
 $('#new').click(function() {
-    console.log('add a new id: ' + NewID);
     $('#result').append(
         '<div class="col-md-12"><br />' +
         '   <div class="col-md-4">' +
@@ -213,7 +353,6 @@ $('#new').click(function() {
         '</div>'
     );
     NewID++;
-    console.log('after add, NewID = ' + NewID);
 });
 
 function update(entry, equipmentid, id, weapon, info, value) {
@@ -224,6 +363,6 @@ function update(entry, equipmentid, id, weapon, info, value) {
     $.ajax({
         type: 'GET',
         data: 'entry=' + entry + '&equipmentid=' + equipmentid + '&id=' + id + '&weapon=' + weapon + '&info=' + info + '&value=' + value,
-        url: 'query.php'
+        url: 'insert.php'
     });
 }
