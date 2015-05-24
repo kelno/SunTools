@@ -25,19 +25,19 @@ if(   (isset($_GET['entry'])         && preg_match('/[0-9]+/', $_GET['entry']))
 	
     switch($weapon) {
         case "mh":     switch($info) { case "display":  $column = "equipmodel1"; break;
-                                       case "skill":    $column = "equipinfo1"; break;
+                                       case "skill":    $column = "equipinfo1"; $value += 2; break;
                                        case "slot":     $column = "equipslot1"; break;
                                        default: return;
                                      }
                        break;
         case "oh":     switch($info) { case "display":  $column = "equipmodel2"; break;
-                                       case "skill":    $column = "equipinfo2"; break;
+                                       case "skill":    $column = "equipinfo2"; $value += 2; break;
                                        case "slot":     $column = "equipslot2"; break;
                                        default: return;
                                      }
                        break;
         case "ranged": switch($info) { case "display":  $column = "equipmodel3"; break;
-                                       case "skill":    $column = "equipinfo3"; break;
+                                       case "skill":    $column = "equipinfo3"; $value += 2; break;
                                        case "slot":     $column = "equipslot3"; break;
                                        default: return;
                                      }
