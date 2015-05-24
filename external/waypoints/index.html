@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>SunWaypoints</title>
+		<link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.css">
+		<script src="../../lib/jquery/jquery-1.11.2.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <style type="text/css">
+            #result > .table > tbody > tr > td {
+                vertical-align: middle;
+                text-align: center;
+            }
+            #result > .table > tbody > tr > td > span.glyphicon {
+                cursor: pointer;
+            }
+            .has-feedback .form-control-feedback {
+                top: 0px!important;
+                z-index: 5;
+            }
+        </style>
+	</head
+	<body>
+        <div class="col-md-12">
+            <h2>Transfer waypoints_data to waypoints</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <p>Waypoints needs the creature entry to store all the PathID points.</p>
+                    <form class="form-horizontal" action="transfer.php" method="POST">
+                        <div class="form-group col-md-4" id="form-entry">
+                            <div class="input-group col-sm-11">
+                                <span class="input-group-addon" id="entry">Entry</span>
+                                <input type="text" class="form-control" name="entry" value="" id="entryid">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="input-group col-sm-11">
+                                <span class="input-group-addon" id="pathid">PathID</span>
+                                <input type="text" class="form-control" name="pathid" id="path" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary">Transfer</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-6" id="errors"></div>
+            </div>
+        </div>
+        <script type="text/javascript" src="main.js"></script>
+    </body>
+</html>
