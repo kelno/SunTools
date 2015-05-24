@@ -37,7 +37,8 @@ function udpateModifiers($GET)
     $query->bindValue(':class',             htmlspecialchars($GET["class"]), PDO::PARAM_INT);
     $query->bindValue(':attackspeed',       htmlspecialchars($GET["attackspeed"]), PDO::PARAM_INT);
     $query->bindValue(':rangedattackspeed', htmlspecialchars($GET["rangedattackspeed"]), PDO::PARAM_INT);
-	$query->execute;
+    $query->bindValue(':entry', htmlspecialchars($GET["entry"]), PDO::PARAM_INT);
+	$query->execute();
 	
 	header('Location: '. "index.php?entry=" . htmlspecialchars($GET["entry"]));
 }
