@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>SunGossip</title>
+        <link href="../../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		<script src="../../lib/jquery/jquery-1.11.2.min.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <script>
+          $(function() {
+            $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
+              _renderItem: function( ul, item ) {
+                var li = $( "<li>", { text: item.label } );
+
+                if ( item.disabled ) {
+                  li.addClass( "ui-state-disabled" );
+                }
+
+                $( "<span>", {
+                  style: item.element.attr( "data-style" ),
+                  "class": "ui-icon " + item.element.attr( "data-class" )
+                })
+                  .appendTo( li );
+
+                return li.appendTo( ul );
+              }
+            });
+
+            $( "#filesB" )
+              .iconselectmenu()
+              .iconselectmenu( "menuWidget" )
+                .addClass( "ui-menu-icons customicons" );
+          });
+          </script>
+          <style type="text/css">
+            
+        </style>
+	</head>
+	<body>
+        
+        <div class="col-md-12">
+            <h2>Add a gossip</h2>
+            <form class="form-horizontal">
+                <div class="form-group col-md-4">
+                    <div class="input-group col-sm-10">
+                        <span class="input-group-addon" id="guidName">Guid</span>
+                        <input type="text" class="form-control" id="guid">
+                    </div>
+                </div>
+                <div class="form-group col-md-5">
+                    <div id="menus">
+                        <label for="guid" class="col-sm-2 control-label">Menu</label>
+                        <div class="col-sm-5 ">
+                            <select class="form-control" id="menusselect">
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" id="add" class="btn btn-primary col-sm-2">Add</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-12 row" id="result">
+        </div>
+        <script type="text/javascript" src="js/main.js"></script>
+    </body>
+</html>
