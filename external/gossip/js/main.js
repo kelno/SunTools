@@ -26,7 +26,8 @@ $('#guid').keyup(function(){
     $.ajax({
     type : 'GET',
     data : 'guid=' + Guid,
-    url  : 'getInfos.php',
+    url  : 'getGossip.php',
+    //url  : 'getInfos.php',
     dataType: 'json',
     success: 
         function(data) {
