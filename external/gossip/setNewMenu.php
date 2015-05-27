@@ -13,7 +13,7 @@ if(isset($_GET['guid']) && preg_match('/[0-9]+/', $_GET['guid'])
    $guid           = htmlspecialchars($_GET['guid']);
 
     // Get a new menu id
-    $select         = $handler->query('SELECT MAX(menu_id) as maxMenu FROM creature_gossip');
+    $select         = $handler->query('SELECT MAX(entry) as maxMenu FROM gossip_menu');
     $select->execute();
     $getSelect = $select->fetch();
 
