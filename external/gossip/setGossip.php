@@ -26,4 +26,17 @@ if(isset($_GET['guid']) && preg_match('/[0-9]+/', $_GET['guid'])
                                          VALUES (:menu, :menu)');
     $insert->bindValue(':menu', $menu, PDO::PARAM_INT);
     $insert->execute();
+    
+    $check          = $handler->prepare('SELECT * FROM creature_gossip WHERE npc_guid = :guid');
+    $check->bindValue(':guid', $guid, PDO::PARAM_INT);
+    $check->execute();
+    
+    if($check->rowCount == null) {
+        $insert         = $handler->prepare('INSERT INTO creature_gossip (menu_id, npc_guid)
+                                             VALUES (:menu, :guid)');
+        $insert->bindValue(':menu', $menu, PDO::PARAM_INT);
+        $insert->bindValue(':guid', $guid, PDO::PARAM_INT);
+        $insert->execute();
+    }
+        
 }
