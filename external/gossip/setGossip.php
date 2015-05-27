@@ -31,7 +31,7 @@ if(isset($_GET['guid']) && preg_match('/[0-9]+/', $_GET['guid'])
     $check->bindValue(':guid', $guid, PDO::PARAM_INT);
     $check->execute();
     
-    if($check->rowCount == null) {
+    if($check->rowCount() == null) {
         $insert         = $handler->prepare('INSERT INTO creature_gossip (menu_id, npc_guid)
                                              VALUES (:menu, :guid)');
         $insert->bindValue(':menu', $menu, PDO::PARAM_INT);
