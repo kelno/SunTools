@@ -22,7 +22,7 @@ if(isset($_GET['guid']) && preg_match('/[0-9]+/', $_GET['guid'])
     $insert->bindValue(':text', $text, PDO::PARAM_STR);
     $insert->execute();
     
-    $insert         = $handler->prepare('INSERT INTO gossip_menu (entry, text_id)
+    $insert         = $handler->prepare('INSERT IGNORE INTO gossip_menu (entry, text_id)
                                          VALUES (:menu, :menu)');
     $insert->bindValue(':menu', $menu, PDO::PARAM_INT);
     $insert->execute();
