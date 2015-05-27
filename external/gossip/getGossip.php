@@ -90,10 +90,10 @@ function addMenuAndChildren($id, & $array)
 $guid = htmlspecialchars($_GET['guid']);
 
 $getRootMenuInfo = $handler->prepare('SELECT cg.menu_id as id, ct.name
-                                      FROM creature_gossip cg
-                                      JOIN creature c ON cg.npc_guid = c.guid
+                                      FROM creature c
+                                      LEFT JOIN creature_gossip cg ON cg.npc_guid = c.guid
                                       JOIN creature_template ct ON ct.entry = c.id
-                                      WHERE npc_guid = :guid');
+                                      WHERE c.guid = :guid');
 $getRootMenuInfo->bindValue(':guid', $guid, PDO::PARAM_INT);
 $getRootMenuInfo->execute();
 $rootMenuInfo = $getRootMenuInfo->fetch();
