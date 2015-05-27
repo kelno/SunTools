@@ -8,88 +8,103 @@ try {
     die();
 }               
 
-if(isset($_GET['guid']) && preg_match('/[0-9]+/', $_GET['guid'])) {
-    $guid           = htmlspecialchars($_GET['guid']);
-    
-    $getMenu        = $handler->prepare('SELECT cg.menu_id as id, ct.name
-                                         FROM creature_gossip cg
-                                         JOIN creature c            ON cg.npc_guid = c.guid
-                                         JOIN creature_template ct  ON ct.entry = c.id
-                                         WHERE npc_guid = :guid');
-    $getMenu->bindValue(':guid', $guid, PDO::PARAM_INT);
-    $getMenu->execute();
-    $menu = $getMenu->fetch();
-    
-     $Infos = [
-            "name"      =>  $menu['name'],
-              ];
-    
-    
-    $getPrincipal   = $handler->prepare('SELECT cg.menu_id,
-                                                gt.text0_0, gt.text0_1,
-                                                gmo.id, gmo.option_icon, gmo.option_text, gmo.action_menu_id
-                                         FROM creature_gossip cg
-                                         JOIN gossip_menu gm            ON gm.entry = cg.menu_id
-                                         JOIN gossip_text gt            ON gt.ID = gm.text_id
-                                         JOIN gossip_menu_option gmo    ON cg.menu_id = gmo.menu_id
-                                         WHERE cg.menu_id = :menu');
-    $getPrincipal->bindValue(':menu', $menu['id'], PDO::PARAM_INT);
-    $getPrincipal->execute();
-    $principal = $getPrincipal->fetchAll();
-    
-    foreach($principal as $menu) {
-        $Infos["menu"] = [
-                    "id"        =>  $menu['menu_id'],
-                    "gossip"    =>  [
-                            "text0"     => $menu['text0_0'],
-                            "text1"     => $menu['text0_1'],
-                                    ],
-                         ];
-    }
-    
-    foreach ($principal as $key => $option) {
-        $Infos["menu"]["options"][$key] = [
-                    "id"        => $option['id'],
-                    "icon"      => $option['option_icon'],
-                    "text"      => $option['option_text'],
-                    "next"      => $option['action_menu_id'],
-                                          ];
-    }
-    
-    // Get submenus
-    foreach($principal as $key2 => $subgossip) {
-        $getSubs        = $handler->prepare('SELECT gm.entry as menu_id,
-                                                    gt.text0_0, gt.text0_1,
-                                                    gmo.id, gmo.option_icon, gmo.option_text, gmo.action_menu_id
-                                             FROM gossip_menu gm
-                                             JOIN gossip_text gt            ON gt.ID = gm.text_id
-                                             JOIN gossip_menu_option gmo    ON gm.entry = gmo.menu_id
-                                             WHERE gm.entry = :submenu');
-        $getSubs->bindValue(':submenu', $subgossip['action_menu_id'], PDO::PARAM_INT);
-        $getSubs->execute();
-        $subs = $getSubs->fetchAll();
-
-        // Get submenus gossip
-        foreach($subs as $menukey => $submenu) {
-            $Infos["submenu"][$menukey] = [
-                    "id"        =>  $submenu['menu_id'],
-                    "gossip"    =>  [
-                            "text0"     => $submenu['text0_0'],
-                            "text1"     => $submenu['text0_1'],
-                                    ],
-                                          ];
-        }
-        
-        // Get submenus option
-        foreach($subs as $subkey => $suboption) {
-        $Infos["submenu"][$subkey]["options"][$subkey] = [
-                    "id"        => $suboption['id'],
-                    "icon"      => $suboption['option_icon'],
-                    "text"      => $suboption['option_text'],
-                    "next"      => $suboption['action_menu_id'],
-                                                         ];
-        }
-    }
-    
-    echo json_encode($Infos);
+if(!isset($_GET['guid']) || !preg_match('/[0-9]+/', $_GET['guid']))
+{
+    http_response_code(400);
+    die();
 }
+
+// Return a menu in the form [ entry, text0_0, text0_1 ]
+function getMenu($id)
+{
+    global $handler;
+    
+    $getMenu = $handler->prepare('SELECT entry, text0_0, text0_1
+                                  FROM gossip_menu gm 
+                                  JOIN gossip_text gt ON gt.ID = gm.text_id
+                                  WHERE gm.entry = :menu');
+    $getMenu->bindValue(':menu', $id, PDO::PARAM_INT);
+    $getMenu->execute();
+    
+    return $getMenu->fetch();
+}
+
+// Return the options of a menu in the form of an array of [ menu_id, id, option_icon, option_text, action_menu_id ]
+function getMenuOptions($id)
+{
+    global $handler;
+    
+    $getMenu = $handler->prepare('SELECT menu_id, id, option_icon, option_text, action_menu_id
+                                  FROM gossip_menu_option
+                                  WHERE menu_id = :menu');
+    $getMenu->bindValue(':menu', $id, PDO::PARAM_INT);
+    $getMenu->execute();
+    return $getMenu->fetchAll();
+}
+
+function hasMenu($array, $id)
+{
+    foreach($array["menus"] as $key => $menu)
+    {
+        if($menu["id"] == $id)
+            return true;
+    }
+    return false;
+}
+
+// Add a menu and all its children (referenced in its options) to $array
+function addMenuAndChildren($id, & $array)
+{
+    $menuDB = getMenu($id);
+    $menu = [
+        "id"      => $id,
+        "text0"   => $menuDB["text0_0"],
+        "text1"   => $menuDB["text0_1"],
+        "options" => [ ],
+    ];
+    
+    //process options
+    $menuOptionsDB = getMenuOptions($id);
+    foreach($menuOptionsDB as $key => $option)
+    {
+        $menu["options"][$key] = [
+           "id"    => $option['id'],
+           "icon"  => $option['option_icon'],
+           "text"  => $option['option_text'],
+           "next"  => $option['action_menu_id'],
+        ];
+    }
+    
+    array_push($array["menus"], $menu);
+    
+    //if any option points to a menu, process it too
+    foreach($menuOptionsDB as $key => $option)
+    {
+        $next = $menu["options"][$key]["next"];
+        if($next != 0 && !hasMenu($array, $next))
+            addMenuAndChildren($next, $array);
+    }
+}
+
+// Get the creature name and the root menu id in database
+$guid = htmlspecialchars($_GET['guid']);
+
+$getRootMenuInfo = $handler->prepare('SELECT cg.menu_id as id, ct.name
+                                      FROM creature_gossip cg
+                                      JOIN creature c ON cg.npc_guid = c.guid
+                                      JOIN creature_template ct ON ct.entry = c.id
+                                      WHERE npc_guid = :guid');
+$getRootMenuInfo->bindValue(':guid', $guid, PDO::PARAM_INT);
+$getRootMenuInfo->execute();
+$rootMenuInfo = $getRootMenuInfo->fetch();
+
+// Create the base json object
+$json = [ 
+    "name"       => $rootMenuInfo["name"],
+    "menus"      => [ ],
+];
+
+// Fill it
+addMenuAndChildren($rootMenuInfo['id'], $json);
+
+echo json_encode($json);

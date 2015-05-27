@@ -79,8 +79,11 @@ $('#guid').keyup(function(){
 });
 
 MenusSelect.change(function() {
+    debugger;
     $('#result').html('');
     displayGossip("display", Data);
+    OptionsCount = Data.menus[$(this).val()].options.length - 1;
+    NewOptionsCount = Data.menus[$(this).val()].options.length - 1;
 });
 
 $('#add').click(function() {
@@ -116,10 +119,10 @@ $('#add').click(function() {
             for(i = MenuCount; i == NewMenuCount++; i++) {
                 if (!Data.menus) {
                     Data.menus = [{}];
-                    var newMenu = { id: response.new, gossip: [{ text0: "", text1: "", }], };
+                    var newMenu = { id: response.new, text0: "", text1: "",};
                     Data.menus[i] = newMenu;
                 } else {
-                    var newMenu = { id: response.new, gossip: [{ text0: "", text1: "", }], };
+                    var newMenu = { id: response.new, text0: "", text1: "", };
                     Data.menus[i] = newMenu;
                 }
                 Menus.show();
@@ -174,7 +177,7 @@ function Option(mode, data, i) {
     }
 }
 
-function displayGossip(mode, data) {    
+function displayGossip(mode, data) {
     if(mode === "new") {
         // Add the menus
         for (i = 0; i < data.menus.length ; i++) {
@@ -182,9 +185,15 @@ function displayGossip(mode, data) {
         }
     }
     
-    if(mode === "new" || mode === "display") {
+    if(mode === "new" && data.menus.length > 1) {
+        var Menu = 0 ;
+        $('#menusselectdiv option[value="' + Menu + '"]').html(data.menus[Menu].id + ' (Principal)');
+        MenusSelect.val(Menu);
+    } else {
         var Menu = MenusSelect.val();
-
+    }
+    
+    if(mode === "new" || mode === "display") {
         // Adds the GossipUI
         $('#result').append('' +
         '<div class="col-md-4">' +
@@ -200,17 +209,17 @@ function displayGossip(mode, data) {
         '   <br />');
 
         // Adds the gossips
-        if(data.menus[Menu].gossip.text0 != null) {
-            $('#gossip_text').html(data.menus[Menu].gossip.text0);
-            $('.gossip_text').html(data.menus[Menu].gossip.text0);
+        if(data.menus[Menu].text0 != null) {
+            $('#gossip_text').html(data.menus[Menu].text0);
+            $('.gossip_text').html(data.menus[Menu].text0);
         }
-        if(data.menus[Menu].gossip.text1 != null) {
-            $('#gossip_text').html(data.menus[Menu].gossip.text1);
-            $('.gossip_text').html(data.menus[Menu].gossip.text1);
+        if(data.menus[Menu].text1 != null) {
+            $('#gossip_text').html(data.menus[Menu].text1);
+            $('.gossip_text').html(data.menus[Menu].text1);
         }
-        if(data.menus[Menu].gossip.text0 != null && data.menus[Menu].gossip.text1 != null) {
-            $('#gossip_text').html(data.menus[Menu].gossip.text0);
-            $('.gossip_text').html(data.menus[Menu].gossip.text0);
+        if(data.menus[Menu].text0 != null && data.menus[Menu].text1 != null) {
+            $('#gossip_text').html(data.menus[Menu].text0);
+            $('.gossip_text').html(data.menus[Menu].text0);
         }
 
         // Adds the OptionUI
@@ -240,10 +249,11 @@ function displayGossip(mode, data) {
         }
 
         $('#addoption').click(function() {
+            debugger;
             var ActualMenu = $('#menusselect').val();
             var ID = Data.menus[ActualMenu];
 
-            if(!ID.options || ID.options > 0) {
+            if(ID.options.length == 0 && OptionsCount == null) {
                 OptionsCount = -1;
                 NewOptionsCount = -1;
             }
@@ -253,6 +263,7 @@ function displayGossip(mode, data) {
             }
 
             for(i = OptionsCount; i == NewOptionsCount++; i++) {
+
                 Option("new", Data.menus[ActualMenu], OptionsCount);
             }
         });
@@ -301,6 +312,6 @@ function updateOption(Menu, id, Info, Value) {
     $.ajax({
     type : 'GET',
     data : 'menu=' + Menu + '&id=' + id + '&info=' + Info + '&value=' + Value,
-    url  : 'setGossip.php'
+    url  : 'setOption.php'
     });
 }

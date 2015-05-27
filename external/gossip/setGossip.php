@@ -22,11 +22,8 @@ if(isset($_GET['guid']) && preg_match('/[0-9]+/', $_GET['guid'])
     $insert->bindValue(':text', $text, PDO::PARAM_STR);
     $insert->execute();
     
-    $insert         = $handler->prepare('INSERT IGNORE INTO creature_gossip (menu_id, npc_guid)
-                                         VALUES (:menu, :guid)');
+    $insert         = $handler->prepare('INSERT INTO gossip_menu (entry, text_id)
+                                         VALUES (:menu, :menu)');
     $insert->bindValue(':menu', $menu, PDO::PARAM_INT);
-    $insert->bindValue(':guid', $guid, PDO::PARAM_INT);
     $insert->execute();
-    
-    http_response_code(200);
 }
