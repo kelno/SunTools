@@ -36,19 +36,10 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 	echo '<div class="col-md-10">
                 <h2>SunQuest</h2>
                 <p>
-                    Voir <a href="http://www.sunstrider.cf/wiki/Quests">Wiki:Quests</a> pour la documentation.
+                    See <a href="http://www.sunstrider.cf/wiki/Quests">Wiki:Quests</a> for the documentation.
                 </p>
-                <h3>Zones</h3>
-                <ul>
-                    <li><a href="?zoneid=3483">Hellfire Peninsula</a></li>
-                    <li><a href="?zoneid=3521">Zangarmarsh</a></li>
-                    <li><a href="?zoneid=3519">Terokkar Forest</a></li>
-                    <li><a href="?zoneid=3518">Nagrand</a></li>
-                    <li><a href="?zoneid=3522">Blade\'s Edge Mountains</a></li>
-                    <li><a href="?zoneid=3523">Netherstorm</a></li>
-                    <li><a href="?zoneid=3520">Shadowmoon Valley</a></li>
-                </ul>
             </div>';
+    echo globalProgression();
     echo zoneProgression(3483); //Hellfire
     echo zoneProgression(3521); //Zangar
     echo zoneProgression(3519); //Terokkar

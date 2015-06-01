@@ -12,12 +12,84 @@ try {
 //global variable
 $zoneID = 0;
 
+function globalCount($status) {
+    global $handler;
+    
+    $query = $handler->prepare('SELECT (SUM(CASE WHEN startTxt = :status THEN 1 ELSE 0 END) +
+                                       SUM(CASE WHEN progTxt = :status THEN 1 ELSE 0 END) +
+                                       SUM(CASE WHEN endTxt = :status THEN 1 ELSE 0 END) +
+                                       SUM(CASE WHEN txtEvent = :status THEN 1 ELSE 0 END) +
+                                       SUM(CASE WHEN pathEvent = :status THEN 1 ELSE 0 END) +
+                                       SUM(CASE WHEN timeEvent = :status THEN 1 ELSE 0 END) +
+                                       SUM(CASE WHEN Exp = :status THEN 1 ELSE 0 END) +
+                                       SUM(CASE WHEN Stuff = :status THEN 1 ELSE 0 END) +
+                                       SUM(CASE WHEN Gold = :status THEN 1 ELSE 0 END) +
+                                       SUM(CASE WHEN emotNPC = :status THEN 1 ELSE 0 END) +
+                                       SUM(CASE WHEN spellNPC = :status THEN 1 ELSE 0 END) +
+                                       SUM(CASE WHEN placeNPC = :status THEN 1 ELSE 0 END) +
+                                       SUM(CASE WHEN workObj = :status THEN 1 ELSE 0 END) +
+                                       SUM(CASE WHEN baObj = :status THEN 1 ELSE 0 END)
+                                       ) AS TotalCount
+                                FROM suntools.quest_test');
+    $query->bindValue(':status', $status, PDO::PARAM_INT);
+    $query->execute();
+    $countStatus = $query->fetch();
+	
+	return $countStatus['TotalCount'];
+}
+
+function globalProgression() {
+	global $handler;
+	
+	$success = globalCount(1);
+	$working = globalCount(2);
+	$bugged	 = globalCount(3);
+	$no		 = globalCount(4);
+	
+	$query = $handler->query('SELECT COUNT(*) as count FROM suntools.quest_test');
+	$query->execute();
+	$totalTested = $query->fetch();
+	$totalTested = $totalTested['count'];
+	
+	$query = $handler->query('SELECT COUNT(*) as count FROM world.quest_template WHERE ZoneOrSort IN (3483, 3521, 3519, 3518, 3522, 3523, 3520)');
+	$query->execute();
+	$totalQuest = $query->fetch();
+	$totalQuest = $totalQuest['count'];
+	
+	$successBar = (($success + $no) / ($totalQuest * 14)) * 100;
+    $buggedBar = ($bugged / ($totalQuest * 14)) * 100;
+    $workingBar = ($working / ($totalQuest * 14)) * 100;
+    
+    // Display results
+    echo '
+        <div class="col-md-4">
+            <h2>Global - '. round($successBar, 2) . '%</h2>
+            <p>
+                <strong>Total quests:</strong> ' . $totalQuest . '<br />
+                <strong>Total tested:</strong> ' . $totalTested . '
+            </p>
+            <p>
+                <strong>Success:</strong> ' . ($success + $no) . '<br />
+                <strong>Bugged:</strong> ' . $bugged . '<br />
+                <strong>Working:</strong> ' . $working . '<br />
+            </p>
+            <div class="progress">
+              <div class="progress-bar progress-bar-success" style="width: ' . $successBar . '%">
+              </div>
+              <div class="progress-bar progress-bar-warning" style="width: ' . $workingBar . '%">
+              </div>
+              <div class="progress-bar progress-bar-danger" style="width: ' . $buggedBar . '%">
+              </div>
+            </div>
+        </div>';
+}
+
 function testProgression($tested, $total) {
     return round(($tested / $total) * 100, 2). '%';
 }
 
-function countFields($status) {
-    global $handler, $zoneID;
+function countFields($status, $zoneID) {
+    global $handler;
     
     $query = $handler->prepare('SELECT (SUM(CASE WHEN startTxt = :status THEN 1 ELSE 0 END) +
                                        SUM(CASE WHEN progTxt = :status THEN 1 ELSE 0 END) +
@@ -78,10 +150,10 @@ function zoneProgression($id) {
     $testedQuest = $testedQuest['count'];
     
     // Count success (status = 1) fields
-    $success = countFields(1);
-    $working = countFields(2);
-    $bugged = countFields(3);
-    $no = countFields(4);
+    $success = countFields(1, $zoneID);
+    $working = countFields(2, $zoneID);
+    $bugged = countFields(3, $zoneID);
+    $no = countFields(4, $zoneID);
     
     $successBar = (($success + $no) / ($totalQuest * 14)) * 100;
     $buggedBar = ($bugged / ($totalQuest * 14)) * 100;
@@ -90,7 +162,7 @@ function zoneProgression($id) {
     // Display results
     echo '
         <div class="col-md-4">
-            <h2>' . $zoneName . ' - '. testProgression($testedQuest, $totalQuest) . '</h2>
+            <h2><a href="?zoneid=' . $id . '">' . $zoneName . '</a> - '. testProgression($testedQuest, $totalQuest) . '</h2>
             <p>
                 <strong>Total quests:</strong> ' . $totalQuest . '<br />
                 <strong>Total tested:</strong> ' . $testedQuest . '
