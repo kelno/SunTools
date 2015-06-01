@@ -63,7 +63,7 @@ function globalProgression() {
     // Display results
     echo '
         <div class="col-md-4">
-            <h2>Global - '. round($successBar, 2) . '%</h2>
+            <h2>Global - '. round($successBar + $workingBar, 2) . '%</h2>
             <p class="col-md-12">
                 <strong>Total quests:</strong> ' . $totalQuest . '<br />
                 <strong>Total tested:</strong> ' . $testedQuest . '

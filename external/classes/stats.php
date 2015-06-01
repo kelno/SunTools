@@ -12,6 +12,70 @@ function testProgression($tested, $total) {
     return round(($tested / $total) * 100, 2). '%';
 }
 
+function globalCount($category, $status) {
+    global $handler;
+    
+    $query = $handler->prepare('SELECT (SUM(CASE WHEN tested = :status THEN 1 ELSE 0 END)) AS TotalCount
+                                FROM class_test_' . $category);
+    $query->bindValue(':status', $status, PDO::PARAM_INT);
+    $query->execute();
+    $countStatus = $query->fetch();
+    
+	return $countStatus['TotalCount'];
+}
+
+function globalProgression() {
+	global $handler;
+	
+	$query = $handler->query('SELECT tested FROM class_test_spells');
+    $query->execute();
+    $totalSpells = $query->rowCount();
+    
+    $query = $handler->query('SELECT tested FROM class_test_talents');
+    $query->execute();
+    $totalTalents = $query->rowCount();
+    
+    $totalNo            = globalCount("talents", 0) + globalCount("spells", 0);
+    $totalAssigned      = globalCount("talents", 1) + globalCount("spells", 1);
+    $totalSuccess       = globalCount("talents", 2) + globalCount("spells", 2);
+    $totalBugged        = globalCount("talents", 3) + globalCount("spells", 3);
+    
+    $testedSpells       = globalCount("spells", 2) + globalCount("spells", 3);
+    $testedTalents      = globalCount("talents", 2) + globalCount("talents", 3);
+    
+    $totalTested        = $testedSpells + $testedTalents;
+    
+    $total = $totalTalents + $totalSpells;
+    
+    $successBar = ($totalSuccess / ($totalSpells + $totalTalents)) * 100;
+    $buggedBar = ($totalBugged / ($totalSpells + $totalTalents)) * 100;
+    
+    // Display results
+    echo '
+        <div class="col-md-3">
+            <h2>Global - '. round($successBar, 2) . '%</h2>
+            <p class="col-md-6">
+                <strong>Total spells:</strong> ' . $totalSpells . '<br />
+                <strong>Total tested:</strong> ' . $testedSpells . '
+            </p>
+            <p class="col-md-6">
+                <strong>Total talents:</strong> ' . $totalTalents . '<br />
+                <strong>Total tested:</strong> ' . $testedTalents . '
+            </p>
+            <p class="col-md-6">
+                <strong>Success:</strong> ' . ($totalSuccess) . '
+            </p>
+            <p class="col-md-6">
+                <strong>Bugged:</strong> ' . $totalBugged . '
+            </p>
+            <div class="progress">
+              <div class="progress-bar progress-bar-success" style="width: ' . $successBar . '%"></div>
+              <div class="progress-bar progress-bar-danger" style="width: ' . $buggedBar . '%">
+              </div>
+            </div>
+        </div>';
+}
+
 function countFields($class, $category, $status) {
     global $handler;
     
@@ -69,7 +133,7 @@ function classProgression($class) {
     
     // Display results
     echo '
-        <div class="col-md-4">
+        <div class="col-md-3">
             <h2><a href="?class=' . strtolower($className) . '">' . $className . '</a> - '. testProgression($totalTested, $total) . '</h2>
             <p class="col-md-6">
                 <strong>Total spells:</strong> ' . $totalSpells . '<br />

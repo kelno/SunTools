@@ -150,6 +150,7 @@ if(!isset($_GET['class'])) {
                     <a href="https://github.com/Nqsty/Sunstrider-Classes-Issues/issues">Issue Tracker</a> - <a href="https://github.com/Nqsty/Sunstrider-Classes-Issues/wiki">Wiki</a>
                 </p>
             </div>';
+    echo globalProgression();
     echo classProgression(11);
     echo classProgression(3);
     echo classProgression(8);
