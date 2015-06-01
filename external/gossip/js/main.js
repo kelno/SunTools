@@ -58,7 +58,7 @@ $('#guid').keyup(function(){
                 if(data.menus != null) {
                     // Display first menu found
                     Menus.show();
-                    displayGossip("new", data);                    
+                    displayGossip("new", data, null);                    
                 }       
             }
 
@@ -79,9 +79,8 @@ $('#guid').keyup(function(){
 });
 
 MenusSelect.change(function() {
-    debugger;
     $('#result').html('');
-    displayGossip("display", Data);
+    displayGossip("display", Data, null);
     OptionsCount = Data.menus[$(this).val()].options.length - 1;
     NewOptionsCount = Data.menus[$(this).val()].options.length - 1;
 });
@@ -132,7 +131,7 @@ $('#add').click(function() {
                 NewMenuCount = MenuCount++;
             }
             
-            displayGossip("display", Data);
+            displayGossip("display", Data, null);
         }
     });
 });
@@ -150,12 +149,15 @@ function Option(mode, data, i) {
     }
     if (mode === "display" || mode === "new") {
         GossipIcon = getIcon(data.options[i].icon);
-        $('.gossip_options').append('<div class="options" title="Next menu: ' + data.options[i].next + '"><img src="img/icons/' + GossipIcon + '.png" alt="" /> ' + data.options[i].text + '</div>');
+        $('<div class="options" id="option_' + data.options[i].id + '" onclick="next(' + data.options[i].next + ')" title="Next menu: ' + data.options[i].next + '">').appendTo('.gossip_options');
+		$('<img src="img/icons/' + GossipIcon + '.png" alt="" />').appendTo('#option_' + data.options[i].id);
+		$(' <span>' + data.options[i].text + '</span></div>').appendTo('#option_' + data.options[i].id);
+		
         $('#gossip_options tbody').append('' +
             '<tr>' + 
             '   <td>' + data.options[i].id + '</td>' +
             '   <td>' +
-            '       <select class="form-control" onchange="updateOption(' + data.id + ', ' + data.options[i].id + ', \'icon\', this.value)">' +
+            '       <select class="form-control" id="icon_' + data.options[i].id + '" onchange="updateOption(' + data.id + ', ' + data.options[i].id + ', \'icon\', this.value)">' +
             '           <option value="0" data-class="icon0">Chat</option>' +
             '           <option value="1" data-class="icon1">Vendor</option>' +
             '           <option value="2" data-class="icon2">Taxi</option>' +
@@ -173,11 +175,12 @@ function Option(mode, data, i) {
             '   <td><input type="text" class="form-control" onchange="updateOption(' + data.id + ', ' + data.options[i].id + ', \'next\', this.value)" value="' + data.options[i].next + '" /></td>' +
             '   <td><span class="glyphicon glyphicon-remove" onclick="updateOption(' + data.id + ', ' + data.options[i].id + ', \'delete\', 0)"></span></td>' +
             '</tr>');
+		$('#icon_' + data.options[i].id).val(data.options[i].icon);
         NewOptionsCount = OptionsCount++;
     }
 }
 
-function displayGossip(mode, data) {
+function displayGossip(mode, data, menu) {
     if(mode === "new") {
         // Add the menus
         for (i = 0; i < data.menus.length ; i++) {
@@ -192,6 +195,11 @@ function displayGossip(mode, data) {
     } else {
         var Menu = MenusSelect.val();
     }
+	
+	if(menu !== null) {
+		var Menu = menu;
+		MenusSelect.val(Menu);
+	}
     
     if(mode === "new" || mode === "display") {
         // Adds the GossipUI
@@ -249,7 +257,6 @@ function displayGossip(mode, data) {
         }
 
         $('#addoption').click(function() {
-            debugger;
             var ActualMenu = $('#menusselect').val();
             var ID = Data.menus[ActualMenu];
 
@@ -272,7 +279,6 @@ function displayGossip(mode, data) {
             var GossipLive = $(this).val();
             $('.gossip_text').html(GossipLive);
         });
-
 
         $('table').on('click', 'span', function(e){
            $(this).closest('tr').remove();
@@ -308,10 +314,31 @@ function updateGossip(Menu, Value) {
 }
 
 function updateOption(Menu, id, Info, Value) {
+	if(Info == "text") {
+		$('#option_' + id + ' span').html(Value);
+	} else if (Info == "icon") {
+		var Icon = getIcon(Value);
+		$('#option_' + id + ' img').attr('src', "img/icons/" + Icon + ".png");
+	} else if (Info == "next") {
+		$('#option_' + id).attr('title', 'Next menu:' + Value);
+	}
+	
     var Guid = $('#guid').val();
     $.ajax({
     type : 'GET',
     data : 'menu=' + Menu + '&id=' + id + '&info=' + Info + '&value=' + Value,
     url  : 'setOption.php'
     });
+}
+
+function next(id) {
+	if(id == 0 || id == null) {
+		return;
+	}
+	
+    $('#result').html('');
+	var Menu = $('#menusselect option').filter(function () { return $(this).html() == id; }).val();
+    displayGossip("display", Data, Menu);
+    OptionsCount = Data.menus[Menu].options.length - 1;
+    NewOptionsCount = Data.menus[Menu].options.length - 1;
 }

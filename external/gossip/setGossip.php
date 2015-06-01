@@ -10,22 +10,24 @@ try {
 
 if(isset($_GET['guid']) && preg_match('/[0-9]+/', $_GET['guid'])
 && isset($_GET['menu']) && preg_match('/[0-9]+/', $_GET['menu'])
-&& isset($_GET['value'])){
+&& isset($_GET['value'])) {
     $guid           = htmlspecialchars($_GET['guid']);
     $menu           = htmlspecialchars($_GET['menu']);
     $text           = htmlspecialchars($_GET['value']);
 
-    $insert         = $handler->prepare('INSERT INTO gossip_text (ID, text0_0)
-                                         VALUES (:menu, :text)
-                                         ON DUPLICATE KEY UPDATE text0_0 = :text');
-    $insert->bindValue(':menu', $menu, PDO::PARAM_INT);
-    $insert->bindValue(':text', $text, PDO::PARAM_STR);
-    $insert->execute();
+    $insertText         = $handler->prepare('INSERT INTO gossip_text (ID, text0_0)
+                                             VALUES (:menu, :text)
+                                             ON DUPLICATE KEY UPDATE text0_0 = :text');
+    $insertText->bindValue(':menu', $menu, PDO::PARAM_INT);
+    $insertText->bindValue(':text', $text, PDO::PARAM_STR);
+    $insertText->execute();
     
-    $insert         = $handler->prepare('INSERT IGNORE INTO gossip_menu (entry, text_id)
-                                         VALUES (:menu, :menu)');
-    $insert->bindValue(':menu', $menu, PDO::PARAM_INT);
-    $insert->execute();
+    $insertMenu         = $handler->prepare('INSERT INTO gossip_menu (entry, text_id)
+                                             VALUES (:menu, :menu2)
+                                             ON DUPLICATE KEY UPDATE entry = :menu');
+    $insertMenu->bindValue(':menu', $menu, PDO::PARAM_INT);
+    $insertMenu->bindValue(':menu2', $menu, PDO::PARAM_INT);
+    $insertMenu->execute();
     
     $check          = $handler->prepare('SELECT * FROM creature_gossip WHERE npc_guid = :guid');
     $check->bindValue(':guid', $guid, PDO::PARAM_INT);

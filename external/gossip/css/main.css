@@ -60,9 +60,9 @@ span.glyphicon-remove {
     background-size: 100% 100%;
     mix-blend-mode: color-dodge;
     width: 100%;
-    height: 20px;
+    height: 100%;
     padding: 1px 0;
     position: absolute;
-    margin: -20px 0 0 -7px;
+	top: 0;
     z-index: 2;
 }
