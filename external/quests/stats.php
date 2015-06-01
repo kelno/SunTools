@@ -48,8 +48,8 @@ function globalProgression() {
 	
 	$query = $handler->query('SELECT COUNT(*) as count FROM suntools.quest_test');
 	$query->execute();
-	$totalTested = $query->fetch();
-	$totalTested = $totalTested['count'];
+	$testedQuest = $query->fetch();
+	$testedQuest = $testedQuest['count'];
 	
 	$query = $handler->query('SELECT COUNT(*) as count FROM world.quest_template WHERE ZoneOrSort IN (3483, 3521, 3519, 3518, 3522, 3523, 3520)');
 	$query->execute();
@@ -64,16 +64,20 @@ function globalProgression() {
     echo '
         <div class="col-md-4">
             <h2>Global - '. round($successBar, 2) . '%</h2>
-            <p>
+            <p class="col-md-12">
                 <strong>Total quests:</strong> ' . $totalQuest . '<br />
-                <strong>Total tested:</strong> ' . $totalTested . '
+                <strong>Total tested:</strong> ' . $testedQuest . '
             </p>
-            <p>
-                <strong>Success:</strong> ' . ($success + $no) . '<br />
-                <strong>Bugged:</strong> ' . $bugged . '<br />
-                <strong>Working:</strong> ' . $working . '<br />
+            <p class="col-md-4">
+                <strong>Success:</strong> ' . ($success + $no) . '
+			</p>
+            <p class="col-md-4">
+                <strong>Bugged:</strong> ' . $bugged . '
+			</p>
+            <p class="col-md-4">
+                <strong>Working:</strong> ' . $working . '
             </p>
-            <div class="progress">
+            <div class="progress col-md-12" style="padding: 0;">
               <div class="progress-bar progress-bar-success" style="width: ' . $successBar . '%">
               </div>
               <div class="progress-bar progress-bar-warning" style="width: ' . $workingBar . '%">
@@ -163,16 +167,20 @@ function zoneProgression($id) {
     echo '
         <div class="col-md-4">
             <h2><a href="?zoneid=' . $id . '">' . $zoneName . '</a> - '. testProgression($testedQuest, $totalQuest) . '</h2>
-            <p>
+            <p class="col-md-12">
                 <strong>Total quests:</strong> ' . $totalQuest . '<br />
                 <strong>Total tested:</strong> ' . $testedQuest . '
             </p>
-            <p>
-                <strong>Success:</strong> ' . ($success + $no) . '<br />
-                <strong>Bugged:</strong> ' . $bugged . '<br />
-                <strong>Working:</strong> ' . $working . '<br />
+            <p class="col-md-4">
+                <strong>Success:</strong> ' . ($success + $no) . '
+			</p>
+            <p class="col-md-4">
+                <strong>Bugged:</strong> ' . $bugged . '
+			</p>
+            <p class="col-md-4">
+                <strong>Working:</strong> ' . $working . '
             </p>
-            <div class="progress">
+            <div class="progress col-md-12" style="padding: 0;">
               <div class="progress-bar progress-bar-success" style="width: ' . $successBar . '%">
               </div>
               <div class="progress-bar progress-bar-warning" style="width: ' . $workingBar . '%">
