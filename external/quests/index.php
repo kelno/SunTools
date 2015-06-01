@@ -94,7 +94,8 @@ if(!isset($_GET['zone']) && !(isset($_GET['zoneid']))) {
 							  LEFT JOIN world.gameobject_template objt2 ON objend.id = objt2.entry
 							  LEFT JOIN world.item_template it ON qt.entry = it.startquest
 							  LEFT JOIN suntools.quest_test qtest ON qt.entry = qtest.questid
-							  WHERE ZoneOrSort = :zone AND qt.Title NOT LIKE "%BETA%"');
+							  WHERE ZoneOrSort = :zone AND qt.Title NOT LIKE "%BETA%"
+							  GROUP BY qt.entry');
 	$query->bindValue(':zone', $getZoneID['id'], PDO::PARAM_INT);
 	$query->execute();
         

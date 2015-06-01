@@ -51,7 +51,7 @@ function globalProgression() {
 	$testedQuest = $query->fetch();
 	$testedQuest = $testedQuest['count'];
 	
-	$query = $handler->query('SELECT COUNT(*) as count FROM world.quest_template WHERE ZoneOrSort IN (3483, 3521, 3519, 3518, 3522, 3523, 3520)');
+	$query = $handler->query('SELECT COUNT(*) as count FROM world.quest_template WHERE ZoneOrSort IN (3483, 3521, 3519, 3518, 3522, 3523, 3520) AND Title NOT LIKE "%BETA%"');
 	$query->execute();
 	$totalQuest = $query->fetch();
 	$totalQuest = $totalQuest['count'];
