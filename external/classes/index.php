@@ -86,7 +86,7 @@ function getClass($category, $spe) {
                                         <option value="14" ' . selected($getClassTalents['tester'], 14) . '>Yukka</option>
                                     </select>
                                 </td>
-                                <td>' . $link .' <input class="form-control" type="text" onchange="update(\'' . $category .'\', \'' . $name . '\', \'issue\', this.value)" value="' . $getClassTalents['issue'] . '" /></td>
+                                <td><span>' . $link .'</span> <input class="form-control link" type="text" onchange="update(\'' . $category .'\', \'' . $name . '\', \'issue\', this.value)" value="' . $getClassTalents['issue'] . '" /></td>
                             </tr>';
     }
     echo 
@@ -238,6 +238,16 @@ if(!isset($_GET['class'])) {
                         url  : 'query.php'
                     });
                 }
+				
+				$('.link').keyup(function() {
+					var Link = $(this).val();
+					
+					if(Link == "") {
+						$(this).prev().replaceWith('<span>#</span>');
+					} else {
+						$(this).prev().replaceWith('<a href="https://github.com/Nqsty/Sunstrider-Classes-Issues/issues/' + Link + '">#</a>');
+					}
+				});
 			</script>
 		</body>
 	</html>
