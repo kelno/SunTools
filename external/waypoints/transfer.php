@@ -33,7 +33,7 @@ if(isset($_POST['entry']) && preg_match('/[0-9]+/', $_POST['entry'])
     
     // Transfer
     while($getPoints = $getPointsQuery->fetch()) {
-        $transferQuery = $handler ->prepare('INSERT INTO waypoints (entry, pointid, position_x, position_y, position_z, point_comment)
+        $transferQuery = $handler ->prepare('INSERT IGNORE INTO waypoints (entry, pointid, position_x, position_y, position_z, point_comment)
                                              VALUES (:entry, :pointid, :position_x, :position_y, :position_z, :comment)');
         $transferQuery->bindValue(':entry',      $entry, PDO::PARAM_INT);
         $transferQuery->bindValue(':pointid',    $getPoints["point"], PDO::PARAM_INT);
