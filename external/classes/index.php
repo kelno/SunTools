@@ -44,6 +44,13 @@ function getClass($category, $spe) {
         } else {
             $check = "no";
         }
+		
+		switch($getClassTalents['tested']) {
+			case 1: $tr = "assigned"; break;
+			case 2: $tr = "ok"; break;
+			case 3: $tr = "bug"; break;
+			default: $tr = "";
+		}
         
         if ($getClassTalents['issue'] == 0) {
             $getClassTalents['issue'] = null;
@@ -56,10 +63,9 @@ function getClass($category, $spe) {
         $name = str_replace("'", "\'", $getClassTalents['name']);
     
         echo
-            
-                            '<tr>
+                            '<tr class="' . $tr . '">
                                 <td>
-                                    <select class="form-control" onchange="update(\'' . $category .'\', \'' . $name . '\', \'tested\', this.value)">
+                                    <select class="form-control status" onchange="update(\'' . $category .'\', \'' . $name . '\', \'tested\', this.value)">
                                         <option value="0">Choose</option>
                                         <option value="1" ' . selected($getClassTalents['tested'], 1) . '>Assigned</option>
                                         <option value="2" ' . selected($getClassTalents['tested'], 2) . '>OK</option>
@@ -139,6 +145,15 @@ function getClass($category, $spe) {
             .progress {
                 clear: both;
             }
+			.ok, .table-hover > tbody > tr.ok:hover > td {
+				background-color: #ABFF92!important;
+			}
+			.bug, .table-hover > tbody > tr.bug:hover > td {
+				background-color: #FF9595!important;
+			}
+			.assigned, .table-hover > tbody > tr.assigned:hover > td {
+				background-color: #E1F3FF!important;
+			}
         </style>
 	</head>
 	<body>
@@ -246,6 +261,19 @@ if(!isset($_GET['class'])) {
 						$(this).prev().replaceWith('<span>#</span>');
 					} else {
 						$(this).prev().replaceWith('<a href="https://github.com/Nqsty/Sunstrider-Classes-Issues/issues/' + Link + '">#</a>');
+					}
+				});
+				
+				$('.status').change(function() {
+					debugger;
+					var Status = $(this).val();
+					
+					if(Status == 1) {
+						$(this).closest('tr').addClass('assigned').removeClass('bug').removeClass('ok');
+					} else if(Status == 2) {
+						$(this).closest('tr').addClass('ok').removeClass('bug').removeClass('assigned');
+					} else if(Status == 3) {
+						$(this).closest('tr').addClass('bug').removeClass('ok').removeClass('assigned');
 					}
 				});
 			</script>
