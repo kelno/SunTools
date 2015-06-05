@@ -104,6 +104,7 @@ if(isset($_POST['entry']) && preg_match('/[0-9]+/', $_POST['entry'])) {
                                     <option value="273" <?php if ($getResult["emote"] == 273) echo "selected=selected"; ?>>Yes</option>
                                     <option value="274" <?php if ($getResult["emote"] == 274) echo "selected=selected"; ?>>No</option>
                                     <option value="275" <?php if ($getResult["emote"] == 275) echo "selected=selected"; ?>>Train</option>
+                                    <option value="432" <?php if ($getResult["emote"] == 432) echo "selected=selected"; ?>>Craft</option>
                                 </select>
                             </td>
                             <td>
