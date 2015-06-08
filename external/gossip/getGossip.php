@@ -19,7 +19,7 @@ function getMenu($id)
 {
     global $handler;
     
-    $getMenu = $handler->prepare('SELECT entry, text0_0, text0_1
+    $getMenu = $handler->prepare('SELECT entry, text_id, text0_0, text0_1
                                   FROM gossip_menu gm 
                                   JOIN gossip_text gt ON gt.ID = gm.text_id
                                   WHERE gm.entry = :menu');
@@ -42,6 +42,22 @@ function getMenuOptions($id)
     return $getMenu->fetchAll();
 }
 
+// Return the conditions of a menu in the form of an array of [ id, source, type, target, reverse, value1, value2, value3 ]
+function getConditions($id, $textid)
+{
+    global $handler;
+    
+    $getMenu = $handler->prepare('SELECT id, SourceTypeOrReferenceId as source, ConditionTypeOrReference as type,
+										 ConditionTarget as target, NegativeCondition as reverse,
+										 ConditionValue1 as value1, ConditionValue2 as value2, ConditionValue3 as value3
+                                  FROM conditions
+                                  WHERE SourceGroup = :menu AND SourceEntry = :textid');
+    $getMenu->bindValue(':menu', $id, PDO::PARAM_INT);
+    $getMenu->bindValue(':textid', $textid, PDO::PARAM_INT);
+    $getMenu->execute();
+    return $getMenu->fetchAll();
+}
+
 function hasMenu($array, $id)
 {
     foreach($array["menus"] as $key => $menu)
@@ -57,22 +73,56 @@ function addMenuAndChildren($id, & $array)
 {
     $menuDB = getMenu($id);
     $menu = [
-        "id"      => $id,
-        "text0"   => $menuDB["text0_0"],
-        "text1"   => $menuDB["text0_1"],
-        "options" => [ ],
+        "id"      		=> $id,
+        "text0"   		=> $menuDB["text0_0"],
+        "text1"   		=> $menuDB["text0_1"],
+        "options" 		=> [ ],
+		"conditions" 	=> [ ],
     ];
+    
+    //process conditions
+    $menuConditionsDB = getConditions($id, $menuDB["text_id"]);
+    foreach($menuConditionsDB as $key => $condition)
+    {
+        $menu["conditions"][$key] = [
+			"id"		=> $condition['id'],
+           	"source"  	=> $condition['source'],
+           	"type"  	=> $condition['type'],
+           	"target"  	=> $condition['target'],
+           	"value1"  	=> $condition['value1'],
+           	"value2"  	=> $condition['value2'],
+           	"value3"  	=> $condition['value3'],
+           	"reverse"  	=> $condition['reverse'],
+        ];
+    }
     
     //process options
     $menuOptionsDB = getMenuOptions($id);
     foreach($menuOptionsDB as $key => $option)
     {
         $menu["options"][$key] = [
-           "id"    => $option['id'],
-           "icon"  => $option['option_icon'],
-           "text"  => $option['option_text'],
-           "next"  => $option['action_menu_id'],
+           	"id"    		=> $option['id'],
+           	"icon"  		=> $option['option_icon'],
+           	"text"  		=> $option['option_text'],
+           	"next"  		=> $option['action_menu_id'],
+			"conditions"	=> [ ],
         ];
+		
+		//process options conditions
+		$menuOptionsConditionsDB = getConditions($id, $key);
+		foreach($menuOptionsConditionsDB as $keyCondition => $condition)
+		{
+			$menu["options"][$key]["conditions"][$keyCondition] = [
+				"id"		=> $condition['id'],
+			   	"source"  	=> $condition['source'],
+			   	"type"  	=> $condition['type'],
+			   	"target"  	=> $condition['target'],
+			   	"value1"  	=> $condition['value1'],
+			   	"value2"  	=> $condition['value2'],
+			   	"value3"  	=> $condition['value3'],
+			   	"reverse"  	=> $condition['reverse'],
+			];
+		}
     }
     
     array_push($array["menus"], $menu);
