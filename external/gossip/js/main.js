@@ -1,5 +1,83 @@
 "use strict";
 
+var ConditionSourceType =
+{
+    CONDITION_SOURCE_TYPE_NONE                           : "0",
+    CONDITION_SOURCE_TYPE_CREATURE_LOOT_TEMPLATE         : "1",
+    CONDITION_SOURCE_TYPE_DISENCHANT_LOOT_TEMPLATE       : "2",
+    CONDITION_SOURCE_TYPE_FISHING_LOOT_TEMPLATE          : "3",
+    CONDITION_SOURCE_TYPE_GAMEOBJECT_LOOT_TEMPLATE       : "4",
+    CONDITION_SOURCE_TYPE_ITEM_LOOT_TEMPLATE             : "5",
+    CONDITION_SOURCE_TYPE_MAIL_LOOT_TEMPLATE             : "6", //Not implemented
+    CONDITION_SOURCE_TYPE_MILLING_LOOT_TEMPLATE          : "7", //Not implemented
+    CONDITION_SOURCE_TYPE_PICKPOCKETING_LOOT_TEMPLATE    : "8",
+    CONDITION_SOURCE_TYPE_PROSPECTING_LOOT_TEMPLATE      : "9",
+    CONDITION_SOURCE_TYPE_REFERENCE_LOOT_TEMPLATE        : "10", //NYI
+    CONDITION_SOURCE_TYPE_SKINNING_LOOT_TEMPLATE         : "11",
+    CONDITION_SOURCE_TYPE_SPELL_LOOT_TEMPLATE            : "12", //NYI
+    CONDITION_SOURCE_TYPE_SPELL_IMPLICIT_TARGET          : "13", //NYI
+    CONDITION_SOURCE_TYPE_GOSSIP_MENU                    : "14",
+    CONDITION_SOURCE_TYPE_GOSSIP_MENU_OPTION             : "15",
+    CONDITION_SOURCE_TYPE_CREATURE_TEMPLATE_VEHICLE      : "16",
+    CONDITION_SOURCE_TYPE_SPELL                          : "17",
+    CONDITION_SOURCE_TYPE_SPELL_CLICK_EVENT              : "18", //Not implemented
+    CONDITION_SOURCE_TYPE_QUEST_ACCEPT                   : "19",
+    CONDITION_SOURCE_TYPE_QUEST_SHOW_MARK                : "20",
+    CONDITION_SOURCE_TYPE_VEHICLE_SPELL                  : "21", //Not implemented
+    CONDITION_SOURCE_TYPE_SMART_EVENT                    : "22",
+    CONDITION_SOURCE_TYPE_NPC_VENDOR                     : "23",
+    CONDITION_SOURCE_TYPE_SPELL_PROC                     : "24", //Not implemented
+    CONDITION_SOURCE_TYPE_PHASE_DEFINITION               : "25", // only 4.3.4
+    CONDITION_SOURCE_TYPE_MAX                            : "26"  // MAX
+};
+
+var ConditionTypes =
+{                                                           // value1           value2         value3
+    CONDITION_NONE                  : "0",                    // 0                0              0                  always true
+    CONDITION_AURA                  : "1",                    // spell_id         effindex       use target?        true if player (or target, if value3) has aura of spell_id with effect effindex
+    CONDITION_ITEM                  : "2",                    // item_id          count          bank               true if has #count of item_ids (if 'bank' is set it searches in bank slots too)
+    CONDITION_ITEM_EQUIPPED         : "3",                    // item_id          0              0                  true if has item_id equipped
+    CONDITION_ZONEID                : "4",                    // zone_id          0              0                  true if in zone_id
+    CONDITION_REPUTATION_RANK       : "5",                    // faction_id       rankMask       0                  true if has min_rank for faction_id
+    CONDITION_TEAM                  : "6",                    // player_team      0,             0                  469 - Alliance, 67 - Horde)
+    CONDITION_SKILL                 : "7",                    // skill_id         skill_value    0                  true if has skill_value for skill_id
+    CONDITION_QUESTREWARDED         : "8",                    // quest_id         0              0                  true if quest_id was rewarded before
+    CONDITION_QUESTTAKEN            : "9",                    // quest_id         0,             0                  true while quest active
+    CONDITION_DRUNKENSTATE          : "10",                   // DrunkenState     0,             0                  true if player is drunk enough
+    CONDITION_WORLD_STATE           : "11",  //NYI            // index            value          0                  true if world has the value for the index
+    CONDITION_ACTIVE_EVENT          : "12",                   // event_id         0              0                  true if event is active
+    CONDITION_INSTANCE_INFO         : "13",                   // entry            data           type               true if the instance info defined by type (enum InstanceInfo) equals data.
+    CONDITION_QUEST_NONE            : "14",                   // quest_id         0              0                  true if doesn't have quest saved
+    CONDITION_CLASS                 : "15",                   // class            0              0                  true if player's class is equal to class
+    CONDITION_RACE                  : "16",                   // race             0              0                  true if player's race is equal to race
+    CONDITION_ACHIEVEMENT           : "17",  //NI - LK        // achievement_id   0              0                  true if achievement is complete
+    CONDITION_TITLE                 : "18",                   // title id         0              0                  true if player has title
+    CONDITION_SPAWNMASK             : "19",                   // spawnMask        0              0                  true if in spawnMask
+    CONDITION_GENDER                : "20",                   // gender           0              0                  true if player's gender is equal to gender
+    CONDITION_UNIT_STATE            : "21",                   // unitState        0              0                  true if unit has unitState
+    CONDITION_MAPID                 : "22",                   // map_id           0              0                  true if in map_id
+    CONDITION_AREAID                : "23",                   // area_id          0              0                  true if in area_id
+    CONDITION_CREATURE_TYPE         : "24",                   // cinfo.type       0              0                  true if creature_template.type : value1
+    CONDITION_SPELL                 : "25",                   // spell_id         0              0                  true if player has learned spell
+    CONDITION_PHASEMASK             : "26",                   // phasemask        0              0                  true if object is in phasemask
+    CONDITION_LEVEL                 : "27",                   // level            ComparisonType 0                  true if unit's level is equal to param1 (param2 can modify the statement)
+    CONDITION_QUEST_COMPLETE        : "28",                   // quest_id         0              0                  true if player has quest_id with all objectives complete, but not yet rewarded
+    CONDITION_NEAR_CREATURE         : "29",                   // creature entry   distance       0                  true if there is a creature of entry in range
+    CONDITION_NEAR_GAMEOBJECT       : "30",                   // gameobject entry distance       0                  true if there is a gameobject of entry in range
+    CONDITION_OBJECT_ENTRY_GUID     : "31",                   // TypeID           entry          guid               true if object is type TypeID and the entry is 0 or matches entry of the object or matches guid of the object
+    CONDITION_TYPE_MASK             : "32",                   // TypeMask         0              0                  true if object is type object's TypeMask matches provided TypeMask
+    CONDITION_RELATION_TO           : "33",                   // ConditionTarget  RelationType   0                  true if object is in given relation with object specified by ConditionTarget
+    CONDITION_REACTION_TO           : "34",     //NYI         // ConditionTarget  rankMask       0                  true if object's reaction matches rankMask object specified by ConditionTarget
+    CONDITION_DISTANCE_TO           : "35",                   // ConditionTarget  distance       ComparisonType     true if object and ConditionTarget are within distance given by parameters
+    CONDITION_ALIVE                 : "36",                   // 0                0              0                  true if unit is alive
+    CONDITION_HP_VAL                : "37",                   // hpVal            ComparisonType 0                  true if unit's hp matches given value
+    CONDITION_HP_PCT                : "38",                   // hpPct            ComparisonType 0                  true if unit's hp matches given pct
+    CONDITION_REALM_ACHIEVEMENT     : "39",                   // achievement_id   0              0                  true if realm achievement is complete
+    CONDITION_IN_WATER              : "40",                   // 0                0              0                  true if unit in water
+    CONDITION_MAX                   : "41"                    // MAX
+};
+
+
 var GuidName        = $('#guidName'); 
 var GossipUI        = $('.gossip');
 var GossipName      = $('.guid_name');
@@ -102,13 +180,11 @@ $('#add').click(function() {
         function(response) {
             console.log(response);
             
-            
-            if(!Data.menus) {
-                var MenuCount = -1;
-                var NewMenuCount = -1;
-            } else {
-                var NewMenuCount = Data.menus.length;
-                var MenuCount = Data.menus.length;
+            var MenuCount =  -1;
+            var NewMenuCount =  -1;
+            if(Data.menus) {
+                NewMenuCount = Data.menus.length;
+                MenuCount = Data.menus.length;
             }
 
             if(!Data.menus || Data.menus > 0) {
@@ -121,14 +197,11 @@ $('#add').click(function() {
             }
 
             for(i = MenuCount; i == NewMenuCount++; i++) {
-                if (!Data.menus) {
+                if (!Data.menus)
                     Data.menus = [{}];
-                    var newMenu = { id: response.new, text0: "", text1: "",};
-                    Data.menus[i] = newMenu;
-                } else {
-                    var newMenu = { id: response.new, text0: "", text1: "", };
-                    Data.menus[i] = newMenu;
-                }
+					
+				Data.menus[i] = { id: response.new, text0: "", text1: "", };
+					
                 Menus.show();
                 MenusSelect.show();
                 MenusSelect.append('<option value="' + i +'">' + response.new +'</option>').show();
@@ -143,14 +216,10 @@ $('#add').click(function() {
 
 function Option(mode, data, i) {
     if(mode === "new") {
-        if (!data.options) {
+        if (!data.options)
             data.options = [{}];
-            var i = {id: "0", icon: "0", text: "", next: ""};
-            data.options[i] = i;
-        } else {
-            var i = {id: NewOptionsCount, icon: "0", text: "", next: ""};
-            data.options[i] = i;
-        }
+			
+		data.options[i] = {id: "0", icon: "0", text: "", next: ""};
     }
     if (mode === "display" || mode === "new") {
         GossipIcon = getIcon(data.options[i].icon);
@@ -197,16 +266,16 @@ function displayGossip(mode, data, menu) {
         }
     }
     
+	var Menu = 0;
     if(mode === "new" && data.menus.length > 1) {
-        var Menu = 0 ;
         $('#menusselectdiv option[value="' + Menu + '"]').html(data.menus[Menu].id + ' (Principal)');
         MenusSelect.val(Menu);
     } else {
-        var Menu = MenusSelect.val();
+        Menu = MenusSelect.val();
     }
 	
 	if(menu !== null) {
-		var Menu = menu;
+		Menu = menu;
 		MenusSelect.val(Menu);
 	}
     
@@ -229,15 +298,15 @@ function displayGossip(mode, data, menu) {
 		'</div>');
 
         // Adds the gossips
-        if(data.menus[Menu].text0 != null) {
+        if(data.menus[Menu].text0 !== null) {
             $('#gossip_text').html(data.menus[Menu].text0);
             $('.gossip_text').html(data.menus[Menu].text0);
         }
-        if(data.menus[Menu].text1 != null) {
+        if(data.menus[Menu].text1 !== null) {
             $('#gossip_text').html(data.menus[Menu].text1);
             $('.gossip_text').html(data.menus[Menu].text1);
         }
-        if(data.menus[Menu].text0 != null && data.menus[Menu].text1 != null) {
+        if(data.menus[Menu].text0 !== null && data.menus[Menu].text1 !== null) {
             $('#gossip_text').html(data.menus[Menu].text0);
             $('.gossip_text').html(data.menus[Menu].text0);
         }
@@ -288,7 +357,7 @@ function displayGossip(mode, data, menu) {
 			$(this).closest('td').next('td').html('');
 			$(this).closest('td').next('td').next('td').html('');
 			$(this).closest('td').next('td').next('td').next('td').html('');
-			getConditionType(data, NewType);
+			appendConditionInputForm(data, NewType);
 		});
 
         // Adds the options
@@ -315,7 +384,7 @@ function displayGossip(mode, data, menu) {
             var ActualMenu = $('#menusselect').val();
             var ID = Data.menus[ActualMenu];
 
-            if(ID.options.length == 0 && OptionsCount == null) {
+            if(ID.options.length == 0 && OptionsCount === null) {
                 OptionsCount = -1;
                 NewOptionsCount = -1;
             }
@@ -334,11 +403,12 @@ function displayGossip(mode, data, menu) {
 			var Source;
 			var NewCondMenu = data.menus[Menu].id;
 			var NewCondOption = 0;
+			var NewCondID;
 			if (NewCondition >= 100) {
-				var NewCondID = 'Menu ' + NewCondition;
+				NewCondID = 'Menu ' + NewCondition;
 				Source = 14;
 			} else {
-				var NewCondID = 'Option ' + NewCondition;
+				NewCondID = 'Option ' + NewCondition;
 				Source = 15;
 			}
 			
@@ -350,7 +420,7 @@ function displayGossip(mode, data, menu) {
 				success: 
 					function(response) {
 						console.log(response);
-						Condition("new", response, i)
+						Condition("new", response, i);
 					},
 				error:
 					function() {
@@ -380,28 +450,27 @@ function Condition(mode, data, i) {
     if(mode === "new") {
         if (!data.conditions) {
             data.conditions = [{}];
-            var i = {source: "0", type: "0", target: "0", reverse: "0", value1: "0", value2: "0", value3: "0"};
-			
-			if(data.source == 14) {
-            	var i = {id: data.id, source: "14", type: "0", target: "0", reverse: "0", value1: "0", value2: "0", value3: "0"};
-			}
-			if(data.source == 15) {
-            	var i = {id: data.id, source: "15", type: "0", target: "0", reverse: "0", value1: "0", value2: "0", value3: "0"};
-			}
-            data.conditions[i] = i;
+            
+			if(data.source == ConditionSourceType.CONDITION_SOURCE_TYPE_GOSSIP_MENU) 
+            	data.conditions[i] = {id: data.id, source: "14", type: "0", target: "0", reverse: "0", value1: "0", value2: "0", value3: "0"};
+			if(data.source == ConditionSourceType.CONDITION_SOURCE_TYPE_GOSSIP_MENU_OPTION)
+            	data.conditions[i] = {id: data.id, source: "15", type: "0", target: "0", reverse: "0", value1: "0", value2: "0", value3: "0"};
+			else
+				data.conditions[i] = {source: "0", type: "0", target: "0", reverse: "0", value1: "0", value2: "0", value3: "0"};
         }
     }
 
-	if (data.conditions[i].source == 14) {
-		var NewCondID = 'Menu ' + data.id;
-	} else if (data.conditions[i].source == 15) {
-		var NewCondID = 'Option ' + i;
+	var NewCondID;
+	if (data.conditions[i].source == ConditionSourceType.CONDITION_SOURCE_TYPE_GOSSIP_MENU) {
+		NewCondID = 'Menu ' + data.id;
+	} else if (data.conditions[i].source == ConditionSourceType.CONDITION_SOURCE_TYPE_GOSSIP_MENU_OPTION) {
+		NewCondID = 'Option ' + i;
 	}
 
-	if (data.source == 14) {
-		var NewCondID = 'Menu ' + data.menu;
-	} else if (data.source == 15) {
-		var NewCondID = 'Option ' + data.option;
+	if (data.source == ConditionSourceType.CONDITION_SOURCE_TYPE_GOSSIP_MENU) {
+		NewCondID = 'Menu ' + data.menu;
+	} else if (data.source == ConditionSourceType.CONDITION_SOURCE_TYPE_GOSSIP_MENU_OPTION) {
+		NewCondID = 'Option ' + data.option;
 	}
 	
     if (mode === "display" || mode === "new") {
@@ -457,31 +526,31 @@ function Condition(mode, data, i) {
 		
 		var ConditionType = $('#condition_' + data.conditions[i].id);
 		ConditionType.val(data.conditions[i].type);
-		getConditionType(data.conditions[i], data.conditions[i].type);
+		appendConditionInputForm(data.conditions[i], data.conditions[i].type);
 		
 		$('#condition_' + data.conditions[i].id).change(function() {
 			var NewType = $(this).val();
 			$(this).closest('td').next('td').html('');
 			$(this).closest('td').next('td').next('td').html('');
 			$(this).closest('td').next('td').next('td').next('td').html('');
-			getConditionType(data.conditions[i], NewType);
+			appendConditionInputForm(data.conditions[i], NewType);
 		});
     }
 }
 
 function getIcon(data) {
     switch(data) {
-        case "0": return "GossipGossipIcon"; break;
-        case "1": return "VendorGossipIcon"; break;
-        case "2": return "TaxiGossipIcon"; break;
-        case "3": return "TrainerGossipIcon"; break;
-        case "4": return "BinderGossipIcon"; break;
-        case "5": return "HealerGossipIcon"; break;
-        case "6": return "BankerGossipIcon"; break;
-        case "7": return "PetitionGossipIcon"; break;
-        case "8": return "TabardGossipIcon"; break;
-        case "9": return "BattleMasterGossipIcon"; break;
-        case "10": return "UI-Quest-BulletPoint"; break;
+        case "0": return "GossipGossipIcon";
+        case "1": return "VendorGossipIcon";
+        case "2": return "TaxiGossipIcon";
+        case "3": return "TrainerGossipIcon";
+        case "4": return "BinderGossipIcon";
+        case "5": return "HealerGossipIcon";
+        case "6": return "BankerGossipIcon";
+        case "7": return "PetitionGossipIcon";
+        case "8": return "TabardGossipIcon";
+        case "9": return "BattleMasterGossipIcon";
+        case "10": return "UI-Quest-BulletPoint";
         default: return;
     }
 }
@@ -547,16 +616,16 @@ function saveCondition(id) {
     });
 }
 
-function getConditionType(data, type) {
+function appendConditionInputForm(data, type) {
 	var ConditionType = $('#condition_' + data.id);
 	
 	switch(type) {
-		case "1": // Aura
+		case ConditionType.CONDITION_AURA: // Aura
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Spell ID" title="Spell ID" value="' + data.value1 + '" />');
 			ConditionType.closest('td').next('td').next('td').append('<input type="text" class="form-control" placeholder="Effect index" title="Effect index" value="' + data.value2 + '" />');
 			break;
 
-		case "2": // Item
+		case ConditionType.CONDITION_ITEM: // Item
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Item ID" title="Item ID" value="' + data.value1 + '" />');
 			ConditionType.closest('td').next('td').next('td').append('<input type="text" class="form-control" placeholder="Count" title="Count" value="' + data.value2 + '" />');
 			ConditionType.closest('td').next('td').next('td').next('td').append('<select class="form-control" id="bank_' + data.id + '">' +
@@ -566,60 +635,60 @@ function getConditionType(data, type) {
 			$('#bank_' + data.id).val(data.value3);
 			break;
 
-		case "3": // Item equipped
+		case ConditionType.CONDITION_ITEM_EQUIPPED: // Item equipped
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Item ID" title="Item ID" value="' + data.value1 + '" />');
 			break;
 
-		case "4": // ZoneID
+		case ConditionType.CONDITION_ZONEID: // ZoneID
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Zone ID" title="Zone ID" value="' + data.value1 + '" />');
 			break;
 
-		case "5": // Faction ID
+		case ConditionType.CONDITION_REPUTATION_RANK: // Faction ID
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Faction ID" title="Faction ID" value="' + data.value1 + '" />');
 			ConditionType.closest('td').next('td').next('td').append('<input type="text" class="form-control" placeholder="rankMask" title="rankMask" value="' + data.value2 + '" />');
 			break;
 
-		case "6": // Team
+		case ConditionType.CONDITION_TEAM: // Team
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Player team" title="Player Team" value="' + data.value1 + '" />');
 			break;
 
-		case "7": // Skill
+		case ConditionType.CONDITION_SKILL: // Skill
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Skill ID" title="Skill ID" value="' + data.value1 + '" />');
 			ConditionType.closest('td').next('td').next('td').append('<input type="text" class="form-control" placeholder="Skill value" title="Skill value" value="' + data.value2 + '" />');
 			break;
 
-		case "8": // Quest rewarded
+		case ConditionType.CONDITION_QUESTREWARDED: // Quest rewarded
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Quest ID" title="Quest ID" value="' + data.value1 + '" />');
 			break;
 
-		case "9": // Quest taken
+		case ConditionType.CONDITION_QUESTTAKEN: // Quest taken
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Quest ID" title="Quest ID" value="' + data.value1 + '" />');
 			break;
 
-		case "10": // Drunken state
+		case ConditionType.CONDITION_DRUNKENSTATE: // Drunken state
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Drunken state" title="Drunken state" value="' + data.value1 + '" />');
 			break;
 
-		case "11": // World state
+		case ConditionType.CONDITION_WORLD_STATE: // World state
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Index" title="Index" value="' + data.value1 + '" />');
 			ConditionType.closest('td').next('td').next('td').append('<input type="text" class="form-control" placeholder="Value" title="Value" value="' + data.value2 + '" />');
 			break;
 
-		case "12": // Active event
+		case ConditionType.CONDITION_ACTIVE_EVENT: // Active event
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Event ID" title="Event ID" value="' + data.value1 + '" />');
 			break;
 
-		case "13": // Instance info
+		case ConditionType.CONDITION_INSTANCE_INFO: // Instance info
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Entry" title="Entry" value="' + data.value1 + '" />');
 			ConditionType.closest('td').next('td').next('td').append('<input type="text" class="form-control" placeholder="Data" title="Data" value="' + data.value2 + '" />');
 			ConditionType.closest('td').next('td').next('td').next('td').append('<input type="text" class="form-control" placeholder="Type" title="Type" value="' + data.value3 + '" />');
 			break;
 
-		case "14": // Quest none
+		case ConditionType.CONDITION_QUEST_NONE: // Quest none
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Quest ID" title="Quest ID" value="' + data.value1 + '" />');
 			break;
 
-		case "15": // Class
+		case ConditionType.CONDITION_CLASS: // Class
 			ConditionType.closest('td').next('td').append('<select class="form-control" id="class_' + data.id + '" onchange="updateCondition(' + data.id + ', 1, this.value)">' +
 				'	<option value="1">Warrior</option>' +
 				'	<option value="2">Paladin</option>' +
@@ -634,7 +703,7 @@ function getConditionType(data, type) {
 			$('#class_' + data.id).val(data.value1);
 			break;
 
-		case "16": // Race
+		case ConditionType.CONDITION_RACE: // Race
 			ConditionType.closest('td').next('td').append('<select class="form-control" id="race_' + data.id + '" onchange="updateCondition(' + data.id + ', 1, this.value)">' +
 				'	<option value="1">Human</option>' +
 				'	<option value="2">Orc</option>' +
@@ -649,59 +718,60 @@ function getConditionType(data, type) {
 				'</select>');
 			$('#race_' + data.id).val(data.value1);
 			break;
-
-		case "18": // Title
+		//case CONDITION_ACHIEVEMENT
+		case ConditionType.CONDITION_TITLE: // Title
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Title ID" title="Title ID" value="' + data.value1 + '" />');
 			break;
-
-		case "20": // Gender
+	    //case CONDITION_SPAWNMASK
+		case ConditionType.CONDITION_GENDER: // Gender
 			ConditionType.closest('td').next('td').append('<select class="form-control" id="gender_' + data.id + '" onchange="updateCondition(' + data.id + ', 1, this.value)">' +
 				'	<option value="0">Male</option>' +
 				'	<option value="1">Female</option>' +
 				'</select>');
 			$('#gender_' + data.id).val(data.value1);
 			break;
-
-		case "22": // Map ID
+		//case CONDITION_UNIT_STATE
+		case ConditionType.CONDITION_MAPID: // Map ID
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Map ID" title="Map ID" value="' + data.value1 + '" />');
 			break;
-
-		case "23": // Area ID
+		case ConditionType.CONDITION_AREAID: // Area ID
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Area ID" title="Area ID" value="' + data.value1 + '" />');
 			break;
-
-		case "25": // Spell
+		//case CONDITION_CREATURE_TYPE
+		case ConditionType.CONDITION_SPELL: // Spell
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Spell ID learnt" title="Spell ID learnt" value="' + data.value1 + '" />');
 			break;
-
-		case "27": // Level
+		//case CONDITION_PHASEMASK
+		case ConditionType.CONDITION_LEVEL: // Level
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Level" title="Level" value="' + data.value1 + '" />');
 			ConditionType.closest('td').next('td').next('td').append('<input type="text" class="form-control" placeholder="Comparison" title="Comparison" value="' + data.value1 + '" />');
 			break;
-
-		case "28": // Quest complete
+		case ConditionType.CONDITION_QUEST_COMPLETE: // Quest complete
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Quest ID" title="Quest ID" value="' + data.value1 + '" />');
 			break;
-
-		case "29": // Near creature
+		case ConditionType.CONDITION_NEAR_CREATURE: // Near creature
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Entry" title="Entry" value="' + data.value1 + '" />');
 			ConditionType.closest('td').next('td').next('td').append('<input type="text" class="form-control" placeholder="Range" title="Range" value="' + data.value1 + '" />');
 			break;
 
-		case "30": // Near gameobject
+		case ConditionType.CONDITION_NEAR_GAMEOBJECT: // Near gameobject
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="Entry" title="Entry" value="' + data.value1 + '" />');
 			ConditionType.closest('td').next('td').next('td').append('<input type="text" class="form-control" placeholder="Range" title="Range" value="' + data.value1 + '" />');
 			break;
-
-		case "37": // HP val
+		//case CONDITION_OBJECT_ENTRY_GUID
+		//...
+		//case CONDITION_ALIVE
+		case ConditionType.CONDITION_HP_VAL: // HP val
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="HP val" title="HP val" value="' + data.value1 + '" />');
 			ConditionType.closest('td').next('td').next('td').append('<input type="text" class="form-control" placeholder="Comparison" title="Comparison" value="' + data.value1 + '" />');
 			break;
-
-		case "38": // HP %
+		case ConditionType.CONDITION_HP_PCT: // HP %
 			ConditionType.closest('td').next('td').append('<input type="text" class="form-control" placeholder="HP %" title="HP %" value="' + data.value1 + '" />');
 			ConditionType.closest('td').next('td').next('td').append('<input type="text" class="form-control" placeholder="Comparison" title="Comparison" value="' + data.value1 + '" />');
 			break;
-		default: return;
+		//case CONDITION_REALM_ACHIEVEMENT
+		//case CONDITION_IN_WATER
+		default: 
+			break;
 	}
 }

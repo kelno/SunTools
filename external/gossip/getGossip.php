@@ -43,7 +43,7 @@ function getMenuOptions($id)
 }
 
 // Return the conditions of a menu in the form of an array of [ id, source, type, target, reverse, value1, value2, value3 ]
-function getConditions($id, $textid)
+function getMenuConditions($id, $textid)
 {
     global $handler;
     
@@ -51,9 +51,24 @@ function getConditions($id, $textid)
 										 ConditionTarget as target, NegativeCondition as reverse,
 										 ConditionValue1 as value1, ConditionValue2 as value2, ConditionValue3 as value3
                                   FROM conditions
-                                  WHERE SourceGroup = :menu AND SourceEntry = :textid');
+                                  WHERE SourceTypeOrReferenceId = 14 AND SourceGroup = :menu AND SourceEntry = :textid'); // CONDITION_SOURCE_TYPE_GOSSIP_MENU = 14
     $getMenu->bindValue(':menu', $id, PDO::PARAM_INT);
     $getMenu->bindValue(':textid', $textid, PDO::PARAM_INT);
+    $getMenu->execute();
+    return $getMenu->fetchAll();
+}
+
+// Return the conditions of a menu option in the form of an array of [ id, source, type, target, reverse, value1, value2, value3 ]
+function getMenuOptionsConditions($id)
+{
+    global $handler;
+    
+    $getMenu = $handler->prepare('SELECT id, SourceTypeOrReferenceId as source, ConditionTypeOrReference as type,
+										 ConditionTarget as target, NegativeCondition as reverse,
+										 ConditionValue1 as value1, ConditionValue2 as value2, ConditionValue3 as value3
+                                  FROM conditions
+                                  WHERE SourceTypeOrReferenceId = 15 AND SourceGroup = :menu'); // CONDITION_SOURCE_TYPE_GOSSIP_MENU_OPTION = 15
+    $getMenu->bindValue(':menu', $id, PDO::PARAM_INT);
     $getMenu->execute();
     return $getMenu->fetchAll();
 }
@@ -81,7 +96,7 @@ function addMenuAndChildren($id, & $array)
     ];
     
     //process conditions
-    $menuConditionsDB = getConditions($id, $menuDB["text_id"]);
+    $menuConditionsDB = getMenuConditions($id, $menuDB["text_id"]);
     foreach($menuConditionsDB as $key => $condition)
     {
         $menu["conditions"][$key] = [
@@ -109,7 +124,7 @@ function addMenuAndChildren($id, & $array)
         ];
 		
 		//process options conditions
-		$menuOptionsConditionsDB = getConditions($id, $key);
+		$menuOptionsConditionsDB = getMenuOptionsConditions($id);
 		foreach($menuOptionsConditionsDB as $keyCondition => $condition)
 		{
 			$menu["options"][$key]["conditions"][$keyCondition] = [
