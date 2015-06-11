@@ -8,19 +8,20 @@ try {
     echo $e->getMessage();
     die();
 }               
+	
+try { 
+	// Get a new menu id
+	$select         = $handler->query('SELECT MAX(entry) as maxMenu FROM gossip_menu');
+	$select->execute();
+	$getSelect = $select->fetch();
 
-if(isset($_GET['guid']) && preg_match('/[0-9]+/', $_GET['guid'])
-&& isset($_GET['newmenu']) && $_GET['newmenu'] == true ){
-   $guid           = htmlspecialchars($_GET['guid']);
+	$maxMenu = $getSelect['maxMenu'] + 1;
+	$Infos = [ "new"   => $maxMenu ];
 
-    // Get a new menu id
-    $select         = $handler->query('SELECT MAX(entry) as maxMenu FROM gossip_menu');
-    $select->execute();
-    $getSelect = $select->fetch();
-
-    $maxMenu = $getSelect['maxMenu'] + 1;
-
-    $Infos = [ "new"   => $maxMenu ];
-    
-    echo json_encode($Infos);
-}
+	echo json_encode($Infos);
+	
+} catch (PDOException $e) {
+  http_response_code(500);
+  echo $e;
+  die();
+} 

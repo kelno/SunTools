@@ -8,7 +8,7 @@ try {
     die();
 }               
 
-if(!isset($_GET['guid']) || !preg_match('/[0-9]+/', $_GET['guid']))
+if(!isset($_GET['entry']) || !preg_match('/^[0-9]+$/', $_GET['entry']))
 {
     http_response_code(400);
     die();
@@ -17,6 +17,9 @@ if(!isset($_GET['guid']) || !preg_match('/[0-9]+/', $_GET['guid']))
 // Return a menu in the form [ entry, text0_0, text0_1 ]
 function getMenu($id)
 {
+		if($id == 0)
+			return array("entry" => "0", "text_id" => "0", "text0_0" => "", "text0_1" => "");
+		
     global $handler;
     
     $getMenu = $handler->prepare('SELECT entry, text_id, text0_0, text0_1
@@ -86,42 +89,48 @@ function hasMenu($array, $id)
 // Add a menu and all its children (referenced in its options) to $array
 function addMenuAndChildren($id, & $array)
 {
-    $menuDB = getMenu($id);
-    $menu = [
-        "id"      		=> $id,
-        "text0"   		=> $menuDB["text0_0"],
-        "text1"   		=> $menuDB["text0_1"],
-        "options" 		=> [ ],
+	$menuDB = getMenu($id);
+	$menu = [
+		"id"      		=> $id,
+		"text0"   		=> $menuDB["text0_0"],
+		"text1"   		=> $menuDB["text0_1"],
+		"options" 		=> [ ],
 		"conditions" 	=> [ ],
-    ];
-    
-    //process conditions
-    $menuConditionsDB = getMenuConditions($id, $menuDB["text_id"]);
-    foreach($menuConditionsDB as $key => $condition)
-    {
-        $menu["conditions"][$key] = [
+	];
+
+	//stop here if no id given
+	if($id == 0) {
+		array_push($array["menus"], $menu);
+		return;
+	}
+		
+	//process conditions
+	$menuConditionsDB = getMenuConditions($id, $menuDB["text_id"]);
+	foreach($menuConditionsDB as $key => $condition)
+	{
+		$menu["conditions"][$key] = [
 			"id"		=> $condition['id'],
-           	"source"  	=> $condition['source'],
-           	"type"  	=> $condition['type'],
-           	"target"  	=> $condition['target'],
-           	"value1"  	=> $condition['value1'],
-           	"value2"  	=> $condition['value2'],
-           	"value3"  	=> $condition['value3'],
-           	"reverse"  	=> $condition['reverse'],
-        ];
-    }
-    
-    //process options
-    $menuOptionsDB = getMenuOptions($id);
-    foreach($menuOptionsDB as $key => $option)
-    {
-        $menu["options"][$key] = [
-           	"id"    		=> $option['id'],
-           	"icon"  		=> $option['option_icon'],
-           	"text"  		=> $option['option_text'],
-           	"next"  		=> $option['action_menu_id'],
+			"source"  	=> $condition['source'],
+			"type"  	=> $condition['type'],
+			"target"  	=> $condition['target'],
+			"value1"  	=> $condition['value1'],
+			"value2"  	=> $condition['value2'],
+			"value3"  	=> $condition['value3'],
+			"reverse"  	=> $condition['reverse'],
+		];
+	}
+
+	//process options
+	$menuOptionsDB = getMenuOptions($id);
+	foreach($menuOptionsDB as $key => $option)
+	{
+		$menu["options"][$key] = [
+			"id"    		=> $option['id'],
+			"icon"  		=> $option['option_icon'],
+			"text"  		=> $option['option_text'],
+			"next"  		=> $option['action_menu_id'],
 			"conditions"	=> [ ],
-        ];
+		];
 		
 		//process options conditions
 		$menuOptionsConditionsDB = getMenuOptionsConditions($id);
@@ -129,37 +138,35 @@ function addMenuAndChildren($id, & $array)
 		{
 			$menu["options"][$key]["conditions"][$keyCondition] = [
 				"id"		=> $condition['id'],
-			   	"source"  	=> $condition['source'],
-			   	"type"  	=> $condition['type'],
-			   	"target"  	=> $condition['target'],
-			   	"value1"  	=> $condition['value1'],
-			   	"value2"  	=> $condition['value2'],
-			   	"value3"  	=> $condition['value3'],
-			   	"reverse"  	=> $condition['reverse'],
+				"source"  	=> $condition['source'],
+				"type"  	=> $condition['type'],
+				"target"  	=> $condition['target'],
+				"value1"  	=> $condition['value1'],
+				"value2"  	=> $condition['value2'],
+				"value3"  	=> $condition['value3'],
+				"reverse"  	=> $condition['reverse'],
 			];
 		}
-    }
-    
-    array_push($array["menus"], $menu);
-    
-    //if any option points to a menu, process it too
-    foreach($menuOptionsDB as $key => $option)
-    {
-        $next = $menu["options"][$key]["next"];
-        if($next != 0 && !hasMenu($array, $next))
-            addMenuAndChildren($next, $array);
-    }
+	}
+
+	array_push($array["menus"], $menu);
+
+	//if any option points to a menu, process it too
+	foreach($menuOptionsDB as $key => $option)
+	{
+		$next = $menu["options"][$key]["next"];
+		if($next != 0 && !hasMenu($array, $next))
+			addMenuAndChildren($next, $array);
+	}
 }
 
 // Get the creature name and the root menu id in database
-$guid = htmlspecialchars($_GET['guid']);
+$entry = htmlspecialchars($_GET['entry']);
 
-$getRootMenuInfo = $handler->prepare('SELECT cg.menu_id as id, ct.name
-                                      FROM creature c
-                                      LEFT JOIN creature_gossip cg ON cg.npc_guid = c.guid
-                                      JOIN creature_template ct ON ct.entry = c.id
-                                      WHERE c.guid = :guid');
-$getRootMenuInfo->bindValue(':guid', $guid, PDO::PARAM_INT);
+$getRootMenuInfo = $handler->prepare('SELECT gossip_menu_id AS id, name
+                                      FROM creature_template
+                                      WHERE entry = :entry');
+$getRootMenuInfo->bindValue(':entry', $entry, PDO::PARAM_INT);
 $getRootMenuInfo->execute();
 $rootMenuInfo = $getRootMenuInfo->fetch();
 

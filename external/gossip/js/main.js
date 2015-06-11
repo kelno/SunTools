@@ -78,7 +78,7 @@ var ConditionTypes =
 };
 
 
-var GuidName        = $('#guidName'); 
+var CreatureName      = $('#creatureName'); 
 var GossipUI        = $('.gossip');
 var GossipName      = $('.guid_name');
 var GossipText      = $('#gossip_text');
@@ -103,11 +103,11 @@ AddMenu.hide();
 Menus.hide();
 MenusSelect.hide();
 
-$('#guid').keyup(function(){
-    var Guid    = $(this).val();
+$('#entry').keyup(function(){
+    var Entry    = $(this).val();
     $.ajax({
     type : 'GET',
-    data : 'guid=' + Guid,
+    data : 'entry=' + Entry,
     url  : 'getGossip.php',
     //url  : 'getInfos.php',
     dataType: 'json',
@@ -127,7 +127,7 @@ $('#guid').keyup(function(){
             
             if(data.name !== null) {
                 console.log(data);
-                GuidName.html(data.name);
+                CreatureName.html(data.name);
                 
                 if(data.options) {
                     OptionsCount    = data.options.length;
@@ -148,8 +148,8 @@ $('#guid').keyup(function(){
                 AddMenu.show();
             }
             
-            if(Guid.length === 0 || data.name === null) {
-                GuidName.html('Guid');
+            if(Entry.length === 0 || data.name === null) {
+                CreatureName.html('Creature Name');
                 GossipName.html('');
                 $('#result').html('');
                 Menus.hide();
@@ -170,10 +170,8 @@ MenusSelect.change(function() {
 
 $('#add').click(function() {
     $('#result').html('');
-    //var Guid    = $('#guid').val();
     $.ajax({
     type : 'GET',
-    data : 'guid=' + Guid + '&newmenu=true',
     url  : 'setNewMenu.php',
     dataType: 'json',
     success: 
@@ -190,6 +188,8 @@ $('#add').click(function() {
 			MenusSelect.show();
 			MenusSelect.append('<option value="' + newMenuIndex +'">' + response.new +'</option>').show();
 			MenusSelect.val(newMenuIndex);
+			
+			$("#gossip_text").removeAttr("disabled");
 			
             displayGossip("display", Data, null);
         }
@@ -259,7 +259,7 @@ function displayGossip(mode, data, menu) {
 		Menu = menu;
 		MenusSelect.val(Menu);
 	}
-    
+	
     if(mode === "new" || mode === "display") {
         // Adds the GossipUI
         $('#result').append('' +
@@ -425,6 +425,9 @@ function displayGossip(mode, data, menu) {
         });
     }
     
+	//disable text input if no menu
+	if(data.menus.length == 1 && data.menus[0].id == 0)
+		$("#gossip_text").prop("disabled", true);
 }
 
 function Condition(mode, data, i) {
@@ -538,10 +541,10 @@ function getIcon(data) {
 }
 
 function updateGossip(Menu, Value) {
-    var Guid = $('#guid').val();
+    var Entry = $('#entry').val();
     $.ajax({
     type : 'GET',
-    data : 'guid=' + Guid + '&menu=' + Menu + '&value=' + Value,
+    data : 'entry=' + Entry + '&menu=' + Menu + '&value=' + Value,
     url  : 'setGossip.php'
     });
 }
@@ -556,7 +559,6 @@ function updateOption(Menu, id, Info, Value) {
 		$('#option_' + id).attr('title', 'Next menu:' + Value);
 	}
 	
-    var Guid = $('#guid').val();
     $.ajax({
     type : 'GET',
     data : 'menu=' + Menu + '&id=' + id + '&info=' + Info + '&value=' + Value,
