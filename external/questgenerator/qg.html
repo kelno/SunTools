@@ -9,19 +9,20 @@
 		<script type="text/javascript" src="qg.js" language="javascript"></script>
 	</head>
 	<body onload="disableCheckboxes();">
-		<h1>Veuillez frapper votre tête sur le clavier : </h1> 
+		<h1>Veuillez frapper votre tête sur le clavier : </h1>
 		<p> Ce générateur ne fait que générer des requêtes qu'il faut garder et qui peuvent être appliquées par la suite par votre dev favori du moment. </p>
+		<p class="red">A mettre à jour avec le schéma de database</p>
 		<noscript>
 			<div class="warning">
 			Vous n'avez pas activé les scripts dans votre navigateur. Aucune vérification ne sera faite. Soyez prudent !
 			</div>
 		</noscript>
 		<br/>
-		<form name="input" action="questgenerator.php" method="post" onsubmit="return verif();">
+		<form name="input" action="index.php" method="post" onsubmit="return verif();">
 			<fieldset class="fs1">
 			<legend>Informations générales</legend>
 				<div class="check strVide" value="strVide">
-				ID Quête <img class="help" title="Si c'est pour une quête unique mettez nimp et précisez le moi, si c'est pour une suite idéalement demandez moi la premiere ID dispo, ça m'évitera de modifier chaque quête par la suite pour créer la suite. Ou alternativement mettez un n'importe quoi cohérent, si vous mettez une id 'canard', mettez 'canard' dans ID quête précédente dans la quête suivante." src="question-mark.png" alt="[?]"/> : 
+				ID Quête <img class="help" title="Si c'est pour une quête unique mettez nimp et précisez le moi, si c'est pour une suite idéalement demandez moi la premiere ID dispo, ça m'évitera de modifier chaque quête par la suite pour créer la suite. Ou alternativement mettez un n'importe quoi cohérent, si vous mettez une id 'canard', mettez 'canard' dans ID quête précédente dans la quête suivante." src="question-mark.png" alt="[?]"/> :
 				<input type="text" name="id" min="0" value="123troisptichats"/>
 				</div>
 				Niveau Minimum :
@@ -30,7 +31,7 @@
 				Niveau Quête <img class="help" title="Change uniquement la couleur dans le journal" src="question-mark.png" alt="[?]"/> :
 				<input type="number" name="questlvl" value="70" min="1" max="70"/>
 				<br/>
-				Type <img class="help" title="Le type raid permet d'accomplir une quête en raid, tous les autres n'ont d'autre effet que de changer l'affichage dans le journal des quêtes" src="question-mark.png" alt="[?]"/> : 
+				Type <img class="help" title="Le type raid permet d'accomplir une quête en raid, tous les autres n'ont d'autre effet que de changer l'affichage dans le journal des quêtes" src="question-mark.png" alt="[?]"/> :
 				<select name="type">
 					<option value = "0">Normal</option>
 					<option value = "1">Elite</option>
@@ -59,9 +60,9 @@
 			</fieldset>
 			<fieldset class="fs1">
 				<legend>Liens</legend>
-				ID de la quête précédente <img class="help" title="Laisser à 0 si pas dans une suite" src="question-mark.png" alt="[?]"/> : 
+				ID de la quête précédente <img class="help" title="Laisser à 0 si pas dans une suite" src="question-mark.png" alt="[?]"/> :
 				<input type="number" name="prevquestid" value="0" min="0"/><br/>
-				ID de la quête suivante <img class="help" title="Laisser à 0 si pas dans une suite" src="question-mark.png" alt="[?]"/> : 
+				ID de la quête suivante <img class="help" title="Laisser à 0 si pas dans une suite" src="question-mark.png" alt="[?]"/> :
 				<input type="number" name="nextquestid" value="0" min="0"/> <br/>
 			</fieldset>
 			<fieldset class="fs1">
@@ -157,19 +158,19 @@
 			<fieldset class="fs1">
 				<legend>Récompenses réputations</legend>
 				<div class="check" value="nbrIncoherence0">
-				Faction (id) : <input type="number" name="rewfaction1" value="0" min="0"/> Valeur : <input type="number" name="rewfactionvalue1" value="0" min="0"/> 
+				Faction (id) : <input type="number" name="rewfaction1" value="0" min="0"/> Valeur : <input type="number" name="rewfactionvalue1" value="0" min="0"/>
 				</div>
 				<div class="check" value="nbrIncoherence0">
-				Faction (id) : <input type="number" name="rewfaction2" value="0" min="0"/> Valeur : <input type="number" name="rewfactionvalue2" value="0" min="0"/> 
+				Faction (id) : <input type="number" name="rewfaction2" value="0" min="0"/> Valeur : <input type="number" name="rewfactionvalue2" value="0" min="0"/>
 				</div>
 				<div class="check" value="nbrIncoherence0">
-				Faction (id) : <input type="number" name="rewfaction3" value="0" min="0"/> Valeur : <input type="number" name="rewfactionvalue3" value="0" min="0"/> 
+				Faction (id) : <input type="number" name="rewfaction3" value="0" min="0"/> Valeur : <input type="number" name="rewfactionvalue3" value="0" min="0"/>
 				</div>
 				<div class="check" value="nbrIncoherence0">
-				Faction (id) : <input type="number" name="rewfaction4" value="0" min="0"/> Valeur : <input type="number" name="rewfactionvalue4" value="0" min="0"/> 
+				Faction (id) : <input type="number" name="rewfaction4" value="0" min="0"/> Valeur : <input type="number" name="rewfactionvalue4" value="0" min="0"/>
 				</div>
 				<div class="check" value="nbrIncoherence0">
-				Faction (id) : <input type="number" name="rewfaction5" value="0" min="0"/> Valeur : <input type="number" name="rewfactionvalue5" value="0" min="0"/> 
+				Faction (id) : <input type="number" name="rewfaction5" value="0" min="0"/> Valeur : <input type="number" name="rewfactionvalue5" value="0" min="0"/>
 				</div>
 			</fieldset>
 			<fieldset class="fs1">
@@ -200,7 +201,7 @@
 		<span id="navErrMsg">Erreur n°1</span>
 		<br/>
 		<input type="button" id="navErrSuivBt" value="Erreur suivante" disabled onclick="errGoSuiv();"/>
-		
+
 		<input type="number" id="navErrCurr" value="-1" hidden />
 		<input type="number" id="navErrMax" value="-1" hidden />
 		</div>
