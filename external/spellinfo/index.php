@@ -31,7 +31,6 @@ if (!isset($_GET["id"])) {
 }
 
 $id = htmlspecialchars($_GET["id"]);
-echo "Spell Info : " . $id . "<br>";
 
 include ('Attributes.php');
 include ('Effects.php');
@@ -95,7 +94,9 @@ $effectTriggerSpell[1] = $data[115];
 $effectTriggerSpell[2] = $data[116];
 $spellName = $data[123];
 
-echo "\"" . $spellName . "\"<br><br>";
+echo "Spell Info : " . $id . "<br>";
+echo "Name: <a href=\"http://www.wowhead.com/spell=".$id."\">".$spellName."</a><br>";
+echo "<br>";
 echo "Duration : " . getDuration($durationIndex) . "<br>";
 echo "Casting time : " . getCastingTime($castingTimeIndex) . "<br>";
 echo "Range : " . getRange($rangeIndex) . "<br>";
