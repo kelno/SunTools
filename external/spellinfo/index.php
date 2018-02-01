@@ -37,7 +37,6 @@ $id = htmlspecialchars($_GET["id"]);
 include ('Attributes.php');
 include ('Effects.php');
 include ('Auras.php');
-include ('Targets.php');
 include ('DBC.php');
 
 $fields = "`entry`,`category`,`dispel`,`mechanic`,`attributes`,`attributesEx`,`attributesEx2`,`attributesEx3`,`attributesEx4`,`attributesEx5`,`attributesEx6`,`stances`,`stancesNot`,`targets`,`targetCreatureType`,`requiresSpellFocus`,`facingCasterFlags`,`casterAuraState`,`targetAuraState`,`casterAuraStateNot`,`targetAuraStateNot`,`castingTimeIndex`,`recoveryTime`,`categoryRecoveryTime`,`interruptFlags`,`auraInterruptFlags`,`channelInterruptFlags`,`procFlags`,`procChance`,`procCharges`,`maxLevel`,`baseLevel`,`spellLevel`,`durationIndex`,`powerType`,`manaCost`,`manaCostPerlevel`,`manaPerSecond`,`manaPerSecondPerLevel`,`rangeIndex`,`speed`,`stackAmount`,`totem1`,`totem2`,`reagent1`,`reagent2`,`reagent3`,`reagent4`,`reagent5`,`reagent6`,`reagent7`,`reagent8`,`reagentCount1`,`reagentCount2`,`reagentCount3`,`reagentCount4`,`reagentCount5`,`reagentCount6`,`reagentCount7`,`reagentCount8`,`equippedItemClass`,`equippedItemSubClassMask`,`equippedItemInventoryTypeMask`,`effect1`,`effect2`,`effect3`,`effectDieSides1`,`effectDieSides2`,`effectDieSides3`,`effectBaseDice1`,`effectBaseDice2`,`effectBaseDice3`,`effectDicePerLevel1`,`effectDicePerLevel2`,`effectDicePerLevel3`,`effectRealPointsPerLevel1`,`effectRealPointsPerLevel2`,`effectRealPointsPerLevel3`,`effectBasePoints1`,`effectBasePoints2`,`effectBasePoints3`,`effectMechanic1`,`effectMechanic2`,`effectMechanic3`,`effectImplicitTargetA1`,`effectImplicitTargetA2`,`effectImplicitTargetA3`,`effectImplicitTargetB1`,`effectImplicitTargetB2`,`effectImplicitTargetB3`,`effectRadiusIndex1`,`effectRadiusIndex2`,`effectRadiusIndex3`,`effectApplyAuraName1`,`effectApplyAuraName2`,`effectApplyAuraName3`,`effectAmplitude1`,`effectAmplitude2`,`effectAmplitude3`,`effectMultipleValue1`,`effectMultipleValue2`,`effectMultipleValue3`,`effectChainTarget1`,`effectChainTarget2`,`effectChainTarget3`,`effectItemType1`,`effectItemType2`,`effectItemType3`,`effectMiscValue1`,`effectMiscValue2`,`effectMiscValue3`,`effectMiscValueB1`,`effectMiscValueB2`,`effectMiscValueB3`,`effectTriggerSpell1`,`effectTriggerSpell2`,`effectTriggerSpell3`,`effectPointsPerComboPoint1`,`effectPointsPerComboPoint2`,`effectPointsPerComboPoint3`,`spellVisual`,`spellIconID`,`activeIconID`,`spellName1`,`spellName2`,`spellName3`,`spellName4`,`spellName5`,`spellName6`,`spellName7`,`spellName8`,`spellName9`,`spellName10`,`spellName11`,`spellName12`,`spellName13`,`spellName14`,`spellName15`,`spellName16`,`rank1`,`rank2`,`rank3`,`rank4`,`rank5`,`rank6`,`rank7`,`rank8`,`rank9`,`rank10`,`rank11`,`rank12`,`rank13`,`rank14`,`rank15`,`rank16`,`description1`,`manaCostPercentage`,`startRecoveryCategory`,`startRecoveryTime`,`maxTargetLevel`,`spellFamilyName`,`spellFamilyFlags`,`maxAffectedTargets`,`dmgClass`,`preventionType`,`dmgMultiplier1`,`dmgMultiplier2`,`dmgMultiplier3`,`totemCategory1`,`totemCategory2`,`areaId`,`schoolMask`";
@@ -180,9 +179,9 @@ for ($i = 0; $i < 3; $i += 1)
 		if($baseSpellInfo->effectTriggerSpell[$i] != 0)
 			echo "<div>Trigger Spell " . $baseSpellInfo->effectTriggerSpell[$i] . "</div>";
 		if($baseSpellInfo->effectImplicitTargetA[$i] != 0)
-			echo "<div>ImplicitTargetA " . $baseSpellInfo->effectImplicitTargetA[$i] . "</div>";
+			echo "<div>ImplicitTargetA " . getTarget($baseSpellInfo->effectImplicitTargetA[$i]) . "</div>";
 		if($baseSpellInfo->effectImplicitTargetB[$i] != 0)
-			echo "<div>ImplicitTargetB " . $baseSpellInfo->effectImplicitTargetB[$i] . "</div>";
+			echo "<div>ImplicitTargetB " . getTarget($baseSpellInfo->effectImplicitTargetB[$i]) . "</div>";
 		if($baseSpellInfo->effectRadiusIndex[$i] != 0)
 		    echo "<div>Radius : " . getRadius($baseSpellInfo->effectRadiusIndex[$i]) . "</div>";
 	}

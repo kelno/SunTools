@@ -1,13 +1,14 @@
 <?php
-include ('Durations.php');
-include ('Radius.php');
-include ('Ranges.php');
+include_once ('Durations.php');
+include_once ('Radius.php');
+include_once ('Ranges.php');
+include_once ('Targets.php');
 
 function getRadius($i)
 {
 	global $SpellRadius;
 	if(array_key_exists($i, $SpellRadius))
-		return $SpellRadius[$i].'y (index ' . $i . ')';
+		return $SpellRadius[$i].'y (' . $i . ')';
 	else 
 		return "unknown". " (index " . $i . ")";
 }
@@ -16,21 +17,30 @@ function getRange($i)
 {
 	global $SpellRanges;
 	if(array_key_exists($i, $SpellRanges))
-		return $SpellRanges[$i][0].'-'.$SpellRanges[$i][1].'y "'.$SpellRanges[$i][2].'" (index ' . $i . ")";
+		return $SpellRanges[$i][0].'-'.$SpellRanges[$i][1].'y "'.$SpellRanges[$i][2].'" (' . $i . ")";
 	else 
-		return "unknown". " (index " . $i . ")";
+		return "unknown". " (" . $i . ")";
 }
 
 function getCastingTime($i)
 {
-	return 'index ' . $i;
+	return '? (' . $i . ')';
 }
 
 function getDuration($i)
 {
 	global $SpellDurations;
 	if(array_key_exists($i, $SpellDurations))
-		return $SpellDurations[$i].'ms (index ' . $i . ')';
+		return $SpellDurations[$i].'ms (' . $i . ')';
 	else 
-		return "unknown". " (index " . $i . ")";
+		return "unknown". " (" . $i . ")";
+}
+
+function getTarget($i)
+{
+		global $Targets;
+	if(array_key_exists($i, $Targets))
+		return $Targets[$i].' (' . $i . ')';
+	else 
+		return "unknown". " (" . $i . ")";
 }
