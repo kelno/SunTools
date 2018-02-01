@@ -115,9 +115,10 @@ for ($a = 0; $a < 7; $a += 1)
 }
 
 //Print effects
-echo "<br><h3>Effects List :</h3>";
+echo "<br><h3>Effects List :</h3><ul>";
 for ($i = 0; $i < 3; $i += 1)
 {
+    echo '<li>';
 	if($effects[$i] != 0)
 	{
 		echo $effects[$i] . " - " . getSpellEffectName($effects[$i]) . "<br>";
@@ -140,8 +141,10 @@ for ($i = 0; $i < 3; $i += 1)
 		if($EffectRadiusIndex[$i] != 0)
 		    echo "<div>Radius : " . getRadius($EffectRadiusIndex[$i]) . "</div>";
 	}
+	echo '</li>';
 }
 
 ?>
+</ul>
 </body>
 </html>
