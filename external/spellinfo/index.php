@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html>
 	<style type="text/css">
-	body{
-	background-color:#446688;
-	color:white;
-	font-family:arial,sans-serif
+	body
+	{
+		background-color:#446688;
+		color:white;
+		font-family:arial,sans-serif
+	}
+	.overriden
+	{
+		font-weight: bold;
+		color:orange;
 	}
 	</style>
 	<head>
@@ -46,16 +52,17 @@ $query->bindValue(':id', $id, PDO::PARAM_INT);
 $query->execute();
 $data = $query->fetch();
 
-$query = $handler->prepare("SELECT ${fields}, Comment FROM spell_template_override where entry = :id");
+$query = $handler->prepare("SELECT ${fields}, customAttributesFlags, Comment FROM spell_template_override where entry = :id");
 $query->bindValue(':id', $id, PDO::PARAM_INT);
 $query->execute();
-$data2 = $query->fetch();
+$data_override = $query->fetch();
 
 class SpellInfo
 {
 	function Load(&$data)
 	{
 		$this->castingTimeIndex = $data[21];
+		$this->procFlags = $data[27];
 		$this->durationIndex = $data[33];
 		$this->rangeIndex = $data[39];
 		$this->effects[0] = $data[63];
@@ -112,6 +119,7 @@ class SpellInfo
 	
 	public $spellAttributes;
 	public $castingTimeIndex;
+	public $procFlags;
 	public $durationIndex;
 	public $rangeIndex;
 	public $effects;
@@ -134,59 +142,249 @@ class SpellInfo
 $baseSpellInfo = new SpellInfo();
 $baseSpellInfo->Load($data);
 
+$overrideSpellInfo = null;
+if($data_override)
+{
+	$overrideSpellInfo = new SpellInfo();
+	$overrideSpellInfo->Load($data_override);
+}
+
+class View
+{
+	function __construct($baseSpellInfo, $overrideSpellInfo)
+	{
+		$this->_baseSpellInfo = $baseSpellInfo;
+		$this->_overrideSpellInfo = $overrideSpellInfo;
+	}
+	
+	function duration()
+	{
+		$baseValue = $this->_baseSpellInfo->durationIndex;
+		$overrideValue =  $this->_overrideSpellInfo->durationIndex;
+		return $this->generic_value($baseValue, $overrideValue, "Duration", "getDuration");
+	}
+	
+	function casting_time()
+	{
+		$baseValue = $this->_baseSpellInfo->castingTimeIndex;
+		$overrideValue =  $this->_overrideSpellInfo->castingTimeIndex;
+		return $this->generic_value($baseValue, $overrideValue, "Cast time", "getCastingTime");
+	}
+	
+	function range()
+	{
+		$baseValue = $this->_baseSpellInfo->rangeIndex;
+		$overrideValue =  $this->_overrideSpellInfo->rangeIndex;
+		return $this->generic_value($baseValue, $overrideValue, "Range", "getRange");
+	}
+	
+	function procFlags()
+	{
+		$baseValue = $this->_baseSpellInfo->procFlags;
+		$overrideValue =  $this->_overrideSpellInfo->procFlags;
+		return $this->generic_value($baseValue, $overrideValue, "ProcFlags", 'View::getHexPrint');
+	}
+	
+	function get_attribute_table()
+	{
+		$str = '';
+		for ($a = 0; $a <= 6; $a++)
+		{
+			$overriden = false;
+			$baseAttribute = $this->_baseSpellInfo->spellAttributes[$a];
+			$attribute = $this->get_attribute($a, $overriden);
+			
+			if($overriden)
+				$str .= "<b>" . getAttributeCategoryName($a) . ' = <span class="overriden" title="0x'.dechex($baseAttribute).'">0x' . dechex($attribute) . "</span></b>";
+			else
+				$str .= "<b>" . getAttributeCategoryName($a) . ' = 0x' . dechex($attribute) . "</b>";
+			
+			$str .= '<table>';
+			for ($i = 0; $i < 32; $i += 1)
+			{
+				if ($attribute & pow(2, $i))
+					$str .= $this->attribute_row($a, $i);
+			}
+			$str .= '</table>';
+		}
+		return $str;
+	}
+	
+	function get_attribute($i, &$overriden)
+	{
+		if($this->_overrideSpellInfo && $this->_overrideSpellInfo->spellAttributes[$i])
+		{
+			$overriden = true;
+			return $this->_overrideSpellInfo->spellAttributes[$i];
+		} else {
+			$overriden = false;
+			return $this->_baseSpellInfo->spellAttributes[$i];
+		}
+	}
+	
+	function attribute_row($a, $j)
+	{
+		return '<tr>' .
+			   '<td width="120">0x' .dechex(pow(2, $j)). '</td>' .
+		       '<td>'. getAttributeName($a, $j). '</td>' .
+		       '</tr>';
+	}
+	
+	function get_whole_effect($i)
+	{
+		$str = '';
+		$overriden = false;
+		$effect = $this->get_effect_index($i, $overriden);
+		$baseEffect = $this->_baseSpellInfo->effects[$i];
+		if($effect)
+		{
+			$str .= '<div>';
+			if($overriden)
+				$str .= $effect . ' - <span class="overriden" title="'.$baseEffect.' - '. getSpellEffectName($baseEffect) .'">' . getSpellEffectName($effect) . "</span>";
+			else
+				$str .= $effect . ' - ' . getSpellEffectName($effect);
+			$str .= '</div>';
+			$str .= $this->effectBasePoints($i);
+			$str .= $this->effectApplyAuraName($i);
+			$str .= $this->effectAmplitude($i);
+			$str .= $this->effectItemType($i);
+			$str .= $this->effectMiscValue($i);
+			$str .= $this->effectTriggerSpell($i);
+			$str .= $this->effectImplicitTargetA($i);
+			$str .= $this->effectImplicitTargetB($i);
+			$str .= $this->effectRadiusIndex($i);
+		}
+		return $str;
+	}
+	
+	function get_effect_index($i, &$overriden)
+	{
+		if($this->_overrideSpellInfo && $this->_overrideSpellInfo->effects[$i])
+		{
+			$overriden = true;
+			return $this->_overrideSpellInfo->effects[$i];
+		} else {
+			$overriden = false;
+			return $this->_baseSpellInfo->effects[$i];
+		}
+	}
+	
+	function generic_value($baseValue, $overrideValue, $name, $value_transform_func = null)
+	{
+		if(!$baseValue && !$overrideValue)
+			return '';
+		
+		$baseValuePrint = $value_transform_func ? call_user_func_array($value_transform_func, array($baseValue)) : $baseValue;
+		$overrideValuePrint = $value_transform_func ? call_user_func_array($value_transform_func, array($overrideValue)) : $overrideValue;
+		
+		$str = '<div>'.$name.': ';
+		if($overrideValue != 0 && $baseValue != $overrideValue)
+			$str .= '<span class="overriden" title="'.$baseValuePrint.'">'.$overrideValuePrint.'</span>';
+		else
+			$str .= $baseValuePrint;
+		
+		$str .= '</div>';
+		return $str;
+	}
+	
+	function effectBasePoints($i)
+	{
+		$baseValue = $this->_baseSpellInfo->effectBasePoints[$i];
+		$overrideValue = $this->_overrideSpellInfo->effectBasePoints[$i];
+		return $this->generic_value($baseValue, $overrideValue, "Base points");
+	}
+	
+	function effectApplyAuraName($i)
+	{
+		if($this->_baseSpellInfo->applyAuraNames[$i] != 0)
+			return "<div>Aura type " . $this->_baseSpellInfo->applyAuraNames[$i] . " - " . getAuraName($this->_baseSpellInfo->applyAuraNames[$i]) . "</div>";
+		else
+			return '';
+	}
+	
+	function effectAmplitude($i)
+	{
+		$baseValue = $this->_baseSpellInfo->effectAmplitude[$i];
+		$overrideValue =  $this->_overrideSpellInfo->effectAmplitude[$i];
+		return $this->generic_value($baseValue, $overrideValue, "Amplitude");
+	}
+	
+	function effectItemType($i)
+	{
+		$baseValue = $this->_baseSpellInfo->effectItemType[$i];
+		$overrideValue =  $this->_overrideSpellInfo->effectItemType[$i];
+		return $this->generic_value($baseValue, $overrideValue, "Item type");
+	}
+	
+	function effectMiscValue($i)
+	{
+		$baseValue = $this->_baseSpellInfo->effectMiscValue[$i];
+		$overrideValue =  $this->_overrideSpellInfo->effectMiscValue[$i];
+		return $this->generic_value($baseValue, $overrideValue, "Misc Value");
+	}
+	
+	function effectTriggerSpell($i)
+	{
+		$baseValue = $this->_baseSpellInfo->effectTriggerSpell[$i];
+		$overrideValue =  $this->_overrideSpellInfo->effectTriggerSpell[$i];
+		return $this->generic_value($baseValue, $overrideValue, "Trigger Spell");
+	}
+	
+	function effectImplicitTargetA($i)
+	{
+		$baseValue = $this->_baseSpellInfo->effectImplicitTargetA[$i];
+		$overrideValue =  $this->_overrideSpellInfo->effectImplicitTargetA[$i];
+		return $this->generic_value($baseValue, $overrideValue, "ImplicitTargetA", "getTarget");
+	}
+	
+	function effectImplicitTargetB($i)
+	{
+		$baseValue = $this->_baseSpellInfo->effectImplicitTargetB[$i];
+		$overrideValue =  $this->_overrideSpellInfo->effectImplicitTargetB[$i];
+		return $this->generic_value($baseValue, $overrideValue, "ImplicitTargetB", "getTarget");
+	}
+	
+	function effectRadiusIndex($i)
+	{
+		$baseValue = $this->_baseSpellInfo->effectRadiusIndex[$i];
+		$overrideValue =  $this->_overrideSpellInfo->effectRadiusIndex[$i];
+		return $this->generic_value($baseValue, $overrideValue, "Radius", "getRadius");
+	}
+	
+	function getHexPrint($value)
+	{
+		return '0x'.dechex($value);
+	}
+	
+	public $_baseSpellInfo;
+	public $_overrideSpellInfo;
+};
+
+$view = new View($baseSpellInfo, $overrideSpellInfo);
+
 echo "<h2>Spell Info : " . $id . "</h2>";
-echo "Name: <a href=\"http://www.wowhead.com/spell=".$id."\">".$baseSpellInfo->spellName."</a> (<a href=\"https://tbc-twinhead.twinstar.cz/?spell=".$id."\">Twinstar TBC</a>)<br>";
-echo "Description: ".$baseSpellInfo->spellDescription;
+echo "Name: <a href=\"http://www.wowhead.com/spell=".$id."\">".$baseSpellInfo->spellName."</a> (<a href=\"https://tbc-twinhead.twinstar.cz/?spell=".$id."\">Twinstar TBC</a>)<br/>";
+echo "Description: ".$baseSpellInfo->spellDescription . '<br/>';
+if($overrideSpellInfo)
+	echo '<span class="overriden">(has overriden data. Mouseover to get original values)</span>';
 echo "<hr>";
 
 echo '<ul>';
-echo "<li>Duration : " . getDuration($baseSpellInfo->durationIndex) . "</li>";
-echo "<li>Casting time : " . getCastingTime($baseSpellInfo->castingTimeIndex) . "</li>";
-echo "<li>Range : " . getRange($baseSpellInfo->rangeIndex) . "</li>";
+echo "<li>" . $view->duration() . "</li>";
+echo "<li>" . $view->casting_time() . "</li>";
+echo "<li>" . $view->range() . "</li>";
+echo "<li>" . $view->procFlags() . "</li>";
 echo '</ul>';
 	
 //Print attributes
 
 echo "<hr><h3>Attributes:</h3>";
-for ($a = 0; $a < 7; $a += 1)
-{
-	echo "<b>" . getAttributeCategoryName($a) . " = " . $baseSpellInfo->spellAttributes[$a] . " = 0x" . dechex($baseSpellInfo->spellAttributes[$a]) . " :</b><br>";
-	for ($i = 0; $i < 32; $i += 1)
-	{
-		if ($baseSpellInfo->spellAttributes[$a] & pow(2,$i))
-			echo "0x" . dechex(pow(2,$i)) . " - " . getAttributeName($a,$i) . "<br>";
-	}
-}
+echo $view->get_attribute_table();
 
 //Print effects
 echo "<hr><h3>Effects:</h3><ul>";
 for ($i = 0; $i < 3; $i += 1)
-{
-    echo '<li>';
-	if($baseSpellInfo->effects[$i] != 0)
-	{
-		echo $baseSpellInfo->effects[$i] . " - " . getSpellEffectName($baseSpellInfo->effects[$i]) . "<br>";
-		if($baseSpellInfo->effectBasePoints[$i] != 0)
-		    echo "<div>Base points " . $baseSpellInfo->effectBasePoints[$i] . "</div>";
-		if($baseSpellInfo->applyAuraNames[$i] != 0)
-			echo "<div>Aura type " . $baseSpellInfo->applyAuraNames[$i] . " - " . getAuraName($baseSpellInfo->applyAuraNames[$i]) . "</div>";
-		if($baseSpellInfo->effectAmplitude[$i] != 0)
-			echo "<div>Amplitude " . $baseSpellInfo->effectAmplitude[$i] . "</div>";
-		if($baseSpellInfo->effectItemType[$i] != 0)
-			echo "<div>Item type " . $baseSpellInfo->effectItemType[$i] . "</div>";
-		if($baseSpellInfo->effectMiscValue[$i] != 0)
-			echo "<div>Misc Value " . $baseSpellInfo->effectMiscValue[$i] . "</div>";
-		if($baseSpellInfo->effectTriggerSpell[$i] != 0)
-			echo "<div>Trigger Spell " . $baseSpellInfo->effectTriggerSpell[$i] . "</div>";
-		if($baseSpellInfo->effectImplicitTargetA[$i] != 0)
-			echo "<div>ImplicitTargetA " . getTarget($baseSpellInfo->effectImplicitTargetA[$i]) . "</div>";
-		if($baseSpellInfo->effectImplicitTargetB[$i] != 0)
-			echo "<div>ImplicitTargetB " . getTarget($baseSpellInfo->effectImplicitTargetB[$i]) . "</div>";
-		if($baseSpellInfo->effectRadiusIndex[$i] != 0)
-		    echo "<div>Radius : " . getRadius($baseSpellInfo->effectRadiusIndex[$i]) . "</div>";
-	}
-	echo '</li>';
-}
+	echo '<li>' . $view->get_whole_effect($i) . '</li>';
 
 ?>
 </ul>
