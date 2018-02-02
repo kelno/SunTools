@@ -57,6 +57,11 @@ $query->bindValue(':id', $id, PDO::PARAM_INT);
 $query->execute();
 $data_override = $query->fetch();
 
+/*$query = $handler->prepare("SELECT first_spell_id, spell_id, rank FROM spell_ranks where spell_id = :id");
+$query->bindValue(':id', $id, PDO::PARAM_INT);
+$query->execute();
+$data_rank = $query->fetch();*/
+
 class SpellInfo
 {
 	function Load(&$data)
@@ -159,30 +164,22 @@ class View
 	
 	function duration()
 	{
-		$baseValue = $this->_baseSpellInfo->durationIndex;
-		$overrideValue =  $this->_overrideSpellInfo->durationIndex;
-		return $this->generic_value($baseValue, $overrideValue, "Duration", "getDuration");
+		return $this->generic_value("durationIndex", "Duration", "getDuration");
 	}
 	
 	function casting_time()
 	{
-		$baseValue = $this->_baseSpellInfo->castingTimeIndex;
-		$overrideValue =  $this->_overrideSpellInfo->castingTimeIndex;
-		return $this->generic_value($baseValue, $overrideValue, "Cast time", "getCastingTime");
+		return $this->generic_value("castingTimeIndex", "Cast time", "getCastingTime");
 	}
 	
 	function range()
 	{
-		$baseValue = $this->_baseSpellInfo->rangeIndex;
-		$overrideValue =  $this->_overrideSpellInfo->rangeIndex;
-		return $this->generic_value($baseValue, $overrideValue, "Range", "getRange");
+		return $this->generic_value("rangeIndex", "Range", "getRange");
 	}
 	
 	function procFlags()
 	{
-		$baseValue = $this->_baseSpellInfo->procFlags;
-		$overrideValue =  $this->_overrideSpellInfo->procFlags;
-		return $this->generic_value($baseValue, $overrideValue, "ProcFlags", 'View::getHexPrint');
+		return $this->generic_value("procFlags", "ProcFlags", 'View::getHexPrint');
 	}
 	
 	function get_attribute_table()
@@ -269,7 +266,7 @@ class View
 		}
 	}
 	
-	function generic_value($baseValue, $overrideValue, $name, $value_transform_func = null)
+	function _generic_value($baseValue, $overrideValue, $name, $value_transform_func = null)
 	{
 		if(!$baseValue && !$overrideValue)
 			return '';
@@ -287,68 +284,63 @@ class View
 		return $str;
 	}
 	
+	function generic_value($fieldName, $name, $value_transform_func = null)
+	{
+		$baseValue = $this->_baseSpellInfo->$fieldName;
+		$overrideValue = $this->_overrideSpellInfo->$fieldName;
+		return $this->_generic_value($baseValue, $overrideValue, $name, $value_transform_func);
+	}
+	
+	function generic_value_i($fieldName, $i, $name, $value_transform_func = null)
+	{
+		$baseValue = $this->_baseSpellInfo->$fieldName[$i];
+		$overrideValue = $this->_overrideSpellInfo->$fieldName[$i];
+		return $this->_generic_value($baseValue, $overrideValue, $name, $value_transform_func);
+	}
+	
 	function effectBasePoints($i)
 	{
-		$baseValue = $this->_baseSpellInfo->effectBasePoints[$i];
-		$overrideValue = $this->_overrideSpellInfo->effectBasePoints[$i];
-		return $this->generic_value($baseValue, $overrideValue, "Base points");
+		return $this->generic_value_i("effectBasePoints", $i, "Base points");
 	}
 	
 	function effectApplyAuraName($i)
 	{
-		if($this->_baseSpellInfo->applyAuraNames[$i] != 0)
-			return "<div>Aura type " . $this->_baseSpellInfo->applyAuraNames[$i] . " - " . getAuraName($this->_baseSpellInfo->applyAuraNames[$i]) . "</div>";
-		else
-			return '';
+		return $this->generic_value_i("applyAuraNames", $i, "Aura type", "getAura");
 	}
 	
 	function effectAmplitude($i)
 	{
-		$baseValue = $this->_baseSpellInfo->effectAmplitude[$i];
-		$overrideValue =  $this->_overrideSpellInfo->effectAmplitude[$i];
-		return $this->generic_value($baseValue, $overrideValue, "Amplitude");
+		return $this->generic_value_i("effectAmplitude", $i, "Amplitude");
 	}
 	
 	function effectItemType($i)
 	{
-		$baseValue = $this->_baseSpellInfo->effectItemType[$i];
-		$overrideValue =  $this->_overrideSpellInfo->effectItemType[$i];
-		return $this->generic_value($baseValue, $overrideValue, "Item type");
+		return $this->generic_value_i("effectItemType", $i, "Item type");
 	}
 	
 	function effectMiscValue($i)
 	{
-		$baseValue = $this->_baseSpellInfo->effectMiscValue[$i];
-		$overrideValue =  $this->_overrideSpellInfo->effectMiscValue[$i];
-		return $this->generic_value($baseValue, $overrideValue, "Misc Value");
+		return $this->generic_value_i("effectMiscValue", $i, "Misc Value");
 	}
 	
 	function effectTriggerSpell($i)
 	{
-		$baseValue = $this->_baseSpellInfo->effectTriggerSpell[$i];
-		$overrideValue =  $this->_overrideSpellInfo->effectTriggerSpell[$i];
-		return $this->generic_value($baseValue, $overrideValue, "Trigger Spell");
+		return $this->generic_value_i("effectTriggerSpell", $i, "Trigger Spell");
 	}
 	
 	function effectImplicitTargetA($i)
 	{
-		$baseValue = $this->_baseSpellInfo->effectImplicitTargetA[$i];
-		$overrideValue =  $this->_overrideSpellInfo->effectImplicitTargetA[$i];
-		return $this->generic_value($baseValue, $overrideValue, "ImplicitTargetA", "getTarget");
+		return $this->generic_value_i("effectImplicitTargetA", $i, "ImplicitTargetA", "getTarget");
 	}
 	
 	function effectImplicitTargetB($i)
 	{
-		$baseValue = $this->_baseSpellInfo->effectImplicitTargetB[$i];
-		$overrideValue =  $this->_overrideSpellInfo->effectImplicitTargetB[$i];
-		return $this->generic_value($baseValue, $overrideValue, "ImplicitTargetB", "getTarget");
+		return $this->generic_value_i("effectImplicitTargetB", $i, "ImplicitTargetB", "getTarget");
 	}
 	
 	function effectRadiusIndex($i)
 	{
-		$baseValue = $this->_baseSpellInfo->effectRadiusIndex[$i];
-		$overrideValue =  $this->_overrideSpellInfo->effectRadiusIndex[$i];
-		return $this->generic_value($baseValue, $overrideValue, "Radius", "getRadius");
+		return $this->generic_value_i("effectRadiusIndex", $i, "Radius", "getRadius");
 	}
 	
 	function getHexPrint($value)

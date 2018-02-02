@@ -38,9 +38,17 @@ function getDuration($i)
 
 function getTarget($i)
 {
-		global $Targets;
+	global $Targets;
 	if(array_key_exists($i, $Targets))
 		return $Targets[$i].' (' . $i . ')';
 	else 
 		return "unknown". " (" . $i . ")";
+}
+
+function getAura($i)
+{
+	if($i != 0)
+		return $i . " - " . getAuraName($i);
+	else
+		return '';
 }
