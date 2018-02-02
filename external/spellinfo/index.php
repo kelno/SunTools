@@ -19,7 +19,7 @@
 	</head>
 <body>
 <?php
-error_reporting( E_ALL ); 
+error_reporting(E_ALL); 
 
 require('../../dbconfig.php');
 
@@ -44,7 +44,7 @@ include_once('Attributes.php');
 include_once('Effects.php');
 include_once('Auras.php');
 include_once('DBC.php');
-include_once('View.php');
+include_once('view.php');
 include_once('DB.php');
 
 try {
