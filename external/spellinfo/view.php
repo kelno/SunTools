@@ -1,6 +1,5 @@
 <?php
 
-
 class View
 {
 	function __construct($baseSpellInfo, $overrideSpellInfo, $rankInfo, $procInfo)
@@ -14,19 +13,19 @@ class View
 	function duration()
 	{
 		$str = "Duration: ";
-		return $str . $this->generic_value("durationIndex", "", "getDuration");
+		return $str . $this->generic_value("durationIndex", "", 'getDuration');
 	}
 	
 	function casting_time()
 	{
 		$str = "Cast time: ";
-		return $str . $this->generic_value("castingTimeIndex", "", "getCastingTime");
+		return $str . $this->generic_value("castingTimeIndex", "", 'getCastingTime');
 	}
 	
 	function range()
 	{
 		$str = "Range: ";
-		return $str . $this->generic_value("rangeIndex", "", "getRange");
+		return $str . $this->generic_value("rangeIndex", "", 'getRange');
 	}
 	
 	function procFlags()
@@ -40,12 +39,12 @@ class View
 		if($this->_procInfo)
 			return 'Has spell_proc entry (' . $this->_procInfo->SpellId. ')';
 		else
-			return '(No spell_proc entry)';
+			return '<span class="novalue">(No spell_proc entry)</span>';
 	}
 	
 	function spellFamily()
 	{
-		$str = 'SpellFamilyName: ' . $this->generic_value("spellFamilyName", "", "getFamilyName");
+		$str = 'SpellFamilyName: ' . $this->generic_value("spellFamilyName", "", 'getFamilyName');
 		$str .= ' | SpellFamilyFlags: ' . $this->generic_value("spellFamilyFlags", "", 'View::getHexPrint');
 		
 		return $str;
@@ -137,8 +136,11 @@ class View
 	
 	function _generic_value($baseValue, $overrideValue, $name, $value_transform_func = null)
 	{
+		$class = '';
+		$title = '';
+		$printValue = '';
 		if(!$baseValue && !$overrideValue)
-			return '';
+			$class = 'novalue';
 		
 		$baseValuePrint = $value_transform_func ? call_user_func_array($value_transform_func, array($baseValue)) : $baseValue;
 		$overrideValuePrint = $value_transform_func ? call_user_func_array($value_transform_func, array($overrideValue)) : $overrideValue;
@@ -147,9 +149,14 @@ class View
 		if($name)
 			$str .= $name.': ';
 		if($overrideValue != 0 && $baseValue != $overrideValue)
-			$str .= '<span class="overriden" title="'.$baseValuePrint.'">'.$overrideValuePrint.'</span>';
-		else
-			$str .= $baseValuePrint;
+		{
+			$class .= ' overriden';
+			$title = $baseValuePrint;
+			$printValue = $overrideValuePrint;
+		} else
+			$printValue = $baseValuePrint;
+		
+		$str .= "<span class=\"$class\" title=\"".$baseValuePrint.'">'.$printValue.'</span>';
 		
 		return $str;
 	}

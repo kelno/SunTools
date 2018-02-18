@@ -12,6 +12,10 @@
 		font-weight: bold;
 		color:orange;
 	}
+	.novalue
+	{
+		color:gray;
+	}
 	</style>
 	<head>
 		<title>Spell Info</title>
