@@ -47,11 +47,11 @@ include_once('DBC.php');
 include_once('view.php');
 include_once('DB.php');
 
+$baseSpellInfo = null;
 try {
 	$baseSpellInfo = new SpellInfo($id);
 } catch (Exception $e) {
-    echo $e->getMessage();
-	return;
+	//
 }
 
 $overrideSpellInfo = null;
@@ -59,6 +59,12 @@ try {
 	$overrideSpellInfo = new SpellInfo($id, true);
 } catch (Exception $e) {
     //no spell override data, continue
+}
+
+if(!$baseSpellInfo && !$overrideSpellInfo)
+{
+	echo "No spell $id in database";
+	return;
 }
 
 $rankInfo = null;
