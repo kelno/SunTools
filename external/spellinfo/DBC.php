@@ -4,6 +4,7 @@ include_once('Radius.php');
 include_once('Ranges.php');
 include_once('Targets.php');
 include_once('SpellFamily.php');
+include_once('SpellModOp.php');
 
 function getRadius($i)
 {
@@ -57,8 +58,17 @@ function getAura($i)
 function getFamilyName($i)
 {
 	global $SpellFamilyName;
-		if(array_key_exists($i, $SpellFamilyName))
+	if(array_key_exists($i, $SpellFamilyName))
 		return $SpellFamilyName[$i].' (' . $i . ')';
+	else 
+		return "unknown". " (" . $i . ")";
+}
+
+function getSpellModOp($i)
+{
+	global $SpellModOp;
+	if(array_key_exists($i, $SpellModOp))
+		return $SpellModOp[$i].' (' . $i . ')';
 	else 
 		return "unknown". " (" . $i . ")";
 }

@@ -163,21 +163,17 @@ class View
 	
 	function generic_value($fieldName, $name, $value_transform_func = null)
 	{
-		$baseValue = $this->_baseSpellInfo->$fieldName;
-		if($this->_overrideSpellInfo)
-			$overrideValue = $this->_overrideSpellInfo->$fieldName;
-		else
-			$overrideValue = null;
+		$baseValue = null;
+		$overrideValue = null;
+		$this->getSpellField($fieldName, $baseValue, $overrideValue);
 		return $this->_generic_value($baseValue, $overrideValue, $name, $value_transform_func);
 	}
 	
 	function generic_value_i($fieldName, $i, $name, $value_transform_func = null)
 	{
-		$baseValue = $this->_baseSpellInfo->$fieldName[$i];
-		if($this->_overrideSpellInfo)
-			$overrideValue = $this->_overrideSpellInfo->$fieldName[$i];
-		else
-			$overrideValue = null;
+		$baseValue = null;
+		$overrideValue = null;
+		$this->getSpellFieldI($fieldName, $i, $baseValue, $overrideValue);
 		return $this->_generic_value($baseValue, $overrideValue, $name, $value_transform_func);
 	}
 	
@@ -198,12 +194,41 @@ class View
 	
 	function effectItemType($i)
 	{
-		return $this->generic_value_i("effectItemType", $i, "Item type");
+		return $this->generic_value_i("effectItemType", $i, "Item type", "View::toHexString");
+	}
+	
+	function effectMiscValueTransform($auraName, $baseValue)
+	{
+		switch($auraName)
+		{
+		case 107: // SPELL_AURA_ADD_FLAT_MODIFIER
+		case 108: // SPELL_AURA_ADD_PCT_MODIFIER
+			return getSpellModOp($baseValue);
+			break;
+		case 18: // SPELL_AURA_MOD_INVISIBILITY
+		case 19: // SPELL_AURA_MOD_INVISIBILITY_DETECTION
+			//TODO
+		case 36: // SPELL_AURA_MOD_SHAPESHIFT
+			//TODO
+		default:
+			return $baseValue;
+		}
 	}
 	
 	function effectMiscValue($i)
 	{
-		return $this->generic_value_i("effectMiscValue", $i, "Misc Value");
+		$baseValue = null;
+		$overrideValue = null;
+		$this->getSpellFieldI("effectMiscValue", $i, $baseValue, $overrideValue);
+		
+		$baseAuraName = null;
+		$overrideAuraName = null;
+		$this->getSpellFieldI("applyAuraNames", $i, $baseAuraName, $overrideAuraName);
+		
+		$baseShownMisc = $this->effectMiscValueTransform($baseAuraName, $baseValue);
+		$overrideShownMisc = $this->effectMiscValueTransform($overrideAuraName, $overrideValue);
+		
+		return $this->_generic_value($baseShownMisc, $overrideShownMisc, "Misc value");
 	}
 	
 	function effectTriggerSpell($i)
@@ -224,6 +249,27 @@ class View
 	function effectRadiusIndex($i)
 	{
 		return $this->generic_value_i("effectRadiusIndex", $i, "Radius", "getRadius");
+	}
+	
+	static function toHexString($integer)
+	{
+		return '0x' . dechex($integer);
+	}
+	
+	function getSpellField($fieldName, &$baseVal, &$override_val)
+	{
+		$baseVal = $this->_baseSpellInfo->$fieldName;
+		$override_val = null;
+		if($this->_overrideSpellInfo)
+			$override_val = $this->_overrideSpellInfo->$fieldName;
+	}
+	
+	function getSpellFieldI($fieldName, $i, &$baseVal, &$override_val)
+	{
+		$baseVal = $this->_baseSpellInfo->$fieldName[$i];
+		$override_val = null;
+		if($this->_overrideSpellInfo)
+			$override_val = $this->_overrideSpellInfo->$fieldName[$i];
 	}
 	
 	function rank()
