@@ -6,8 +6,6 @@ class ProcInfo
 	{
 		global $handler;
 		
-		echo $id;
-		echo $id2;
 		$query = $handler->prepare("SELECT `SpellId`, `SchoolMask`, `SpellFamilyName`, `SpellFamilyMask`, `ProcFlags`, `SpellTypeMask`, `SpellPhaseMask`, `HitMask`, `AttributesMask`, `ProcsPerMinute`, `Chance`, `Cooldown`, `Charges` FROM spell_proc where SpellId = :id OR -SpellId = :id OR SpellId = :id2 OR -SpellId = :id2");
 		$query->bindValue(':id', $id, PDO::PARAM_INT);
 		$query->bindValue(':id2', $id2, PDO::PARAM_INT);
