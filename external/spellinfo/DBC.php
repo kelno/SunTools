@@ -5,6 +5,7 @@ include_once('Ranges.php');
 include_once('Targets.php');
 include_once('SpellFamily.php');
 include_once('SpellModOp.php');
+include_once('SpellProcsEnum.php');
 
 function getRadius($i)
 {

@@ -6,7 +6,9 @@ class ProcInfo
 	{
 		global $handler;
 		
-		$query = $handler->prepare("SELECT * FROM spell_proc where SpellId = :id OR -SpellId = :id OR SpellId = :id2 OR -SpellId = :id2");
+		echo $id;
+		echo $id2;
+		$query = $handler->prepare("SELECT `SpellId`, `SchoolMask`, `SpellFamilyName`, `SpellFamilyMask`, `ProcFlags`, `SpellTypeMask`, `SpellPhaseMask`, `HitMask`, `AttributesMask`, `ProcsPerMinute`, `Chance`, `Cooldown`, `Charges` FROM spell_proc where SpellId = :id OR -SpellId = :id OR SpellId = :id2 OR -SpellId = :id2");
 		$query->bindValue(':id', $id, PDO::PARAM_INT);
 		$query->bindValue(':id2', $id2, PDO::PARAM_INT);
 		$query->execute();
@@ -16,6 +18,18 @@ class ProcInfo
 			throw new Exception("No proc for spell $id in database");
 		
 		$this->SpellId = $data[0];
+		$this->SchoolMask = $data[1];
+		$this->SpellFamilyName = $data[2];
+		$this->SpellFamilyMask = $data[3];
+		$this->ProcFlags = $data[4];
+		$this->SpellTypeMask = $data[5];
+		$this->SpellPhaseMask = $data[6];
+		$this->HitMask = $data[7];
+		$this->AttributesMask = $data[8];
+		$this->ProcsPerMinute = $data[9];
+		$this->Chance = $data[10];
+		$this->Cooldown = $data[11];
+		$this->Charges = $data[12];
 	}
 	
 	function __construct($id, $id2)
@@ -24,7 +38,18 @@ class ProcInfo
 	}
 	
 	public $SpellId;
-	//...
+	public $SchoolMask;
+	public $SpellFamilyName;
+	public $SpellFamilyMask;
+	public $ProcFlags;
+	public $SpellTypeMask;
+	public $SpellPhaseMask;
+	public $HitMask;
+	public $AttributesMask;
+	public $ProcsPerMinute;
+	public $Chance;
+	public $Cooldown;
+	public $Charges;
 }
 
 class RankInfo

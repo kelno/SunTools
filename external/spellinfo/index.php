@@ -16,6 +16,16 @@
 	{
 		color:gray;
 	}
+	caption 
+	{ 
+		text-align: left;
+		font-style: italic;
+	}
+	table
+	{
+		border: 1px solid white;
+	}
+	
 	</style>
 	<head>
 		<title>Spell Info</title>
@@ -100,7 +110,6 @@ echo "<li>" . $view->spellFamily() . "</li>";
 echo "<li>" . $view->duration() . "</li>";
 echo "<li>" . $view->casting_time() . "</li>";
 echo "<li>" . $view->range() . "</li>";
-echo "<li>" . $view->procFlags() . ' / ' . $view->procFlags_spell_proc() . "</li>";
 echo '</ul>';
 	
 //Print attributes
@@ -112,8 +121,12 @@ echo $view->get_attribute_table();
 echo "<hr><h3>Effects:</h3><ul>";
 for ($i = 0; $i <= 2; $i++)
 	echo '<li>' . $view->get_whole_effect($i) . '</li>';
+echo "</ul>";
 
+echo "<hr><h3>Proc data:</h3>";
+echo $view->procFlags();
+echo '<p/>';
+echo $view->procEntry();
 ?>
-</ul>
 </body>
 </html>

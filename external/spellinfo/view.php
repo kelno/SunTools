@@ -30,16 +30,103 @@ class View
 	
 	function procFlags()
 	{
+		global $ProcFlags;
+		
 		$str = "ProcFlags: ";
-		return $str . $this->generic_value("procFlags", "", 'View::getHexPrint');
+		$str .= $this->generic_value("procFlags", "", 'View::getHexPrint');
+		$baseVal = null;
+		$overrideVal = null;
+		$this->getSpellField("procFlags", $baseVal, $overrideVal);
+		$useVal = $overrideVal ? $overrideVal : $baseVal;
+		if($useVal)
+			$str .= $this->getFlagsTable($useVal, $ProcFlags);
+		
+		return $str;
 	}
 	
-	function procFlags_spell_proc()
+	function procEntry()
 	{
-		if($this->_procInfo)
-			return 'Has spell_proc entry (' . $this->_procInfo->SpellId. ')';
-		else
+		if(!$this->_procInfo)
 			return '<span class="novalue">(No spell_proc entry)</span>';
+		
+		$str = '<table border=1 style="width:100%">';
+		
+		$str .= '<caption>spell_proc entry summary (' . $this->_procInfo->SpellId. ')</caption>';
+		$str .= "<tr><th>SchoolMask</th><th>SpellFamilyName</th><th>SpellFamilyMask</th><th>ProcFlags</th><th>SpellTypeMask</th><th>SpellPhaseMask</th><th>HitMask</th><th>AttributesMask</th><th>ProcsPerMinute</th><th>Chance</th><th>Cooldown</th><th>Charges</th></tr>";
+		$str .= '<tr>';
+		$str .= '<td>' . $this->getHexPrint($this->_procInfo->SchoolMask) . '</td>';
+		$str .= '<td>' . getFamilyName($this->_procInfo->SpellFamilyName) . '</td>';
+		$str .= '<td>' . $this->getHexPrint($this->_procInfo->SpellFamilyMask) . '</td>';
+		$str .= '<td>' . $this->getHexPrint($this->_procInfo->ProcFlags) . '</td>';
+		$str .= '<td>' . $this->getHexPrint($this->_procInfo->SpellTypeMask) . '</td>';
+		$str .= '<td>' . $this->getHexPrint($this->_procInfo->SpellPhaseMask) . '</td>';
+		$str .= '<td>' . $this->getHexPrint($this->_procInfo->HitMask) . '</td>';
+		$str .= '<td>' . $this->getHexPrint($this->_procInfo->AttributesMask) . '</td>';
+		$str .= '<td>' . $this->_procInfo->ProcsPerMinute . '</td>';
+		$str .= '<td>' . $this->_procInfo->Chance . '</td>';
+		$str .= '<td>' . $this->_procInfo->Cooldown . '</td>';
+		$str .= '<td>' . $this->_procInfo->Charges . '</td>';
+		$str .= '</tr>';
+		$str .= "</table>";
+		$str .= $this->SpellProcFlags();
+		$str .= $this->SpellProcTypeMask();
+		$str .= $this->SpellProcPhaseMask();
+		$str .= $this->SpellProcHitMask();
+		$str .= $this->SpellProcAttributesMask();
+		return $str;
+	}
+	
+	function getFlagsTable($flags, $enum, $caption = null)
+	{
+		$str = '<table style="width:100%">';
+		if($caption)
+			$str .= '<caption>'.$caption.'</caption>';
+		
+		if(!$flags)
+			$str .= '<tr><td>'. $enum[0] .'</td></tr>';
+		else
+			foreach ($enum as $key => $value)
+			{
+				if($flags & $key)
+				{
+					$str .= '<tr>';
+					$str .= '<td>' . $this->getHexPrint($key) . '</td><td>' . $value . '</td>';
+					$str .= '</tr>';
+				}
+			}
+		
+		$str .= "</table>";
+		return $str;
+	}
+	
+	function SpellProcFlags()
+	{
+		global $ProcFlags;
+		return $this->getFlagsTable($this->_procInfo->ProcFlags, $ProcFlags, "ProcFlags");
+	}
+	
+	function SpellProcTypeMask()
+	{
+		global $ProcFlagsSpellType;
+		return $this->getFlagsTable($this->_procInfo->SpellTypeMask, $ProcFlagsSpellType, "SpellType");
+	}
+	
+	function SpellProcPhaseMask()
+	{
+		global $ProcFlagsSpellPhase;
+		return $this->getFlagsTable($this->_procInfo->SpellPhaseMask, $ProcFlagsSpellPhase, "SpellPhase");
+	}
+	
+	function SpellProcHitMask()
+	{
+		global $ProcFlagsHit;
+		return $this->getFlagsTable($this->_procInfo->HitMask, $ProcFlagsHit, "ProcFlagsHit");
+	}
+	
+	function SpellProcAttributesMask()
+	{
+		global $ProcAttributes;
+		return $this->getFlagsTable($this->_procInfo->AttributesMask, $ProcAttributes, "Attributes");
 	}
 	
 	function spellFamily()
