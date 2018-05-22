@@ -30,6 +30,7 @@
 	<head>
 		<title>Spell Info</title>
 		<meta charset="utf-8"/>
+		<script type="text/javascript" src="view.js"></script>
 	</head>
 <body>
 <?php
@@ -90,13 +91,21 @@ try {
 
 $procInfo = null;
 try {
-	$id2 = $rankInfo ? $rankInfo->first_spell_id : 0;
-	$procInfo = new ProcInfo($id, $id2);
+	$first_id = $rankInfo ? $rankInfo->first_spell_id : 0;
+	$procInfo = new ProcInfo($id, $first_id);
 } catch (Exception $e) {
     //no spell rank data, continue
 }
 
-$view = new View($baseSpellInfo, $overrideSpellInfo, $rankInfo, $procInfo);
+$affectInfo = null;
+try {
+	$first_id = $rankInfo ? $rankInfo->first_spell_id : 0;
+	$affectInfo = new AffectInfo($id, $first_id);
+} catch (Exception $e) {
+    //no spell rank data, continue
+}
+
+$view = new View($baseSpellInfo, $overrideSpellInfo, $rankInfo, $procInfo, $affectInfo);
 
 echo "<h2>Spell Info : " . $id . "</h2>";
 echo "Name: <a href=\"http://www.wowhead.com/spell=".$id."\">".$baseSpellInfo->spellName."</a> (<a href=\"https://tbc-twinhead.twinstar.cz/?spell=".$id."\">TBC DB</a>)<br/>";
@@ -127,6 +136,9 @@ echo "<hr><h3>Proc data:</h3>";
 echo $view->procFlags();
 echo '<p/>';
 echo $view->procEntry();
+echo '<p/>';
+echo "<hr><h3>Affect data:</h3>";
+echo $view->affectEntry();
 ?>
 </body>
 </html>

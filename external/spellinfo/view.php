@@ -2,12 +2,13 @@
 
 class View
 {
-	function __construct($baseSpellInfo, $overrideSpellInfo, $rankInfo, $procInfo)
+	function __construct($baseSpellInfo, $overrideSpellInfo, $rankInfo, $procInfo, $affectInfo)
 	{
 		$this->_baseSpellInfo = $baseSpellInfo;
 		$this->_overrideSpellInfo = $overrideSpellInfo;
 		$this->_rankInfo = $rankInfo;
 		$this->_procInfo = $procInfo;
+		$this->_affectInfo = $affectInfo;
 	}
 	
 	function duration()
@@ -44,6 +45,28 @@ class View
 		return $str;
 	}
 	
+	function affectEntry()
+	{
+		if(!$this->_affectInfo)
+			return '<span class="novalue">(No spell_proc entry)</span>';
+		
+		$str = '<table border=1 style="min-width: 600px;">';
+		$str .= '<caption>spell_affect entry (db ' . $this->_affectInfo->db_id . ')</caption>';
+		$str .= "<tr><th>EffectId</th><th>Mask</th><th>(tools)</th></tr>";
+		for($i = 0; $i < 3; $i++)
+			if(array_key_exists($i,  $this->_affectInfo->masks))
+			{
+				$str .= '<tr>';
+				$str .= '<td>' . $i . '</td>';
+				$str .= '<td>' . $this->getHexPrint($this->_affectInfo->masks[$i]) . '</td>';
+				$str .= '<td><input id="maskInput" type="text" name="mask"><button onclick="addAffectMaskPopup('. $this->_affectInfo->db_id .','.$i.')" type="button">Add</button><button onclick="affectCheckAffected('.$this->_affectInfo->masks[$i].')" type="button" id="affectedButton">Affected?</button></td>';
+				$str .= '</tr>';
+			}
+				
+		$str .= "</table>";
+		return $str;
+	}
+	
 	function procEntry()
 	{
 		if(!$this->_procInfo)
@@ -51,7 +74,7 @@ class View
 		
 		$str = '<table border=1 style="width:100%">';
 		
-		$str .= '<caption>spell_proc entry summary (' . $this->_procInfo->SpellId. ')</caption>';
+		$str .= '<caption>spell_proc entry summary (db ' . $this->_procInfo->SpellId. ')</caption>';
 		$str .= "<tr><th>SchoolMask</th><th>SpellFamilyName</th><th>SpellFamilyMask</th><th>ProcFlags</th><th>SpellTypeMask</th><th>SpellPhaseMask</th><th>HitMask</th><th>AttributesMask</th><th>ProcsPerMinute</th><th>Chance</th><th>Cooldown</th><th>Charges</th></tr>";
 		$str .= '<tr>';
 		$str .= '<td>' . $this->getHexPrint($this->_procInfo->SchoolMask) . '</td>';
@@ -387,4 +410,5 @@ class View
 	public $_overrideSpellInfo;
 	public $_rankInfo;
 	public $_procInfo;
+	public $_affectInfo;
 };

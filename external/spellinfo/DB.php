@@ -1,14 +1,54 @@
 <?php
 
-class ProcInfo
+class AffectInfo
 {
-	private function Load($id, $id2)
+	private function FetchData($spell_id)
 	{
 		global $handler;
 		
-		$query = $handler->prepare("SELECT `SpellId`, `SchoolMask`, `SpellFamilyName`, `SpellFamilyMask`, `ProcFlags`, `SpellTypeMask`, `SpellPhaseMask`, `HitMask`, `AttributesMask`, `ProcsPerMinute`, `Chance`, `Cooldown`, `Charges` FROM spell_proc where SpellId = :id OR -SpellId = :id OR SpellId = :id2 OR -SpellId = :id2");
+		$query = $handler->prepare("SELECT `entry`, `effectId`, `SpellFamilyMask` FROM spell_affect where entry = :id");
+		$query->bindValue(':id', $spell_id, PDO::PARAM_INT);
+		$query->execute();
+		return $query->fetchAll();
+	}
+	
+	private function Load($id, $first_id)
+	{
+		global $handler;
+		
+		$data = $this->FetchData($id);
+		if(!$data)
+			$data = $this->FetchData($first_id);
+		
+		if(!$data)
+			throw new Exception("No affect for spell $id in database");
+		
+		foreach($data as $value) {
+			$this->db_id = $value["entry"];
+			$effectId = $value["effectId"];
+			$mask = $value["SpellFamilyMask"];
+			$this->masks[$effectId] = $mask;	
+		}
+	}
+	
+	function __construct($id, $first_id)
+	{
+		$this->Load($id, $first_id);
+	}
+	
+	public $db_id;
+	public $masks = array(); //one mask for each effect
+}
+
+class ProcInfo
+{
+	private function Load($id, $first_id)
+	{
+		global $handler;
+		
+		$query = $handler->prepare("SELECT `SpellId`, `SchoolMask`, `SpellFamilyName`, `SpellFamilyMask`, `ProcFlags`, `SpellTypeMask`, `SpellPhaseMask`, `HitMask`, `AttributesMask`, `ProcsPerMinute`, `Chance`, `Cooldown`, `Charges` FROM spell_proc where SpellId = :id OR -SpellId = :id OR SpellId = :first_id OR -SpellId = :first_id");
 		$query->bindValue(':id', $id, PDO::PARAM_INT);
-		$query->bindValue(':id2', $id2, PDO::PARAM_INT);
+		$query->bindValue(':first_id', $first_id, PDO::PARAM_INT);
 		$query->execute();
 		$data = $query->fetch();
 
