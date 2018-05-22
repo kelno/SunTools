@@ -1,36 +1,10 @@
 <!DOCTYPE html>
 <html>
-	<style type="text/css">
-	body
-	{
-		background-color:#446688;
-		color:white;
-		font-family:arial,sans-serif
-	}
-	.overriden
-	{
-		font-weight: bold;
-		color:orange;
-	}
-	.novalue
-	{
-		color:gray;
-	}
-	caption 
-	{ 
-		text-align: left;
-		font-style: italic;
-	}
-	table
-	{
-		border: 1px solid white;
-	}
-	
-	</style>
 	<head>
 		<title>Spell Info</title>
 		<meta charset="utf-8"/>
 		<script type="text/javascript" src="view.js"></script>
+		<link rel="stylesheet" type="text/css" href="view.css">
 	</head>
 <body>
 <?php
@@ -123,22 +97,40 @@ echo '</ul>';
 	
 //Print attributes
 
-echo "<hr><h3>Attributes:</h3>";
-echo $view->get_attribute_table();
+echo "<hr>";
+echo '<div id="bloc1" class="bloc">';
+	echo '<div class="leftbloc">';
+		echo "<h3>Attributes:</h3>";
+		echo $view->get_attribute_table();
+	echo '</div>';
 
-//Print effects
-echo "<hr><h3>Effects:</h3><ul>";
-for ($i = 0; $i <= 2; $i++)
-	echo '<li>' . $view->get_whole_effect($i) . '</li>';
-echo "</ul>";
+	echo '<div class="rightbloc">';
+		echo "<h3>Effects:</h3>";
+		echo "<ul>";
+		for ($i = 0; $i <= 2; $i++)
+			echo '<li>' . $view->get_whole_effect($i) . '</li>';
+		echo "</ul>";
+	echo '</div>';
+echo "</div>";
 
-echo "<hr><h3>Proc data:</h3>";
-echo $view->procFlags();
-echo '<p/>';
-echo $view->procEntry();
-echo '<p/>';
-echo "<hr><h3>Affect data:</h3>";
-echo $view->affectEntry();
+echo "<hr>";
+
+
+echo '<div id="bloc1" class="bloc">';
+	echo '<div class="leftbloc">';
+		echo "<h3>Proc data:</h3>";
+		echo $view->procFlags();
+		echo '<p/>';
+		echo $view->procEntry();
+	echo '</div>';
+	
+	echo '<div class="rightbloc">';
+		echo "<h3>Affect data:</h3>";
+		echo $view->affectEntry();
+	echo '</div>';
+echo "</div>";
+
+echo "<hr>";
 ?>
 </body>
 </html>

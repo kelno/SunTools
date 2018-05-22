@@ -1,0 +1,31 @@
+body {
+	background-color:#446688;
+	color:white;
+	font-family:arial,sans-serif
+}
+.overriden {
+	font-weight: bold;
+	color:orange;
+}
+.novalue {
+	color:gray;
+}
+caption { 
+	text-align: left;
+	font-style: italic;
+}
+table {
+	border: 1px solid white;
+	font-size: small;
+}
+.bloc {
+	overflow: auto;
+}
+.leftbloc {
+	float: left;
+	width:50%;
+}
+.rightbloc {
+	float: right;
+	width:50%; 
+}

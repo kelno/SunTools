@@ -75,7 +75,7 @@ class View
 		$str = '<table border=1 style="width:100%">';
 		
 		$str .= '<caption>spell_proc entry summary (db ' . $this->_procInfo->SpellId. ')</caption>';
-		$str .= "<tr><th>SchoolMask</th><th>SpellFamilyName</th><th>SpellFamilyMask</th><th>ProcFlags</th><th>SpellTypeMask</th><th>SpellPhaseMask</th><th>HitMask</th><th>AttributesMask</th><th>ProcsPerMinute</th><th>Chance</th><th>Cooldown</th><th>Charges</th></tr>";
+		$str .= "<tr><th>SchoolMask</th><th>SpellFamilyName</th><th>FamilyMask</th><th>ProcFlags</th><th>TypeMask</th><th>PhaseMask</th><th>HitMask</th><th>AttributesMask</th><th>PPM</th><th>%</th><th>CD</th><th>Charges</th></tr>";
 		$str .= '<tr>';
 		$str .= '<td>' . $this->getHexPrint($this->_procInfo->SchoolMask) . '</td>';
 		$str .= '<td>' . getFamilyName($this->_procInfo->SpellFamilyName) . '</td>';
