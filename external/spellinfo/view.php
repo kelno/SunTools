@@ -59,7 +59,7 @@ class View
 				$str .= '<tr>';
 				$str .= '<td>' . $i . '</td>';
 				$str .= '<td>' . $this->getHexPrint($this->_affectInfo->masks[$i]) . '</td>';
-				$str .= '<td><input id="maskInput" type="text" name="mask"><button onclick="addAffectMaskPopup('. $this->_affectInfo->db_id .','.$i.')" type="button">Add</button><button onclick="affectCheckAffected('.$this->_affectInfo->masks[$i].')" type="button" id="affectedButton">Affected?</button></td>';
+				$str .= '<td><input id="maskInput'.$i.'" type="text" name="mask"><button onclick="addAffectMaskPopup('. $this->_affectInfo->db_id .','.$i.')" type="button">Add</button><button onclick="affectCheckAffected('.$i . ', '.$this->_affectInfo->masks[$i].')" type="button" id="affectedButton'.$i.'">Affected?</button></td>';
 				$str .= '</tr>';
 			}
 				

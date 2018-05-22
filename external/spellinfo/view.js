@@ -1,5 +1,5 @@
 function addAffectMaskPopup(db_id, effectId) {
-	let inputMask = document.getElementById("maskInput").value;
+	let inputMask = document.getElementById("maskInput"+effectId).value;
 	let sql = "UPDATE spell_affect SET SpellFamilyMask = SpellFamilyMask | " + inputMask + " WHERE entry = " + db_id + " AND effectId = " + effectId + ";";
 	alert(sql);
 }
@@ -12,11 +12,11 @@ function convertIfHex(mask) {
 	return mask;
 }
 
-function affectCheckAffected(mask) {
-	let inputMask = document.getElementById("maskInput").value;
+function affectCheckAffected(effectId, mask) {
+	let inputMask = document.getElementById("maskInput"+effectId).value;
 	inputMask = convertIfHex(inputMask);
 	if(mask & inputMask)
-		document.getElementById("affectedButton").style.color = "green";
+		document.getElementById("affectedButton"+effectId).style.color = "green";
 	else
-		document.getElementById("affectedButton").style.color = "red";
+		document.getElementById("affectedButton"+effectId).style.color = "red";
 }
