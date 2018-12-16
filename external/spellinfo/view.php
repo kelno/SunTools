@@ -224,6 +224,7 @@ class View
 			$str .= '<div>' . $this->effectAmplitude($i). '</div>';
 			$str .= '<div>' . $this->effectItemType($i). '</div>';
 			$str .= '<div>' . $this->effectMiscValue($i). '</div>';
+			$str .= '<div>' . $this->effectMiscValueB($i). '</div>';
 			$str .= '<div>' . $this->effectTriggerSpell($i). '</div>';
 			$str .= '<div>' . $this->effectImplicitTargetA($i). '</div>';
 			$str .= '<div>' . $this->effectImplicitTargetB($i). '</div>';
@@ -325,6 +326,16 @@ class View
 		}
 	}
 	
+	function effectMiscValueBTransform($auraName, $baseValue)
+	{
+		switch($auraName)
+		{
+			//TODO
+		default:
+			return $baseValue;
+		}
+	}
+	
 	function effectMiscValue($i)
 	{
 		$baseValue = null;
@@ -338,7 +349,23 @@ class View
 		$baseShownMisc = $this->effectMiscValueTransform($baseAuraName, $baseValue);
 		$overrideShownMisc = $this->effectMiscValueTransform($overrideAuraName, $overrideValue);
 		
-		return $this->_generic_value($baseShownMisc, $overrideShownMisc, "Misc value");
+		return $this->_generic_value($baseShownMisc, $overrideShownMisc, "Misc Value");
+	}
+	
+	function effectMiscValueB($i)
+	{
+		$baseValue = null;
+		$overrideValue = null;
+		$this->getSpellFieldI("effectMiscValueB", $i, $baseValue, $overrideValue);
+		
+		$baseAuraName = null;
+		$overrideAuraName = null;
+		$this->getSpellFieldI("applyAuraNames", $i, $baseAuraName, $overrideAuraName);
+		
+		$baseShownMisc = $this->effectMiscValueBTransform($baseAuraName, $baseValue);
+		$overrideShownMisc = $this->effectMiscValueBTransform($overrideAuraName, $overrideValue);
+		
+		return $this->_generic_value($baseShownMisc, $overrideShownMisc, "Misc Value B");
 	}
 	
 	function effectTriggerSpell($i)

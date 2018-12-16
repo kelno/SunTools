@@ -3,7 +3,7 @@
 $ProcFlags = array(
 	0x00000000 => "PROC_FLAG_NONE", 
 
-	0x00000001 => "PROC_FLAG_KILLED",     // 00 Killed by agressor - not sure about this flag
+	0x00000001 => "PROC_FLAG_HEARTBEAT",     // 00 
 	0x00000002 => "PROC_FLAG_KILL",     // 01 Kill target (in most cases need XP/Honor reward)
 
 	0x00000004 => "PROC_FLAG_DONE_MELEE_AUTO_ATTACK",     // 02 Done melee auto attack

@@ -12,7 +12,7 @@ if(isset($_POST['entry']) && preg_match('/[0-9]+/', $_POST['entry'])) {
     $entry          = htmlentities($_POST['entry']);
     $getResultQuery = $handler->prepare('SELECT *
                                          FROM creature_text
-                                         WHERE entry = :entry');
+                                         WHERE CreatureID = :entry');
     $getResultQuery->bindValue(':entry', $entry, PDO::PARAM_INT);
     $getResultQuery->execute();
     
