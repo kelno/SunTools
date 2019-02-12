@@ -1,4 +1,4 @@
-define(['durandal/app', 'knockout', 'jquery', 'creatureDefines'], 
+define(['durandal/app', 'knockout', 'jquery', 'creatureDefines'],
     function (app, ko, $, creatureDefines) {
         "use strict";
 
@@ -6,7 +6,7 @@ define(['durandal/app', 'knockout', 'jquery', 'creatureDefines'],
             var target = event.currentTarget;
             $(target).toggleClass("active");
             var active = $(target).hasClass("active");
-            $(".mechalist").each(function (index, element) {
+            $(".unitflagslist").each(function (index, element) {
                 if (element == event.currentTarget) {
                     if (active == true)
                         var newVal = selection() | Math.pow(2, index);
@@ -16,27 +16,28 @@ define(['durandal/app', 'knockout', 'jquery', 'creatureDefines'],
                     selection(newVal);
                 }
             });
-        },
-        redrawList = function () {
-            $(".mechalist").each(function (index, element) {
+        };
+        var redrawList = function () {
+            $(".unitflagslist").each(function (index, element) {
                 var active = selection() & Math.pow(2, index);
                 $(element).toggleClass("active", active != 0);
             });
-        },
-        selection = ko.observable(0),
-        selectionC = ko.computed(function () {
+        };
+        var selection = ko.observable(0);
+        var selectionC = ko.computed(function () {
             redrawList();
             return selection();
-        }),
-        reset = function () { selection(0); }
-        ;
+        });
+        var reset = function () { 
+            selection(0); 
+        };
 
         return {
-            creatureImmuneMechanics: creatureDefines.creatureImmuneMechanics,
+            creatureUnitFlags: creatureDefines.creatureUnitFlags,
             selection: selection,
             selectionC: selectionC,
             redrawList: redrawList,
             clicked: clicked,
             reset: reset,
         };
-});
+    });

@@ -56,6 +56,12 @@ define(
                     title: 'Extra flags',
                     nav: true,
                     hash: 'ExtraFlags',
+                }, {
+                    route: 'UnitFlags',
+                    moduleId: 'maskunitflags',
+                    title: 'Unit flags',
+                    nav: true,
+                    hash: 'UnitFlags',
                 }
                 ]
         }, {
