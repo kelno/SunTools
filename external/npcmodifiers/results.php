@@ -24,21 +24,26 @@ function printResultingStats($baseStats, $creatureModifiers)
 	
 	echo "<br/>";
 	
+	$resultMin = $minDamage * $creatureModifiers["attackspeed"];
+	$resultMax = $maxDamage * $creatureModifiers["attackspeed"];
+	$resultMinRanged = $minDamageRanged * $creatureModifiers["rangedattackspeed"];
+	$resultMaxRanged = $maxDamageRanged * $creatureModifiers["rangedattackspeed"];
+	
 	echo "<table border=1 class=\"full\">";
 	echo "<tr><th style=\"width: 80px;\"></th><th>DamageBase</th><th>AP Damage</th><th>DamageMin</th><th>DamageMax</th><th>AvgDPS</th></tr>";
 	echo "<tr>";
 		echo "<td>Melee</td>";
 		echo "<td>". round($baseStats["damagebase"] * $creatureModifiers["damage"]) ."</td>";
 		echo "<td>". round($apdamage * $creatureModifiers["damage"]) ."</td>";
-		echo "<td>". round($minDamage) ."</td>";
-		echo "<td>". round($maxDamage) ."</td>";
-		echo "<td>". round( ($minDamage+$maxDamage)/2 / $creatureModifiers["attackspeed"]) . "</td>";
+		echo "<td>". round($resultMin) ."</td>";
+		echo "<td>". round($resultMax) ."</td>";
+		echo "<td>". round( ($resultMin+$resultMax)/2) . "</td>";
 	echo "</tr><tr>";
 		echo "<td>Ranged</td>";
 		echo "<td>". round($baseStats["damagebase"] * $creatureModifiers["damage"]) ."</td>";
 		echo "<td>". round($rangeapdamage * $creatureModifiers["damage"]) ."</td>";
-		echo "<td>". round($minDamageRanged) ."</td>";
-		echo "<td>". round($maxDamageRanged) ."</td>";
-		echo "<td>". round( ($minDamageRanged+$maxDamageRanged)/2 / $creatureModifiers["rangedattackspeed"]) . "</td>";
+		echo "<td>". round($resultMinRanged) ."</td>";
+		echo "<td>". round($resultMaxRanged) ."</td>";
+		echo "<td>". round( ($resultMinRanged+$resultMaxRanged)/2 ) . "</td>";
 	echo "</tr></table>";
 }
