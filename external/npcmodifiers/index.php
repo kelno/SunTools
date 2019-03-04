@@ -93,7 +93,11 @@ if (!isset($_GET["entry"]))
     
     echo "<h1>" . getCreatureName($entry) . " (<a href=\"http://www.wowhead.com/npc=" . $entry . "\">" . $entry . "</a>)</h1>"; 
     echo "<div style=\"float: left; width: 220px\">";
-    $creatureModifiers = getModifiers($entry);
+    $dbModifiers = getDBModifiers($entry);
+	$queryModifiers = getQueryModifiers();
+	
+	$creatureModifiers = $queryModifiers ? $queryModifiers : $dbModifiers;
+	
     printModifersForm($entry, $creatureModifiers);
     echo "</div><div id=\"content\">";
     $baseStatsInfo = getBaseStatsInfo($entry);
@@ -117,8 +121,15 @@ if (!isset($_GET["entry"]))
     $title = "<h3>Results :</h3>";
     echo "<fieldset><legend>" . $title . "</legend>";
     printResultingStats($baseStats, $creatureModifiers);
-    echo "</fieldset></div>";
-
+    echo "</fieldset><br/>";
+	
+	if($queryModifiers)
+	{
+		$title = "<h3>Update query :</h3>";
+		echo "<fieldset><legend>" . $title . "</legend>";
+		printUpdateQuery($entry, $queryModifiers, $dbModifiers);
+		echo "</fieldset></div>";
+	}
 }
 
 ?>

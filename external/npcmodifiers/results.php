@@ -5,8 +5,8 @@ function printResultingStats($baseStats, $creatureModifiers)
 	//formula from core
 	$attackpower       = $baseStats["ap"];
 	$rangedattackpower = $baseStats["rangedap"];
-	$apdamage          = ($attackpower / 14.0) * $creatureModifiers["attackspeed"];
-	$rangeapdamage     = ($rangedattackpower / 14.0) * $creatureModifiers["rangedattackspeed"];
+	$apdamage          = ($attackpower / 14.0) * $creatureModifiers["attackspeed"]/1000;
+	$rangeapdamage     = ($rangedattackpower / 14.0) * $creatureModifiers["rangedattackspeed"]/1000;
 	$minDamage         = ($baseStats["damagebase"] + $apdamage) * $creatureModifiers["damage"];
 	$maxDamage         = $minDamage * (1 + $creatureModifiers["basevariance"]);
 	$minDamageRanged   = ($baseStats["damagebase"] + $rangeapdamage) * $creatureModifiers["damage"];
@@ -24,10 +24,10 @@ function printResultingStats($baseStats, $creatureModifiers)
 	
 	echo "<br/>";
 	
-	$resultMin = $minDamage * $creatureModifiers["attackspeed"];
-	$resultMax = $maxDamage * $creatureModifiers["attackspeed"];
-	$resultMinRanged = $minDamageRanged * $creatureModifiers["rangedattackspeed"];
-	$resultMaxRanged = $maxDamageRanged * $creatureModifiers["rangedattackspeed"];
+	$resultMin = $minDamage * $creatureModifiers["attackspeed"]/1000;
+	$resultMax = $maxDamage * $creatureModifiers["attackspeed"]/1000;
+	$resultMinRanged = $minDamageRanged * $creatureModifiers["rangedattackspeed"]/1000;
+	$resultMaxRanged = $maxDamageRanged * $creatureModifiers["rangedattackspeed"]/1000;
 	
 	echo "<table border=1 class=\"full\">";
 	echo "<tr><th style=\"width: 80px;\"></th><th>DamageBase</th><th>AP Damage</th><th>DamageMin</th><th>DamageMax</th><th>AvgDPS</th></tr>";
