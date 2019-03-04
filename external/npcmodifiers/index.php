@@ -80,7 +80,6 @@ try {
 include ('modifiers.php');
 include ('basestats.php');
 include ('results.php');
-include ('modifymodifiers.php');
 include ('misc.php');
 
 if (!isset($_GET["entry"]))
