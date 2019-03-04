@@ -15,9 +15,37 @@ $creatureModifiers  = [
 */
 function getModifiers($entry)
 {
+	if(isset($_POST["entry"])
+	&& isset($_POST["expansion"])
+	&& isset($_POST["health"])
+	&& isset($_POST["mana"])
+	&& isset($_POST["armor"])
+	&& isset($_POST["damage"])
+	&& isset($_POST["class"])
+	&& isset($_POST["experience"])
+	&& isset($_POST["basevariance"])
+	&& isset($_POST["rangevariance"])
+	&& isset($_POST["attackspeed"])
+	&& isset($_POST["rangedattackspeed"])) {
+		$creatureModifiers = [
+			"expansion"         => $_POST["expansion"],
+			"health"            => $_POST["health"],
+			"mana"              => $_POST["mana"],
+			"armor"             => $_POST["armor"],
+			"damage"            => $_POST["damage"],
+			"experience"        => $_POST["experience"],
+			"class"             => $_POST["class"],
+			"basevariance"      => $_POST["basevariance"],
+			"rangevariance"     => $_POST["rangevariance"],
+			"attackspeed"       => $_POST["attackspeed"],
+			"rangedattackspeed" => $_POST["rangedattackspeed"],
+		];
+		return $creatureModifiers;
+	}
+
     global $handler;
     
-	$query = $handler->prepare("SELECT exp, HealthModifier, ManaModifier, ArmorModifier, DamageModifier, ExperienceModifier, unit_class, BaseVariance, RangeVariance, BaseAttackTime/1000, RangeAttackTime/1000 FROM creature_template WHERE entry = :entry");
+	$query = $handler->prepare("SELECT exp, HealthModifier, ManaModifier, ArmorModifier, DamageModifier, ExperienceModifier, unit_class, BaseVariance, RangeVariance, BaseAttackTime, RangeAttackTime FROM creature_template WHERE entry = :entry");
     $query->bindValue(':entry', htmlspecialchars($entry), PDO::PARAM_INT);
     $query->execute();
 
@@ -37,8 +65,8 @@ function getModifiers($entry)
         "class"             => $data[6],
         "basevariance"      => $data[7],
         "rangevariance"     => $data[8],
-        "attackspeed"       => $data[9],
-        "rangedattackspeed" => $data[10],
+        "attackspeed"       => $data[9]/1000,
+        "rangedattackspeed" => $data[10]/1000,
 	];
 	return $creatureModifiers;
 }
@@ -51,7 +79,7 @@ function printSelectedIfEqual($i, $compare)
 
 function printModifersForm($entry, $modifiers)
 {
-	echo "<form method=\"get\"><fieldset>";
+	echo "<form method=\"post\"><fieldset>";
 	echo "<legend><h3>Modifiers</h3></legend>";
 	echo "<input type=\"text\" name=\"entry\" value=\"". $entry . "\" hidden />";
 	
@@ -118,7 +146,7 @@ function printModifersForm($entry, $modifiers)
 		echo "<img class=\"help\" title=\"The class determines the set of Base stats used\" src=\"question-mark.png\" alt=\"[?]\"/>";
 		echo "<br/>";
 		
-	echo "<br/><input type=\"submit\" value=\"modify\" />";
+	echo "<br/><input type=\"submit\" value=\"preview\" />";
 	echo " </fieldset></form>";
 	echo "<form action=\"resetentry.php\" method=\"get\">";
 	echo "<input type=\"text\" name=\"entry\" value=\"". $entry . "\" hidden />";

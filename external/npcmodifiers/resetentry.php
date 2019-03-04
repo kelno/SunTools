@@ -21,10 +21,10 @@ function resetEntry($entry)
     $query->execute();
 }
 
-if(isset($_GET["entry"]))
+if(isset($_POST["entry"]))
 {
-	resetEntry($_GET["entry"]);
+	resetEntry($_POST["entry"]);
 	
 }
 
-header('Location: '. "index.php?entry=" . htmlspecialchars($_GET["entry"]));
+header('Location: '. "index.php?entry=" . htmlspecialchars($_POST["entry"]));

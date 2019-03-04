@@ -82,7 +82,7 @@ try {
 $view = new View($baseSpellInfo, $overrideSpellInfo, $rankInfo, $procInfo, $affectInfo);
 
 echo "<h2>Spell Info : " . $id . "</h2>";
-echo "Name: <a href=\"http://www.wowhead.com/spell=".$id."\">".$baseSpellInfo->spellName."</a> (<a href=\"https://tbc-twinhead.twinstar.cz/?spell=".$id."\">TBC DB</a>)<br/>";
+echo "Name: <a href=\"http://www.wowhead.com/spell=".$id."\">".$baseSpellInfo->spellName."</a> (<a href=\"http://tbc.cavernoftime.com/spell=".$id."\">TBC DB</a>)<br/>";
 echo "Description: ".$baseSpellInfo->spellDescription . '<br/>';
 echo $view->rank() . '<br/>';
 echo $view->overriden() . '<br/>';

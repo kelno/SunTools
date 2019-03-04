@@ -83,21 +83,6 @@ include ('results.php');
 include ('modifymodifiers.php');
 include ('misc.php');
 
-
-if(isset($_GET["entry"])
-&& isset($_GET["expansion"])
-&& isset($_GET["health"])
-&& isset($_GET["mana"])
-&& isset($_GET["armor"])
-&& isset($_GET["damage"])
-&& isset($_GET["experience"])
-&& isset($_GET["basevariance"])
-&& isset($_GET["rangevariance"])
-&& isset($_GET["attackspeed"])
-&& isset($_GET["rangedattackspeed"])) {
-	udpateModifiers($_GET);
-}
-
 if (!isset($_GET["entry"]))
 {
 	echo '<form method="GET" action="index.php">';
