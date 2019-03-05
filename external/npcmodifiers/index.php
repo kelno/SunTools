@@ -91,7 +91,12 @@ if (!isset($_GET["entry"]))
 } else {
     $entry = htmlspecialchars($_GET["entry"]);
     
-    echo "<h1>" . getCreatureName($entry) . " (<a href=\"http://www.wowhead.com/npc=" . $entry . "\">" . $entry . "</a>)</h1>"; 
+    echo "<h1>" . getCreatureName($entry) . " (" . $entry . ")"; 
+	if ($heroicEntry = getHeroicEntry($entry))
+		echo ' (heroic: <a href="index.php?entry='.$heroicEntry .'">'.$heroicEntry.'</a>)';
+	
+	echo "</h1>";
+	
     echo "<div style=\"float: left; width: 220px\">";
     $dbModifiers = getDBModifiers($entry);
 	$queryModifiers = getQueryModifiers();

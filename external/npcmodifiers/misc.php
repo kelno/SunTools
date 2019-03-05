@@ -2,6 +2,20 @@
 
 require('../../dbconfig.php');
 
+function getHeroicEntry($entry)
+{
+    global $handler;
+    
+	$query = $handler->prepare("SELECT difficulty_entry_1 FROM creature_template WHERE entry = :entry");
+    $query->bindValue(':entry', htmlspecialchars($entry), PDO::PARAM_INT);
+    $query->execute();
+
+	if ($data = $query->fetch())
+		return $data[0];
+	
+	return 0;
+}
+
 function getCreatureName($entry)
 {
     global $handler;
