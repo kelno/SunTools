@@ -61,9 +61,8 @@ foreach ($testMe as $test)
 	$dmgMin = $test[1];
 	$dmgMinHeroic = $test[2];
 	printDamageModifier($entry, $dmgMin);
-	if($dmgMinHeroic)
-		if($heroic_entry = getHeroicEntry($entry))
-			printDamageModifier($heroic_entry, $dmgMinHeroic);
+	if($heroic_entry = getHeroicEntry($entry))
+		printDamageModifier($heroic_entry, $dmgMinHeroic);
 }
 ?>
 </body>
