@@ -1,5 +1,6 @@
 <?php
 include_once('Durations.php');
+include_once('CastTime.php');
 include_once('Radius.php');
 include_once('Ranges.php');
 include_once('Targets.php');
@@ -27,7 +28,11 @@ function getRange($i)
 
 function getCastingTime($i)
 {
-	return '? (' . $i . ')';
+	global $SpellCastTimes;
+	if(array_key_exists($i, $SpellCastTimes))
+		return $SpellCastTimes[$i].'ms (' . $i . ')';
+	else 
+		return "unknown". " (" . $i . ")";
 }
 
 function getDuration($i)
