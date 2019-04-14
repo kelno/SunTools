@@ -200,7 +200,16 @@ function printDamageModifier($entry, $mindmg)
 
 
 echo "Assuming attack speed 2 </br></br>";
-echo "<table>";
+?>
+ <table>
+ <tr>
+   <th>entry</th>
+   <th>mod</th>
+   <th>name</th>
+   <th>old mod</th>
+ </tr>
+<?php
+ 
 foreach ($testMe as $test)
 {
 	$entry = $test[0];
