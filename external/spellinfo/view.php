@@ -259,7 +259,7 @@ class View
 		$str = '';
 		if($name)
 			$str .= $name.': ';
-		if($overrideValue != 0 && $baseValue != $overrideValue)
+		if($overrideValue != null && $baseValue != $overrideValue)
 		{
 			$class .= ' overriden';
 			$title = $baseValuePrint;

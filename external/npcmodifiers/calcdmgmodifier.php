@@ -30,10 +30,10 @@ try {
 	</head>
 <body>
 <?php
-include ('modifiers.php');
-include ('basestats.php');
-include ('results.php');
-include ('misc.php');
+include('modifiers.php');
+include('basestats.php');
+include('results.php');
+include('misc.php');
 
 //entry, dmgmin, dmgminheroic
 $testMe = [ 
@@ -48,13 +48,17 @@ function printDamageModifier($entry, $mindmg)
     $baseStatsInfo = getBaseStatsInfo($entry);
     $baseStats = getBaseStats($baseStatsInfo["level"], $baseStatsInfo["class"], $baseStatsInfo["expansion"]);
 	
-	$apdamage          = ($baseStats["ap"] / 14.0) * $dbModifiers["attackspeed"]/1000;
-	$resultMin = ($baseStats["damagebase"] + $apdamage) * $dbModifiers["damage"] * $dbModifiers["attackspeed"]/1000;
-	$modifier = $mindmg / ($dbModifiers["attackspeed"]/1000) / ($baseStats["damagebase"] + $apdamage);
-	echo $entry . " | " . round($modifier) . " | " . getCreatureName($entry) .  "</br>";
+	$creatureModifiers["attackspeed"] = 2; //always assume 2
+	$creatureModifiers["damage"] = 1; //calc for damage rate 1
+	$stats = getStats($baseStats, $creatureModifiers);
+	
+	$resultMin = $stats["minDamage"];
+	$modifier = $mindmg / $resultMin;
+	echo $entry . " | " . round($modifier, 1) . " | " . getCreatureName($entry) . " // mindmg " . $mindmg . "</br>";
 }
 
 
+echo "Assuming attack speed 2 </br></br>";
 foreach ($testMe as $test)
 {
 	$entry = $test[0];

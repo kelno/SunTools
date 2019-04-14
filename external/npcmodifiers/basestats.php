@@ -63,9 +63,9 @@ function getBaseStats($level, $class, $exp)
 			"health"        => $data[0],
 			"mana"          => $data[1],
 			"armor"         => $data[2],
-			"ap"            => $data[3],
-			"rangedap"      => $data[4],
-			"damagebase"    => $data[5]
+			"ap"            => $data[3] / 2,
+			"rangedap"      => $data[4] / 2,
+			"damagebase"    => $data[5] * 2,
 		];
 		return $baseStats;
 	} else {

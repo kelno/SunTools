@@ -50,7 +50,7 @@ function getDBModifiers($entry)
 {
     global $handler;
     
-	$query = $handler->prepare("SELECT exp, HealthModifier, ManaModifier, ArmorModifier, DamageModifier, ExperienceModifier, unit_class, BaseVariance, RangeVariance, BaseAttackTime, RangeAttackTime FROM creature_template WHERE entry = :entry");
+	$query = $handler->prepare("SELECT exp, HealthModifier, ManaModifier, ArmorModifier, DamageModifier, ExperienceModifier, unit_class, BaseVariance, RangeVariance, BaseAttackTime / 1000, RangeAttackTime / 1000 FROM creature_template WHERE entry = :entry");
     $query->bindValue(':entry', htmlspecialchars($entry), PDO::PARAM_INT);
     $query->execute();
 
