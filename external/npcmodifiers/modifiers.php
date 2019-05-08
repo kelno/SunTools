@@ -112,8 +112,8 @@ function printUpdateQuery($entry, $queryModifiers, $dbModifiers)
 			case "class":             $query .= "unit_class = ${value}, "; break;
 			case "basevariance":      $query .= "BaseVariance = ${value}, "; break;
 			case "rangevariance":     $query .= "RangeVariance = ${value}, "; break;
-			case "attackspeed":       $query .= "BaseAttackTime = ${value}, "; break;
-			case "rangedattackspeed": $query .= "RangeAttackTime = ${value}, "; break;
+			case "attackspeed":       $query .= "BaseAttackTime = ${value} * 1000, "; break;
+			case "rangedattackspeed": $query .= "RangeAttackTime = ${value} * 1000, "; break;
 		}
 	}
 	$query = substr($query, 0, -2);
