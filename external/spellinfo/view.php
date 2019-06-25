@@ -48,7 +48,7 @@ class View
 	function affectEntry()
 	{
 		if(!$this->_affectInfo)
-			return '<span class="novalue">(No spell_proc entry)</span>';
+			return '<span class="novalue">(No spell_affect entry)</span>';
 		
 		$str = '<table border=1 style="min-width: 600px;">';
 		$str .= '<caption>spell_affect entry (db ' . $this->_affectInfo->db_id . ')</caption>';
