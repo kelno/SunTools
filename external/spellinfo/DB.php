@@ -6,7 +6,7 @@ class AffectInfo
 	{
 		global $handler;
 		
-		$query = $handler->prepare("SELECT `entry`, `effectId`, `SpellFamilyMask` FROM spell_affect where entry = :id");
+		$query = $handler->prepare("SELECT `entry`, `effectId`, `SpellFamilyMask` FROM spell_affect WHERE entry = :id");
 		$query->bindValue(':id', $spell_id, PDO::PARAM_INT);
 		$query->execute();
 		return $query->fetchAll();
@@ -46,7 +46,7 @@ class ProcInfo
 	{
 		global $handler;
 		
-		$query = $handler->prepare("SELECT `SpellId`, `SchoolMask`, `SpellFamilyName`, `SpellFamilyMask`, `ProcFlags`, `SpellTypeMask`, `SpellPhaseMask`, `HitMask`, `AttributesMask`, `ProcsPerMinute`, `Chance`, `Cooldown`, `Charges` FROM spell_proc where SpellId = :id OR -SpellId = :id OR SpellId = :first_id OR -SpellId = :first_id");
+		$query = $handler->prepare("SELECT `SpellId`, `SchoolMask`, `SpellFamilyName`, `SpellFamilyMask`, `ProcFlags`, `SpellTypeMask`, `SpellPhaseMask`, `HitMask`, `AttributesMask`, `ProcsPerMinute`, `Chance`, `Cooldown`, `Charges` FROM spell_proc WHERE SpellId = :id OR -SpellId = :id OR SpellId = :first_id OR -SpellId = :first_id");
 		$query->bindValue(':id', $id, PDO::PARAM_INT);
 		$query->bindValue(':first_id', $first_id, PDO::PARAM_INT);
 		$query->execute();
@@ -96,7 +96,7 @@ class RankInfo
 	{
 		global $handler;
 		
-		$query = $handler->prepare("SELECT first_spell_id, spell_id, rank FROM spell_ranks where spell_id = :id");
+		$query = $handler->prepare("SELECT first_spell_id, spell_id, rank FROM spell_ranks WHERE spell_id = :id");
 		$query->bindValue(':id', $id, PDO::PARAM_INT);
 		$query->execute();
 		$data = $query->fetch();
@@ -221,3 +221,37 @@ class SpellInfo
 	public $spellFamilyName;
 	public $spellFamilyFlags;
 };
+
+class SpellLinkInfo
+{
+	private function FetchData($spell_id)
+	{
+		global $handler;
+		
+		$query = $handler->prepare("SELECT spell_trigger, spell_effect, type, comment FROM spell_linked_spell WHERE spell_trigger = :id OR -spell_trigger = :id");
+		$query->bindValue(':id', $spell_id, PDO::PARAM_INT);
+		$query->execute();
+		return $query->fetchAll();
+	}
+	
+	private function Load($id)
+	{
+		global $handler;
+		
+		$data = $this->FetchData($id);
+		if(!$data)
+			throw new Exception("No spell link for spell $id in database");
+		
+		foreach($data as $value) {
+			$this->db_id = $value["spell_trigger"];
+		}
+	}
+	
+	function __construct($id)
+	{
+		$this->Load($id);
+	}
+	
+	public $db_id;
+}
+

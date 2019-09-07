@@ -2,13 +2,14 @@
 
 class View
 {
-	function __construct($baseSpellInfo, $overrideSpellInfo, $rankInfo, $procInfo, $affectInfo)
+	function __construct($baseSpellInfo, $overrideSpellInfo, $rankInfo, $procInfo, $affectInfo, $spellLinkInfo)
 	{
 		$this->_baseSpellInfo = $baseSpellInfo;
 		$this->_overrideSpellInfo = $overrideSpellInfo;
 		$this->_rankInfo = $rankInfo;
 		$this->_procInfo = $procInfo;
 		$this->_affectInfo = $affectInfo;
+		$this->_spellLinkInfo = $spellLinkInfo;
 	}
 	
 	function duration()
@@ -65,6 +66,14 @@ class View
 				
 		$str .= "</table>";
 		return $str;
+	}
+	
+	function spellLinked()
+	{
+		if($this->_spellLinkInfo)
+			return '<span class="warning">Has spell_linked_spell data</span>';
+		else
+			return '(no spell_linked_spell data)';
 	}
 	
 	function procEntry()
@@ -438,4 +447,5 @@ class View
 	public $_rankInfo;
 	public $_procInfo;
 	public $_affectInfo;
+	public $_spellLinkInfo;
 };

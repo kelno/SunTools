@@ -63,6 +63,13 @@ try {
     //no spell rank data, continue
 }
 
+$spellLinkInfo = null;
+try {
+	$spellLinkInfo = new SpellLinkInfo($id);
+} catch (Exception $e) {
+    //no spell link data, continue
+}
+
 $procInfo = null;
 try {
 	$first_id = $rankInfo ? $rankInfo->first_spell_id : 0;
@@ -79,13 +86,14 @@ try {
     //no spell rank data, continue
 }
 
-$view = new View($baseSpellInfo, $overrideSpellInfo, $rankInfo, $procInfo, $affectInfo);
+$view = new View($baseSpellInfo, $overrideSpellInfo, $rankInfo, $procInfo, $affectInfo, $spellLinkInfo);
 
 echo "<h2>Spell Info : " . $id . "</h2>";
 echo "Name: <a href=\"http://www.wowhead.com/spell=".$id."\">".$baseSpellInfo->spellName."</a> (<a href=\"http://db.endless.gg/?spell=".$id."\">TBC DB</a>)<br/>";
 echo "Description: ".$baseSpellInfo->spellDescription . '<br/>';
 echo $view->rank() . '<br/>';
 echo $view->overriden() . '<br/>';
+echo $view->spellLinked() . '<br/>';
 echo "<hr>";
 
 echo '<ul>';

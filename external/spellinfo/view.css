@@ -5,6 +5,10 @@ body {
 }
 .overriden {
 	font-weight: bold;
+	color:#ffcf00;
+}
+.warning {
+	font-weight: bold;
 	color:orange;
 }
 .novalue {
