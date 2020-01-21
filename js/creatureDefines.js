@@ -48,7 +48,7 @@
                     "NONE",
                     "NONE",
                     "NONE",
-                    "NONE",
+                    "CREATURE_FLAG_EXTRA_NO_SKILLGAIN",
                     "CREATURE_FLAG_EXTRA_WORLDEVENT",
                     "CREATURE_FLAG_EXTRA_NO_SPELL_SLOW",
                     "CREATURE_FLAG_EXTRA_NO_TAUNT",
