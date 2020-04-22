@@ -3,13 +3,11 @@
 function getStats($baseStats, $creatureModifiers)
 {
 	//formula from core
-	$attackpower       = $baseStats["ap"];
-	$rangedattackpower = $baseStats["rangedap"];
 	$attackspeed       = $creatureModifiers["attackspeed"];
-	$apdamage          = ($attackpower / 14.0) * $attackspeed;
-	$rangeapdamage     = ($rangedattackpower / 14.0) * $attackspeed;
+	$apdamage          = (max($baseStats["ap"]       + $creatureModifiers["apmod"], 0) / 14.0) * $attackspeed;
+	$rangeapdamage     = (max($baseStats["rangedap"] + $creatureModifiers["apmod"], 0) / 14.0) * $attackspeed;
 	$minDamage         = ($baseStats["damagebase"] + $apdamage) * $creatureModifiers["damage"];
-	$maxDamage         = $minDamage * (1 + $creatureModifiers["basevariance"]);
+	$maxDamage         = ($baseStats["damagebase"] * (1 + $creatureModifiers["basevariance"]) + $apdamage) * $creatureModifiers["damage"];
 	$minDamageRanged   = ($baseStats["damagebase"] + $rangeapdamage) * $creatureModifiers["damage"];
 	$maxDamageRanged   = $minDamageRanged * (1 + $creatureModifiers["rangevariance"]);
 	

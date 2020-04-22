@@ -39,6 +39,7 @@ function getQueryModifiers()
 			"rangevariance"     => $_POST["rangevariance"],
 			"attackspeed"       => $_POST["attackspeed"],
 			"rangedattackspeed" => $_POST["rangedattackspeed"],
+			"apmod"             => $_POST["apmod"],
 		];
 		return $creatureModifiers;
 	}
@@ -72,6 +73,7 @@ function getDBModifiers($entry)
         "rangevariance"     => $data[8],
         "attackspeed"       => $data[9],
         "rangedattackspeed" => $data[10],
+        "apmod"             => 0,
 	];
 	return $creatureModifiers;
 }
@@ -176,6 +178,10 @@ function printModifersForm($entry, $modifiers)
 	echo "<label for=\"rangevariance\">Range Variance</label>";
 	echo "<input type=\"number\" step=\"any\" id=\"rangevariance\" name=\"rangevariance\" value=\"". $modifiers["rangevariance"] . "\"/>";
 	echo "<img class=\"help\" title=\"Same as Base Variance but with ranged weapon\" src=\"question-mark.png\" alt=\"[?]\"/>";
+	echo "<br/>";
+	echo "<label for=\"apmod\">AP Mod</label>";
+	echo "<input type=\"number\" step=\"any\" id=\"apmod\" name=\"apmod\" value=\"". $modifiers["apmod"] . "\"/>";
+	echo "<img class=\"help\" title=\"Like demo shout value. NOT a DB value, this is just for previewing here\" src=\"question-mark.png\" alt=\"[?]\"/>";
 	echo "<br/>";
 	echo "<label for=\"class\">Class</label>";
 		echo "<select name=\"class\" id=\"class\" value=\"". $modifiers["class"] . "\">";
