@@ -45,7 +45,7 @@
                     "CREATURE_FLAG_EXTRA_TRIGGER",
                     "CREATURE_FLAG_EXTRA_DUNGEON_BOSS",
                     "CREATURE_FLAG_EXTRA_DUNGEON_HOME",
-                    "CREATURE_FLAG_EXTRATRIGGER_PVP_COMBAT",
+                    "CREATURE_FLAG_EXTRA_TRIGGER_PVP_COMBAT",
                     "CREATURE_FLAG_EXTRA_ZONE_COMBAT",
                     "CREATURE_FLAG_EXTRA_ALL_DIMINISH",
                     "CREATURE_FLAG_EXTRA_NO_SKILLGAIN",
