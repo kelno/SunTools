@@ -61,6 +61,7 @@
 					"CREATURE_FLAG_EXTRA_NO_HEALTH_RESET",
 					"CREATURE_FLAG_EXTRA_GUARD",
 					"CREATURE_FLAG_EXTRA_NO_COMBAT",
+					"CREATURE_FLAG_EXTRA_NO_EVADE_TELEPORT",
                 ], creatureUnitFlags: [
                     "UNIT_FLAG_SERVER_CONTROLLED",
                     "UNIT_FLAG_NON_ATTACKABLE",
