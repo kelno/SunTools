@@ -309,7 +309,7 @@ class View
 	
 	function effectAmplitude($i)
 	{
-		return $this->generic_value_i("effectAmplitude", $i, "Amplitude");
+		return $this->generic_value_i("effectAmplitude", $i, "Period");
 	}
 	
 	function effectItemType($i)
