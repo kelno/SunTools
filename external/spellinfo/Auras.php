@@ -261,7 +261,7 @@ $spellAuraNames = array(
     "SPELL_AURA_258",
     "SPELL_AURA_259",
     "SPELL_AURA_260",
-    "SPELL_AURA_261"
+    "SPELL_AURA_PHASE"
 );
 
 function getAuraName($i)
