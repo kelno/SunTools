@@ -86,11 +86,21 @@ try {
     //no spell rank data, continue
 }
 
+$serverSide = !$baseSpellInfo;
+if ($serverSide) {
+    // then it's only in base spell info table, don't show as override
+    $baseSpellInfo = $overrideSpellInfo;
+    $overrideSpellInfo = null;
+}
+
 $view = new View($baseSpellInfo, $overrideSpellInfo, $rankInfo, $procInfo, $affectInfo, $spellLinkInfo);
 
-echo "<h2>Spell Info : " . $id . "</h2>";
-echo "Name: <a href=\"http://www.wowhead.com/spell=".$id."\">".$baseSpellInfo->spellName."</a> (<a href=\"http://db.endless.gg/?spell=".$id."\">TBC DB</a>)<br/>";
-echo "Description: ".$baseSpellInfo->spellDescription . '<br/>';
+$idText = $id . ($serverSide ? " (SERVERSIDE)" : '');
+echo "<h2>Spell Info : ${idText} </h2>";
+$name = $baseSpellInfo ? $baseSpellInfo->spellName : $overrideSpellInfo->spellName;
+echo "Name: <a href=\"http://www.wowhead.com/spell=".$id."\">${name}</a> (<a href=\"http://db.endless.gg/?spell=".$id."\">TBC DB</a>)<br/>";
+$desc = $baseSpellInfo ? $baseSpellInfo->spellDescription : $overrideSpellInfo->spellDescription;
+echo "Description: ${desc} <br/>";
 echo $view->rank() . '<br/>';
 echo $view->overriden() . '<br/>';
 echo $view->spellLinked() . '<br/>';
