@@ -40,14 +40,22 @@ $baseSpellInfo = null;
 try {
 	$baseSpellInfo = new SpellInfo($id);
 } catch (Exception $e) {
-	//
+    if ($e->getMessage() != "Nospell")
+    {
+        echo $e . '<br/>';
+        exit;
+    }
 }
 
 $overrideSpellInfo = null;
 try {
 	$overrideSpellInfo = new SpellInfo($id, true);
 } catch (Exception $e) {
-    //no spell override data, continue
+    if ($e->getMessage() != "Nospell")
+    {
+        echo $e . '<br/>';
+        exit;
+    }
 }
 
 if(!$baseSpellInfo && !$overrideSpellInfo)

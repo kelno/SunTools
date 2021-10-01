@@ -135,7 +135,7 @@ class SpellInfo
 		$data = $query->fetch();
 		
 		if(!$data)
-			throw new Exception("No spell $id in database");
+			throw new Exception("Nospell");
 		
 		$this->castingTimeIndex = $data[21];
 		$this->procFlags = $data[27];
