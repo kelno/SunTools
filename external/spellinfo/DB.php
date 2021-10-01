@@ -122,18 +122,19 @@ class SpellInfo
 	private function Load($id, $override)
 	{
 		global $handler;
-		$fields = "`entry`,`category`,`dispel`,`mechanic`,`attributes`,`attributesEx`,`attributesEx2`,`attributesEx3`,`attributesEx4`,`attributesEx5`,`attributesEx6`,`stances`,`stancesNot`,`targets`,`targetCreatureType`,`requiresSpellFocus`,`facingCasterFlags`,`casterAuraState`,`targetAuraState`,`casterAuraStateNot`,`targetAuraStateNot`,`castingTimeIndex`,`recoveryTime`,`categoryRecoveryTime`,`interruptFlags`,`auraInterruptFlags`,`channelInterruptFlags`,`procFlags`,`procChance`,`procCharges`,`maxLevel`,`baseLevel`,`spellLevel`,`durationIndex`,`powerType`,`manaCost`,`manaCostPerlevel`,`manaPerSecond`,`manaPerSecondPerLevel`,`rangeIndex`,`speed`,`stackAmount`,`totem1`,`totem2`,`reagent1`,`reagent2`,`reagent3`,`reagent4`,`reagent5`,`reagent6`,`reagent7`,`reagent8`,`reagentCount1`,`reagentCount2`,`reagentCount3`,`reagentCount4`,`reagentCount5`,`reagentCount6`,`reagentCount7`,`reagentCount8`,`equippedItemClass`,`equippedItemSubClassMask`,`equippedItemInventoryTypeMask`,`effect1`,`effect2`,`effect3`,`effectDieSides1`,`effectDieSides2`,`effectDieSides3`,`effectBaseDice1`,`effectBaseDice2`,`effectBaseDice3`,`effectDicePerLevel1`,`effectDicePerLevel2`,`effectDicePerLevel3`,`effectRealPointsPerLevel1`,`effectRealPointsPerLevel2`,`effectRealPointsPerLevel3`,`effectBasePoints1`,`effectBasePoints2`,`effectBasePoints3`,`effectMechanic1`,`effectMechanic2`,`effectMechanic3`,`effectImplicitTargetA1`,`effectImplicitTargetA2`,`effectImplicitTargetA3`,`effectImplicitTargetB1`,`effectImplicitTargetB2`,`effectImplicitTargetB3`,`effectRadiusIndex1`,`effectRadiusIndex2`,`effectRadiusIndex3`,`effectApplyAuraName1`,`effectApplyAuraName2`,`effectApplyAuraName3`,`effectAmplitude1`,`effectAmplitude2`,`effectAmplitude3`,`effectMultipleValue1`,`effectMultipleValue2`,`effectMultipleValue3`,`effectChainTarget1`,`effectChainTarget2`,`effectChainTarget3`,`effectItemType1`,`effectItemType2`,`effectItemType3`,`effectMiscValue1`,`effectMiscValue2`,`effectMiscValue3`,`effectMiscValueB1`,`effectMiscValueB2`,`effectMiscValueB3`,`effectTriggerSpell1`,`effectTriggerSpell2`,`effectTriggerSpell3`,`effectPointsPerComboPoint1`,`effectPointsPerComboPoint2`,`effectPointsPerComboPoint3`,`spellVisual`,`spellIconID`,`activeIconID`,`spellName1`,`spellName2`,`spellName3`,`spellName4`,`spellName5`,`spellName6`,`spellName7`,`spellName8`,`spellName9`,`spellName10`,`spellName11`,`spellName12`,`spellName13`,`spellName14`,`spellName15`,`spellName16`,`rank1`,`rank2`,`rank3`,`rank4`,`rank5`,`rank6`,`rank7`,`rank8`,`rank9`,`rank10`,`rank11`,`rank12`,`rank13`,`rank14`,`rank15`,`rank16`,`description1`,`manaCostPercentage`,`startRecoveryCategory`,`startRecoveryTime`,`maxTargetLevel`,`spellFamilyName`,`spellFamilyFlags`,`maxAffectedTargets`,`dmgClass`,`preventionType`,`dmgMultiplier1`,`dmgMultiplier2`,`dmgMultiplier3`,`totemCategory1`,`totemCategory2`,`areaId`,`schoolMask`";
+    
+		$fields = "`entry`,`category`,`dispel`,`mechanic`,`attributes`,`attributesEx`,`attributesEx2`,`attributesEx3`,`attributesEx4`,`attributesEx5`,`attributesEx6`,`shapeshiftMask1`,`shapeshiftExclude1`,`targets`,`targetCreatureType`,`requiresSpellFocus`,`facingCasterFlags`,`casterAuraState`,`targetAuraState`,`casterAuraStateNot`,`targetAuraStateNot`,`castingTimeIndex`,`recoveryTime`,`categoryRecoveryTime`,`interruptFlags`,`auraInterruptFlags`,`channelInterruptFlags`,`procFlags`,`procChance`,`procCharges`,`maxLevel`,`baseLevel`,`spellLevel`,`durationIndex`,`powerType`,`manaCost`,`manaCostPerlevel`,`manaPerSecond`,`manaPerSecondPerLevel`,`rangeIndex`,`speed`,`stackAmount`,`totem1`,`totem2`,`reagent1`,`reagent2`,`reagent3`,`reagent4`,`reagent5`,`reagent6`,`reagent7`,`reagent8`,`reagentCount1`,`reagentCount2`,`reagentCount3`,`reagentCount4`,`reagentCount5`,`reagentCount6`,`reagentCount7`,`reagentCount8`,`equippedItemClass`,`equippedItemSubClassMask`,`equippedItemInventoryTypeMask`,`effect1`,`effect2`,`effect3`,`effectDieSides1`,`effectDieSides2`,`effectDieSides3`,`effectBaseDice1`,`effectBaseDice2`,`effectBaseDice3`,`effectDicePerLevel1`,`effectDicePerLevel2`,`effectDicePerLevel3`,`effectRealPointsPerLevel1`,`effectRealPointsPerLevel2`,`effectRealPointsPerLevel3`,`effectBasePoints1`,`effectBasePoints2`,`effectBasePoints3`,`effectMechanic1`,`effectMechanic2`,`effectMechanic3`,`effectImplicitTargetA1`,`effectImplicitTargetA2`,`effectImplicitTargetA3`,`effectImplicitTargetB1`,`effectImplicitTargetB2`,`effectImplicitTargetB3`,`effectRadiusIndex1`,`effectRadiusIndex2`,`effectRadiusIndex3`,`effectApplyAuraName1`,`effectApplyAuraName2`,`effectApplyAuraName3`,`effectAuraPeriod1`,`effectAuraPeriod2`,`effectAuraPeriod3`,`effectMultipleValue1`,`effectMultipleValue2`,`effectMultipleValue3`,`effectChainTarget1`,`effectChainTarget2`,`effectChainTarget3`,`effectItemType1`,`effectItemType2`,`effectItemType3`,`effectMiscValue1`,`effectMiscValue2`,`effectMiscValue3`,`effectMiscValueB1`,`effectMiscValueB2`,`effectMiscValueB3`,`effectTriggerSpell1`,`effectTriggerSpell2`,`effectTriggerSpell3`,`effectPointsPerComboPoint1`,`effectPointsPerComboPoint2`,`effectPointsPerComboPoint3`,`spellVisual`,`spellIconID`,`activeIconID`,`spellName1`,`manaCostPercentage`,`startRecoveryCategory`,`startRecoveryTime`,`maxTargetLevel`,`spellFamilyName`,`spellFamilyFlags1`,`spellFamilyFlags2`,`maxAffectedTargets`,`dmgClass`,`preventionType`,`effectChainAmplitude1`,`effectChainAmplitude2`,`effectChainAmplitude3`,`totemCategory1`,`totemCategory2`,`areaId`,`schoolMask`";
 		if($override)
 			$fields .= ", `customAttributesFlags`, `Comment`";
-		
+        
 		$table = ($override ? "spell_template_override" : "spell_template");
-		
+
 		$sql = "SELECT ${fields} FROM ${table} WHERE entry = :id";
 		$query = $handler->prepare($sql);
 		$query->bindValue(':id', $id, PDO::PARAM_INT);
 		$query->execute();
 		$data = $query->fetch();
-		
+
 		if(!$data)
 			throw new Exception("Nospell");
 		
@@ -165,9 +166,9 @@ class SpellInfo
 		$this->applyAuraNames[0] = $data[93];
 		$this->applyAuraNames[1] = $data[94];
 		$this->applyAuraNames[2] = $data[95];
-		$this->effectAmplitude[0] = $data[96];
-		$this->effectAmplitude[1] = $data[97];
-		$this->effectAmplitude[2] = $data[98];
+		$this->effectAuraPeriod[0] = $data[96];
+		$this->effectAuraPeriod[1] = $data[97];
+		$this->effectAuraPeriod[2] = $data[98];
 		$this->effectItemType[0] = $data[105];
 		$this->effectItemType[1] = $data[106];
 		$this->effectItemType[2] = $data[107];
@@ -181,10 +182,10 @@ class SpellInfo
 		$this->effectTriggerSpell[1] = $data[115];
 		$this->effectTriggerSpell[2] = $data[116];
 		$this->spellName = $data[123];
-		$this->spellDescription = $data[155];
-		$this->spellFamilyName = $data[160];
-		$this->spellFamilyFlags = $data[161];
-		
+		$this->spellDescription = $data[123];
+		$this->spellFamilyName = $data[128];
+		$this->spellFamilyFlags = $data[129] | ($data[130] << 32);
+
 		$c = 0;
 		for ($i = 4; $i < 11; $i += 1)
 		{

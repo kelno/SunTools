@@ -230,7 +230,7 @@ class View
 			$str .= '</div>';
 			$str .= '<div>' . $this->effectBasePoints($i) . '</div>';
 			$str .= '<div>' . $this->effectApplyAuraName($i). '</div>';
-			$str .= '<div>' . $this->effectAmplitude($i). '</div>';
+			$str .= '<div>' . $this->effectAuraPeriod($i). '</div>';
 			$str .= '<div>' . $this->effectItemType($i). '</div>';
 			$str .= '<div>' . $this->effectMiscValue($i). '</div>';
 			$str .= '<div>' . $this->effectMiscValueB($i). '</div>';
@@ -307,9 +307,9 @@ class View
 		return $this->generic_value_i("applyAuraNames", $i, "Aura type", "getAura");
 	}
 	
-	function effectAmplitude($i)
+	function effectAuraPeriod($i)
 	{
-		return $this->generic_value_i("effectAmplitude", $i, "Period");
+		return $this->generic_value_i("effectAuraPeriod", $i, "Period");
 	}
 	
 	function effectItemType($i)
