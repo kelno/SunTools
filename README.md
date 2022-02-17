@@ -1,3 +1,5 @@
+Legacy tools, only SpellInfo is still updated.
+
 ## SunTools
 * SunClasses
 * SunCommands
